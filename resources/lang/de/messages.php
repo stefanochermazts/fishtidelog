@@ -188,6 +188,24 @@ return [
     'hours' => 'Stunden',
     'minutes' => 'Minuten',
     'kg' => 'kg',
+    
+    // Environmental Data
+    'environmental_data' => 'Umweltdaten',
+    'moon_phase' => 'Mondphase',
+    'sunrise_sunset' => 'Sonnenaufgang & Sonnenuntergang',
+    'weather_forecast' => 'Wettervorhersage',
+    'sunrise' => 'Sonnenaufgang',
+    'sunset' => 'Sonnenuntergang',
+    'day_length' => 'Tageslänge',
+    'solar_noon' => 'Sonnenmittag',
+    'illumination' => 'Beleuchtung',
+    'temperature' => 'Temperatur',
+    'conditions' => 'Bedingungen',
+    'humidity' => 'Luftfeuchtigkeit',
+    'wind' => 'Wind',
+    'loading_environmental_data' => 'Lade Umweltdaten...',
+    'environmental_data_error' => 'Fehler beim Laden der Umweltdaten',
+    'select_location_first' => 'Wählen Sie zuerst einen Standort auf der Karte',
     'cm' => 'cm',
     
     // Validation

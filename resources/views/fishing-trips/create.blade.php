@@ -39,6 +39,115 @@
                             @enderror
                         </div>
 
+                        <!-- Dati Ambientali -->
+                        <div id="environmental-data" class="hidden">
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                                <h4 class="font-medium text-blue-900 dark:text-blue-100 mb-4 flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.004 5.004 0 00-4.9 4H3z"></path>
+                                    </svg>
+                                    Dati Ambientali
+                                </h4>
+                                
+                                <!-- Loading -->
+                                <div id="env-loading" class="flex items-center justify-center py-4">
+                                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                                    <span class="ml-3 text-neutral-600 dark:text-neutral-400">Caricamento dati ambientali...</span>
+                                </div>
+
+                                <!-- Dati Luna -->
+                                <div id="moon-data" class="hidden mb-4">
+                                    <div class="flex items-center mb-2">
+                                        <svg class="w-5 h-5 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                        </svg>
+                                        <span class="font-medium text-neutral-900 dark:text-neutral-100">Fase Lunare</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Fase:</span>
+                                            <span id="moon-phase" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Illuminazione:</span>
+                                            <span id="moon-illumination" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dati Sole -->
+                                <div id="sun-data" class="hidden mb-4">
+                                    <div class="flex items-center mb-2">
+                                        <svg class="w-5 h-5 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                        </svg>
+                                        <span class="font-medium text-neutral-900 dark:text-neutral-100">Alba e Tramonto</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Alba:</span>
+                                            <span id="sunrise-time" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Tramonto:</span>
+                                            <span id="sunset-time" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Durata giorno:</span>
+                                            <span id="day-length" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Mezzogiorno solare:</span>
+                                            <span id="solar-noon" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dati Meteo -->
+                                <div id="weather-data" class="hidden">
+                                    <div class="flex items-center mb-2">
+                                        <svg class="w-5 h-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                        </svg>
+                                        <span class="font-medium text-neutral-900 dark:text-neutral-100">Previsioni Meteo</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Temperatura:</span>
+                                            <span id="weather-temp" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Condizioni:</span>
+                                            <span id="weather-desc" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Umidità:</span>
+                                            <span id="weather-humidity" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600 dark:text-neutral-400">Vento:</span>
+                                            <span id="weather-wind" class="ml-2 font-medium text-neutral-900 dark:text-neutral-100"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Errore -->
+                                <div id="env-error" class="hidden">
+                                    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                                        <div class="flex">
+                                            <svg class="w-5 h-5 text-red-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            <div class="ml-3">
+                                                <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Errore</h3>
+                                                <div class="mt-1 text-sm text-red-700 dark:text-red-300" id="env-error-message"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Selezione punto di pesca esistente -->
                         @if($fishingSpots->count() > 0)
                             <div>
@@ -531,6 +640,132 @@
                 
                 tideData.innerHTML = html;
                 tideResults.classList.remove('hidden');
+            }
+
+            // Gestione dati ambientali
+            const startTimeInput = document.getElementById('start_time');
+            const environmentalData = document.getElementById('environmental-data');
+            const envLoading = document.getElementById('env-loading');
+            const envError = document.getElementById('env-error');
+            const envErrorMessage = document.getElementById('env-error-message');
+            const moonData = document.getElementById('moon-data');
+            const sunData = document.getElementById('sun-data');
+            const weatherData = document.getElementById('weather-data');
+
+            if (startTimeInput) {
+                startTimeInput.addEventListener('change', function() {
+                    const dateTime = this.value;
+                    if (dateTime) {
+                        // Estrai solo la data dal datetime-local
+                        const date = dateTime.split('T')[0];
+                        loadEnvironmentalData(date);
+                    }
+                });
+            }
+
+            function loadEnvironmentalData(date) {
+                // Usa coordinate di default (Roma) se non sono state selezionate
+                const latitude = latInput.value || 41.9028;
+                const longitude = lngInput.value || 12.4964;
+
+                if (!latitude || !longitude) {
+                    showEnvError('Seleziona prima una posizione sulla mappa');
+                    return;
+                }
+
+                showEnvLoading();
+
+                fetch('{{ route("environmental-data.get") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        date: date,
+                        latitude: parseFloat(latitude),
+                        longitude: parseFloat(longitude)
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideEnvLoading();
+                    if (data.success) {
+                        showEnvironmentalData(data.data);
+                    } else {
+                        showEnvError(data.message || 'Errore nel caricamento dei dati ambientali');
+                    }
+                })
+                .catch(error => {
+                    hideEnvLoading();
+                    showEnvError('Errore di connessione');
+                });
+            }
+
+            function showEnvLoading() {
+                environmentalData.classList.remove('hidden');
+                envLoading.classList.remove('hidden');
+                envError.classList.add('hidden');
+                moonData.classList.add('hidden');
+                sunData.classList.add('hidden');
+                weatherData.classList.add('hidden');
+            }
+
+            function hideEnvLoading() {
+                envLoading.classList.add('hidden');
+            }
+
+            function showEnvError(message) {
+                envErrorMessage.textContent = message;
+                envError.classList.remove('hidden');
+                envLoading.classList.add('hidden');
+                moonData.classList.add('hidden');
+                sunData.classList.add('hidden');
+                weatherData.classList.add('hidden');
+            }
+
+            function showEnvironmentalData(data) {
+                // Mostra dati lunari
+                if (data.moon && data.moon.success) {
+                    document.getElementById('moon-phase').textContent = data.moon.data.phase;
+                    document.getElementById('moon-illumination').textContent = data.moon.data.illumination + '%';
+                    moonData.classList.remove('hidden');
+                }
+
+                // Mostra dati solari
+                if (data.sun && data.sun.success) {
+                    document.getElementById('sunrise-time').textContent = data.sun.data.sunrise;
+                    document.getElementById('sunset-time').textContent = data.sun.data.sunset;
+                    document.getElementById('day-length').textContent = data.sun.data.day_length;
+                    document.getElementById('solar-noon').textContent = data.sun.data.solar_noon;
+                    sunData.classList.remove('hidden');
+                }
+
+                // Mostra dati meteo
+                if (data.weather && data.weather.success) {
+                    document.getElementById('weather-temp').textContent = data.weather.data.temperature + '°C';
+                    document.getElementById('weather-desc').textContent = data.weather.data.description;
+                    document.getElementById('weather-humidity').textContent = data.weather.data.humidity + '%';
+                    document.getElementById('weather-wind').textContent = data.weather.data.wind_speed + ' km/h';
+                    weatherData.classList.remove('hidden');
+                }
+
+                // Nascondi errori
+                envError.classList.add('hidden');
+            }
+
+            // Aggiorna dati ambientali quando cambia la posizione
+            if (latInput && lngInput) {
+                const updateEnvironmentalData = () => {
+                    const dateTime = startTimeInput.value;
+                    if (dateTime && latInput.value && lngInput.value) {
+                        const date = dateTime.split('T')[0];
+                        loadEnvironmentalData(date);
+                    }
+                };
+
+                latInput.addEventListener('change', updateEnvironmentalData);
+                lngInput.addEventListener('change', updateEnvironmentalData);
             }
         });
     </script>

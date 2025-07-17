@@ -199,6 +199,24 @@ return [
     'minutes' => 'minuti',
     'kg' => 'kg',
     
+    // Environmental Data
+    'environmental_data' => 'Dati Ambientali',
+    'moon_phase' => 'Fase Lunare',
+    'sunrise_sunset' => 'Alba e Tramonto',
+    'weather_forecast' => 'Previsioni Meteo',
+    'sunrise' => 'Alba',
+    'sunset' => 'Tramonto',
+    'day_length' => 'Durata Giorno',
+    'solar_noon' => 'Mezzogiorno Solare',
+    'illumination' => 'Illuminazione',
+    'temperature' => 'Temperatura',
+    'conditions' => 'Condizioni',
+    'humidity' => 'Umidità',
+    'wind' => 'Vento',
+    'loading_environmental_data' => 'Caricamento dati ambientali...',
+    'environmental_data_error' => 'Errore nel caricamento dei dati ambientali',
+    'select_location_first' => 'Seleziona prima una posizione sulla mappa',
+    
     // Admin
     'admin_dashboard' => 'Dashboard Amministrazione',
     'users_management' => 'Gestione Utenti',

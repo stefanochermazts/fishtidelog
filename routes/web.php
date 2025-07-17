@@ -8,6 +8,7 @@ use App\Http\Controllers\FishSpeciesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\TideController;
+use App\Http\Controllers\EnvironmentalDataController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,12 @@ Route::middleware(['auth'])->group(function () {
     // Tides
 Route::get('/tides', [TideController::class, 'index'])->name('tides.index');
 Route::post('/tides/get-by-coordinates', [TideController::class, 'getTidesByCoordinates'])->name('tides.get-by-coordinates');
+
+// Environmental Data Routes
+Route::post('/environmental-data', [EnvironmentalDataController::class, 'getEnvironmentalData'])->name('environmental-data.get');
+Route::post('/moon-phase', [EnvironmentalDataController::class, 'getMoonPhase'])->name('moon-phase.get');
+Route::post('/sunrise-sunset', [EnvironmentalDataController::class, 'getSunriseSunset'])->name('sunrise-sunset.get');
+Route::post('/weather', [EnvironmentalDataController::class, 'getWeather'])->name('weather.get');
     
     // Profile routes (from Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

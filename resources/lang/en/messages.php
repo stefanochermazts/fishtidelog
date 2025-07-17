@@ -192,6 +192,24 @@ return [
     'hours' => 'hours',
     'minutes' => 'minutes',
     'kg' => 'kg',
+    
+    // Environmental Data
+    'environmental_data' => 'Environmental Data',
+    'moon_phase' => 'Moon Phase',
+    'sunrise_sunset' => 'Sunrise & Sunset',
+    'weather_forecast' => 'Weather Forecast',
+    'sunrise' => 'Sunrise',
+    'sunset' => 'Sunset',
+    'day_length' => 'Day Length',
+    'solar_noon' => 'Solar Noon',
+    'illumination' => 'Illumination',
+    'temperature' => 'Temperature',
+    'conditions' => 'Conditions',
+    'humidity' => 'Humidity',
+    'wind' => 'Wind',
+    'loading_environmental_data' => 'Loading environmental data...',
+    'environmental_data_error' => 'Error loading environmental data',
+    'select_location_first' => 'Select a location on the map first',
     'cm' => 'cm',
     
     // Admin
