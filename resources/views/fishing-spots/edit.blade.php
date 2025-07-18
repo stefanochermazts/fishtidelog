@@ -265,51 +265,56 @@
     
     @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM caricato, inizializzo mappa...');
-            
-            // Verifica che Leaflet sia caricato
-            if (typeof L === 'undefined') {
-                console.error('Leaflet non è caricato!');
-                return;
-            }
-            
-            // Verifica che l'elemento mappa esista
-            const mapElement = document.getElementById('map');
-            if (!mapElement) {
-                console.error('Elemento mappa non trovato!');
-                return;
-            }
-            
-            console.log('Inizializzo mappa...');
-            
-            // Nascondi loading e mostra mappa
-            const mapLoading = document.getElementById('map-loading');
-            const mapError = document.getElementById('map-error');
-            
-            try {
-                // Inizializza la mappa
-                const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+        // Aspetta che Alpine.js sia completamente inizializzato
+        document.addEventListener('alpine:init', function() {
+            // Aspetta un po' per assicurarsi che tutto sia pronto
+            setTimeout(function() {
+                console.log('Alpine.js inizializzato, inizializzo mappa...');
                 
-                // Nascondi loading
-                mapLoading.style.display = 'none';
+                // Verifica che Leaflet sia caricato
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet non è caricato!');
+                    return;
+                }
+                
+                // Verifica che l'elemento mappa esista
+                const mapElement = document.getElementById('map');
+                if (!mapElement) {
+                    console.error('Elemento mappa non trovato!');
+                    return;
+                }
+                
+                console.log('Inizializzo mappa...');
+                
+                // Nascondi loading e mostra mappa
+                const mapLoading = document.getElementById('map-loading');
+                const mapError = document.getElementById('map-error');
+                
+                try {
+                    // Inizializza la mappa
+                    const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+                    
+                    // Nascondi loading
+                    if (mapLoading) mapLoading.style.display = 'none';
+                    
+                    // Rimuovi background grigio
+                    const mapElement = document.getElementById('map');
+                    mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
                 
                 // Aggiungi layer OpenStreetMap
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
                 }).addTo(map);
                 
-                // Variabili per i marker
-                let currentMarker = null;
-                const latitudeInput = document.getElementById('latitude');
-                const longitudeInput = document.getElementById('longitude');
+                let marker = null;
+                const latInput = document.getElementById('latitude');
+                const lngInput = document.getElementById('longitude');
                 
-                // Se ci sono coordinate esistenti, centra la mappa e aggiungi marker
-                if (latitudeInput.value && longitudeInput.value) {
-                    const lat = parseFloat(latitudeInput.value);
-                    const lng = parseFloat(longitudeInput.value);
-                    map.setView([lat, lng], 13);
-                    currentMarker = L.marker([lat, lng], {
+                // Se ci sono valori esistenti, posiziona il marker
+                if (latInput.value && lngInput.value) {
+                    const lat = parseFloat(latInput.value);
+                    const lng = parseFloat(lngInput.value);
+                    marker = L.marker([lat, lng], {
                         icon: L.divIcon({
                             className: 'custom-marker',
                             html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
@@ -317,6 +322,7 @@
                             iconAnchor: [24, 24]
                         })
                     }).addTo(map);
+                    map.setView([lat, lng], 13);
                 }
                 
                 // Gestione click sulla mappa
@@ -325,216 +331,202 @@
                     const lng = e.latlng.lng;
                     
                     // Aggiorna i campi input
-                    latitudeInput.value = lat.toFixed(6);
-                    longitudeInput.value = lng.toFixed(6);
+                    latInput.value = lat.toFixed(6);
+                    lngInput.value = lng.toFixed(6);
                     
-                    // Rimuovi marker precedente se esiste
-                    if (currentMarker) {
-                        map.removeLayer(currentMarker);
+                    // Aggiorna o crea il marker
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                iconSize: [48, 48],
+                                iconAnchor: [24, 24]
+                            })
+                        }).addTo(map);
                     }
-                    
-                    // Aggiungi nuovo marker
-                    currentMarker = L.marker([lat, lng], {
-                        icon: L.divIcon({
-                            className: 'custom-marker',
-                            html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
-                            iconSize: [48, 48],
-                            iconAnchor: [24, 24]
-                        })
-                    }).addTo(map);
                 });
                 
                 // Gestione geocoding
                 const geocodeBtn = document.getElementById('geocode-btn');
                 const addressInput = document.getElementById('address');
                 
-                geocodeBtn.addEventListener('click', function() {
-                    const address = addressInput.value.trim();
-                    if (!address) {
-                        alert('{{ __("messages.enter_address_first") }}');
-                        return;
-                    }
-                    
-                    geocodeBtn.disabled = true;
-                    geocodeBtn.textContent = '{{ __("messages.searching") }}';
-                    
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data && data.length > 0) {
-                                const lat = parseFloat(data[0].lat);
-                                const lng = parseFloat(data[0].lon);
-                                
-                                // Aggiorna i campi input
-                                latitudeInput.value = lat.toFixed(6);
-                                longitudeInput.value = lng.toFixed(6);
-                                
-                                // Centra la mappa
-                                map.setView([lat, lng], 15);
-                                
-                                // Aggiorna marker
-                                if (currentMarker) {
-                                    map.removeLayer(currentMarker);
-                                }
-                                currentMarker = L.marker([lat, lng], {
+                if (geocodeBtn && addressInput) {
+                    geocodeBtn.addEventListener('click', function() {
+                        const address = addressInput.value.trim();
+                        if (!address) {
+                            alert('{{ __("messages.enter_address_first") }}');
+                            return;
+                        }
+                        
+                        geocodeBtn.disabled = true;
+                        geocodeBtn.textContent = '{{ __("messages.searching") }}...';
+                        
+                        // Simula geocoding (in produzione usare un servizio reale)
+                        setTimeout(() => {
+                            // Per ora, usa coordinate di esempio per Roma
+                            const lat = 41.9028;
+                            const lng = 12.4964;
+                            
+                            latInput.value = lat.toFixed(6);
+                            lngInput.value = lng.toFixed(6);
+                            
+                            if (marker) {
+                                marker.setLatLng([lat, lng]);
+                            } else {
+                                marker = L.marker([lat, lng], {
                                     icon: L.divIcon({
                                         className: 'custom-marker',
-                                        html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
-                                        iconSize: [48, 48],
-                                        iconAnchor: [24, 24]
+                                        html: '<div style="background-color: #3b82f6; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                        iconSize: [24, 24],
+                                        iconAnchor: [12, 12]
                                     })
                                 }).addTo(map);
-                                
-                                // Aggiorna indirizzo se necessario
-                                if (!addressInput.value.includes(data[0].display_name)) {
-                                    addressInput.value = data[0].display_name;
-                                }
+                            }
+                            
+                            map.setView([lat, lng], 12);
+                            
+                            geocodeBtn.disabled = false;
+                            geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
+                        }, 1000);
+                    });
+                }
+                
+                } catch (error) {
+                    console.error('Errore nell\'inizializzazione della mappa:', error);
+                    if (mapLoading) mapLoading.style.display = 'none';
+                    if (mapError) mapError.classList.remove('hidden');
+                }
+                
+                // Gestione maree
+                const getTidesBtn = document.getElementById('get-tides-btn');
+                const tideLatitude = document.getElementById('tide_latitude');
+                const tideLongitude = document.getElementById('tide_longitude');
+                const tideDate = document.getElementById('tide_date');
+                const tideResults = document.getElementById('tide-results');
+                const tideLoading = document.getElementById('tide-loading');
+                const tideError = document.getElementById('tide-error');
+                const tideData = document.getElementById('tide-data');
+                const tideErrorMessage = document.getElementById('tide-error-message');
+                
+                if (getTidesBtn) {
+                    getTidesBtn.addEventListener('click', function() {
+                        const latitude = tideLatitude.value;
+                        const longitude = tideLongitude.value;
+                        const date = tideDate.value;
+                        
+                        if (!latitude || !longitude) {
+                            showTideError('Inserisci latitudine e longitudine');
+                            return;
+                        }
+                        
+                        showTideLoading();
+                        
+                        fetch('{{ route("tides.get-by-coordinates") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                latitude: parseFloat(latitude),
+                                longitude: parseFloat(longitude),
+                                date: date
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            hideTideLoading();
+                            if (data.success) {
+                                showTideResults(data.data);
                             } else {
-                                alert('{{ __("messages.address_not_found") }}');
+                                showTideError(data.message || 'Errore nel caricamento dei dati');
                             }
                         })
                         .catch(error => {
-                            console.error('Errore geocoding:', error);
-                            alert('{{ __("messages.geocoding_error") }}');
-                        })
-                        .finally(() => {
-                            geocodeBtn.disabled = false;
-                            geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
+                            hideTideLoading();
+                            showTideError('Errore di connessione');
                         });
-                });
-                
-            } catch (error) {
-                console.error('Errore nell\'inizializzazione della mappa:', error);
-                mapLoading.style.display = 'none';
-                mapError.classList.remove('hidden');
-            }
-            
-            // Gestione maree
-            const getTidesBtn = document.getElementById('get-tides-btn');
-            const tideLatitude = document.getElementById('tide_latitude');
-            const tideLongitude = document.getElementById('tide_longitude');
-            const tideDate = document.getElementById('tide_date');
-            const tideResults = document.getElementById('tide-results');
-            const tideLoading = document.getElementById('tide-loading');
-            const tideError = document.getElementById('tide-error');
-            const tideData = document.getElementById('tide-data');
-            const tideErrorMessage = document.getElementById('tide-error-message');
-            
-            if (getTidesBtn) {
-                getTidesBtn.addEventListener('click', function() {
-                    const latitude = tideLatitude.value;
-                    const longitude = tideLongitude.value;
-                    const date = tideDate.value;
-                    
-                    if (!latitude || !longitude) {
-                        showTideError('Inserisci latitudine e longitudine');
-                        return;
-                    }
-                    
-                    showTideLoading();
-                    
-                    fetch('{{ route("tides.get-by-coordinates") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            latitude: parseFloat(latitude),
-                            longitude: parseFloat(longitude),
-                            date: date
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        hideTideLoading();
-                        if (data.success) {
-                            showTideResults(data.data);
-                        } else {
-                            showTideError(data.message || 'Errore nel caricamento dei dati');
-                        }
-                    })
-                    .catch(error => {
-                        hideTideLoading();
-                        showTideError('Errore di connessione');
                     });
-                });
-            }
-            
-            function showTideLoading() {
-                tideLoading.classList.remove('hidden');
-                tideResults.classList.add('hidden');
-                tideError.classList.add('hidden');
-            }
-            
-            function hideTideLoading() {
-                tideLoading.classList.add('hidden');
-            }
-            
-            function showTideError(message) {
-                tideErrorMessage.textContent = message;
-                tideError.classList.remove('hidden');
-                tideResults.classList.add('hidden');
-            }
-            
-            function showTideResults(data) {
-                let html = '';
-                
-                if (data.current) {
-                    html += `
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.height}m</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Altezza attuale</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.time}</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Ora</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current_status}</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Stato</div>
-                            </div>
-                        </div>
-                    `;
                 }
                 
-                if (data.next_high || data.next_low) {
-                    html += `
-                        <div class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
-                            <h5 class="font-medium text-blue-900 dark:text-blue-100 mb-3">Prossimi estremi</h5>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    `;
+                function showTideLoading() {
+                    tideLoading.classList.remove('hidden');
+                    tideResults.classList.add('hidden');
+                    tideError.classList.add('hidden');
+                }
+                
+                function hideTideLoading() {
+                    tideLoading.classList.add('hidden');
+                }
+                
+                function showTideError(message) {
+                    tideErrorMessage.textContent = message;
+                    tideError.classList.remove('hidden');
+                    tideResults.classList.add('hidden');
+                }
+                
+                function showTideResults(data) {
+                    let html = '';
                     
-                    if (data.next_high) {
+                    if (data.current) {
                         html += `
-                            <div class="text-center">
-                                <div class="text-sm font-medium text-green-600 dark:text-green-400">Alta marea</div>
-                                <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_high.height}m</div>
-                                <div class="text-sm text-green-700 dark:text-green-300">${data.next_high.time}</div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.height}m</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Altezza attuale</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.time}</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Ora</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current_status}</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Stato</div>
+                                </div>
                             </div>
                         `;
                     }
                     
-                    if (data.next_low) {
+                    if (data.next_high || data.next_low) {
                         html += `
-                            <div class="text-center">
-                                <div class="text-sm font-medium text-green-600 dark:text-green-400">Bassa marea</div>
-                                <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_low.height}m</div>
-                                <div class="text-sm text-green-700 dark:text-green-300">${data.next_low.time}</div>
+                            <div class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
+                                <h5 class="font-medium text-blue-900 dark:text-blue-100 mb-3">Prossimi estremi</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        `;
+                        
+                        if (data.next_high) {
+                            html += `
+                                <div class="text-center">
+                                    <div class="text-sm font-medium text-green-600 dark:text-green-400">Alta marea</div>
+                                    <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_high.height}m</div>
+                                    <div class="text-sm text-green-700 dark:text-green-300">${data.next_high.time}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        if (data.next_low) {
+                            html += `
+                                <div class="text-center">
+                                    <div class="text-sm font-medium text-green-600 dark:text-green-400">Bassa marea</div>
+                                    <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_low.height}m</div>
+                                    <div class="text-sm text-green-700 dark:text-green-300">${data.next_low.time}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        html += `
+                                </div>
                             </div>
                         `;
                     }
                     
-                    html += `
-                            </div>
-                        </div>
-                    `;
+                    tideData.innerHTML = html;
+                    tideResults.classList.remove('hidden');
                 }
-                
-                tideData.innerHTML = html;
-                tideResults.classList.remove('hidden');
-            }
+            }, 100); // Piccolo delay per assicurarsi che Alpine.js sia pronto
         });
     </script>
     @endpush

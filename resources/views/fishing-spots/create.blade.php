@@ -263,38 +263,41 @@
     </style>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM caricato, inizializzo mappa...');
-            
-            // Verifica che Leaflet sia caricato
-            if (typeof L === 'undefined') {
-                console.error('Leaflet non è caricato!');
-                return;
-            }
-            
-            // Verifica che l'elemento mappa esista
-            const mapElement = document.getElementById('map');
-            if (!mapElement) {
-                console.error('Elemento mappa non trovato!');
-                return;
-            }
-            
-            console.log('Inizializzo mappa...');
-            
-            // Nascondi loading e mostra mappa
-            const mapLoading = document.getElementById('map-loading');
-            const mapError = document.getElementById('map-error');
-            
-            try {
-                // Inizializza la mappa
-                const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+        // Aspetta che Alpine.js sia completamente inizializzato
+        document.addEventListener('alpine:init', function() {
+            // Aspetta un po' per assicurarsi che tutto sia pronto
+            setTimeout(function() {
+                console.log('Alpine.js inizializzato, inizializzo mappa...');
                 
-                // Nascondi loading
-                if (mapLoading) mapLoading.style.display = 'none';
+                // Verifica che Leaflet sia caricato
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet non è caricato!');
+                    return;
+                }
                 
-                // Rimuovi background grigio
+                // Verifica che l'elemento mappa esista
                 const mapElement = document.getElementById('map');
-                mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
+                if (!mapElement) {
+                    console.error('Elemento mappa non trovato!');
+                    return;
+                }
+                
+                console.log('Inizializzo mappa...');
+                
+                // Nascondi loading e mostra mappa
+                const mapLoading = document.getElementById('map-loading');
+                const mapError = document.getElementById('map-error');
+                
+                try {
+                    // Inizializza la mappa
+                    const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+                    
+                    // Nascondi loading
+                    if (mapLoading) mapLoading.style.display = 'none';
+                    
+                    // Rimuovi background grigio
+                    const mapElement = document.getElementById('map');
+                    mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
             
             // Aggiungi layer OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -520,7 +523,7 @@
                 
                 tideData.innerHTML = html;
                 tideResults.classList.remove('hidden');
-            }
+            }, 100); // Piccolo delay per assicurarsi che Alpine.js sia pronto
         });
     </script>
 </x-app-layout> 
