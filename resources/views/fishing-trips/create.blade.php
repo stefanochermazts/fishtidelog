@@ -472,6 +472,10 @@
                         latInput.value = latFloat.toFixed(6);
                         lngInput.value = lngFloat.toFixed(6);
                         
+                        // Copia automaticamente le coordinate nei campi delle maree
+                        tideLatitude.value = latFloat.toFixed(6);
+                        tideLongitude.value = lngFloat.toFixed(6);
+                        
                         // Aggiorna la mappa
                         if (marker) {
                             marker.setLatLng([latFloat, lngFloat]);
@@ -541,6 +545,17 @@
             
             if (getTidesBtn) {
                 getTidesBtn.addEventListener('click', function() {
+                    // Copia automaticamente le coordinate e la data se sono vuote
+                    if (!tideLatitude.value && latInput.value) {
+                        tideLatitude.value = latInput.value;
+                    }
+                    if (!tideLongitude.value && lngInput.value) {
+                        tideLongitude.value = lngInput.value;
+                    }
+                    if (!tideDate.value && startTimeInput.value) {
+                        tideDate.value = startTimeInput.value.split('T')[0];
+                    }
+                    
                     const latitude = tideLatitude.value;
                     const longitude = tideLongitude.value;
                     const date = tideDate.value;
@@ -672,8 +687,56 @@
                         // Estrai solo la data dal datetime-local
                         const date = dateTime.split('T')[0];
                         loadEnvironmentalData(date);
+                        
+                        // Copia automaticamente la data nel campo delle maree se è vuoto
+                        if (!tideDate.value) {
+                            tideDate.value = date;
+                        }
                     }
                 });
+            }
+
+            // Copia automatica delle coordinate e data quando si interagisce con i campi delle maree
+            const tideFields = [tideLatitude, tideLongitude, tideDate];
+            tideFields.forEach(field => {
+                field.addEventListener('focus', function() {
+                    // Copia le coordinate dell'uscita se i campi delle maree sono vuoti
+                    if (this === tideLatitude && !this.value && latInput.value) {
+                        this.value = latInput.value;
+                    }
+                    if (this === tideLongitude && !this.value && lngInput.value) {
+                        this.value = lngInput.value;
+                    }
+                    if (this === tideDate && !this.value && startTimeInput.value) {
+                        this.value = startTimeInput.value.split('T')[0];
+                    }
+                    
+                    // Mostra messaggio di feedback
+                    showCopyFeedback();
+                });
+            });
+
+            // Funzione per mostrare feedback visivo della copia automatica
+            function showCopyFeedback() {
+                // Crea un elemento di feedback se non esiste
+                let feedback = document.getElementById('copy-feedback');
+                if (!feedback) {
+                    feedback = document.createElement('div');
+                    feedback.id = 'copy-feedback';
+                    feedback.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300';
+                    feedback.textContent = 'Coordinate e data copiate automaticamente!';
+                    document.body.appendChild(feedback);
+                }
+                
+                // Mostra il feedback
+                feedback.style.transform = 'translateX(0)';
+                feedback.style.opacity = '1';
+                
+                // Nascondi dopo 3 secondi
+                setTimeout(() => {
+                    feedback.style.transform = 'translateX(100%)';
+                    feedback.style.opacity = '0';
+                }, 3000);
             }
 
             function loadEnvironmentalData(date) {
@@ -780,6 +843,65 @@
                 latInput.addEventListener('change', updateEnvironmentalData);
                 lngInput.addEventListener('change', updateEnvironmentalData);
             }
+
+            // Autocaricamento dati ambientali se c'è un punto di pesca preselezionato
+            @if(isset($selectedSpotId) && $selectedSpotId)
+                // Aspetta che il DOM sia completamente caricato e che la mappa sia inizializzata
+                setTimeout(() => {
+                    const dateTime = startTimeInput.value;
+                    const latitude = latInput.value;
+                    const longitude = lngInput.value;
+                    
+                    if (dateTime && latitude && longitude) {
+                        const date = dateTime.split('T')[0];
+                        loadEnvironmentalData(date);
+                    }
+                }, 1000); // Attendi 1 secondo per assicurarsi che tutto sia caricato
+            @endif
+
+            // Autocaricamento maree se c'è un punto di pesca preselezionato
+            @if(isset($selectedSpotId) && $selectedSpotId)
+                setTimeout(() => {
+                    const tideLat = tideLatitude.value;
+                    const tideLng = tideLongitude.value;
+                    const tideDate = tideDate.value;
+                    
+                    if (tideLat && tideLng) {
+                        // Se non c'è una data specifica per le maree, usa la data di inizio
+                        const date = tideDate || (startTimeInput.value ? startTimeInput.value.split('T')[0] : null);
+                        
+                        if (date) {
+                            showTideLoading();
+                            
+                            fetch('{{ route("tides.get-by-coordinates") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({
+                                    latitude: parseFloat(tideLat),
+                                    longitude: parseFloat(tideLng),
+                                    date: date
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                hideTideLoading();
+                                if (data.success) {
+                                    showTideResults(data.data);
+                                } else {
+                                    showTideError(data.message || 'Errore nel caricamento dei dati maree');
+                                }
+                            })
+                            .catch(error => {
+                                hideTideLoading();
+                                showTideError('Errore di connessione per i dati maree');
+                            });
+                        }
+                    }
+                }, 1500); // Attendi 1.5 secondi per assicurarsi che tutto sia caricato
+            @endif
         });
     </script>
 </x-app-layout> 
