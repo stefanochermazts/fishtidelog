@@ -198,6 +198,7 @@ return [
         'temperature' => 'Temperatura',
         'wind_direction' => 'Direzione Vento',
         'wind_speed' => 'Velocità Vento',
+        'password' => 'Password',
         'tide_phase' => 'Fase Marea',
         'tide_height' => 'Altezza Marea',
         'lunar_phase' => 'Fase Lunare',
