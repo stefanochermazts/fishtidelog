@@ -30,49 +30,42 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
                         </svg>
-                        {{ __('messages.dashboard') }}
+                        {{ __('Dashboard') }}
                     </x-nav-link>
                     
                     <x-nav-link :href="route('fishing-trips.index')" :active="request()->routeIs('fishing-trips.*')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        {{ __('messages.fishing_trips') }}
+                        {{ __('Uscite') }}
                     </x-nav-link>
                     
                     <x-nav-link :href="route('fishing-spots.index')" :active="request()->routeIs('fishing-spots.*')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                         </svg>
-                        {{ __('messages.fishing_spots') }}
+                        {{ __('Punti Pesca') }}
                     </x-nav-link>
                     
                     <x-nav-link :href="route('catches.index')" :active="request()->routeIs('catches.*')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        {{ __('messages.catches') }}
+                        {{ __('Le Mie Catture') }}
                     </x-nav-link>
                     
                     <x-nav-link :href="route('map')" :active="request()->routeIs('map')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
                         </svg>
-                        {{ __('messages.map') }}
+                        {{ __('Mappa') }}
                     </x-nav-link>
                     
                     <x-nav-link :href="route('statistics')" :active="request()->routeIs('statistics')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
                         </svg>
-                        {{ __('messages.statistics') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('tides.index')" :active="request()->routeIs('tides.*')" class="nav-link">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                        {{ __('messages.tides') }}
+                        {{ __('Statistiche') }}
                     </x-nav-link>
                     
                     @if(Auth::user()->isAdmin())
@@ -80,7 +73,7 @@
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
                             </svg>
-                            {{ __('messages.admin_dashboard') }}
+                            {{ __('Amministrazione') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -132,7 +125,7 @@
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
-                            {{ __('messages.profile') }}
+                            {{ __('Profilo') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -145,7 +138,7 @@
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
                                 </svg>
-                                {{ __('messages.logout') }}
+                                {{ __('Logout') }}
                             </x-dropdown-link>
                         </form>
                     </div>
@@ -154,6 +147,9 @@
 
             <!-- Mobile menu button -->
             <div class="flex items-center lg:hidden space-x-2">
+                <!-- Language Selector Mobile -->
+                <x-language-selector />
+                
                 <!-- Theme Toggle Mobile -->
                 <x-theme-toggle />
                 
@@ -182,49 +178,42 @@
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
                 </svg>
-                {{ __('messages.dashboard') }}
+                {{ __('Dashboard') }}
             </x-responsive-nav-link>
             
             <x-responsive-nav-link :href="route('fishing-trips.index')" :active="request()->routeIs('fishing-trips.*')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                {{ __('messages.fishing_trips') }}
+                {{ __('Uscite') }}
             </x-responsive-nav-link>
             
             <x-responsive-nav-link :href="route('fishing-spots.index')" :active="request()->routeIs('fishing-spots.*')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                 </svg>
-                {{ __('messages.fishing_spots') }}
+                {{ __('Punti Pesca') }}
             </x-responsive-nav-link>
             
             <x-responsive-nav-link :href="route('catches.index')" :active="request()->routeIs('catches.*')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                {{ __('messages.catches') }}
+                {{ __('Le Mie Catture') }}
             </x-responsive-nav-link>
             
             <x-responsive-nav-link :href="route('map')" :active="request()->routeIs('map')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
                 </svg>
-                {{ __('messages.map') }}
+                {{ __('Mappa') }}
             </x-responsive-nav-link>
             
             <x-responsive-nav-link :href="route('statistics')" :active="request()->routeIs('statistics')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
                 </svg>
-                {{ __('messages.statistics') }}
-            </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('tides.index')" :active="request()->routeIs('tides.*')" class="nav-link">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                </svg>
-                {{ __('messages.tides') }}
+                {{ __('Statistiche') }}
             </x-responsive-nav-link>
             
             @if(Auth::user()->isAdmin())
@@ -232,7 +221,7 @@
                     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
                     </svg>
-                    {{ __('messages.admin_dashboard') }}
+                    {{ __('Amministrazione') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -258,7 +247,7 @@
                     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                     </svg>
-                    {{ __('messages.profile') }}
+                    {{ __('Profilo') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -270,7 +259,7 @@
                         <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('messages.logout') }}
+                        {{ __('Logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

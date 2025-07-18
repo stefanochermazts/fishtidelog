@@ -48,7 +48,7 @@
     <body class="font-sans antialiased bg-gradient-to-br from-neutral-50 to-primary-50 dark:from-neutral-900 dark:to-primary-950 transition-colors duration-200">
         {{-- Skip to content link per accessibilità --}}
         <a href="#main-content" class="skip-to-content">
-            {{ __('Skip to main content') }}
+            {{ __('Vai al contenuto principale') }}
         </a>
         
         <div class="min-h-screen flex flex-col">
@@ -121,15 +121,15 @@
                 <div class="container-wide py-6">
                     <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                         <div class="text-sm text-neutral-600 dark:text-neutral-400">
-                            &copy; {{ date('Y') }} {{ config('app.name', 'FishTideLog') }}. {{ __('All rights reserved.') }}
+                            &copy; {{ date('Y') }} {{ config('app.name', 'FishTideLog') }}. {{ __('Tutti i diritti riservati') }}
                         </div>
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('profile.edit') }}" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                                {{ __('Settings') }}
+                                {{ __('Impostazioni') }}
                             </a>
                             <span class="text-neutral-400 dark:text-neutral-600">|</span>
                             <a href="#" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                                {{ __('Help') }}
+                                {{ __('Aiuto') }}
                             </a>
                         </div>
                     </div>

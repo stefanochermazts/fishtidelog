@@ -6,47 +6,37 @@
      :aria-checked="theme === 'dark'"
      aria-label="{{ __('Toggle dark mode') }}">
     
-    <button @click="toggle()" 
-            @keydown.enter="toggle()"
-            @keydown.space="toggle()"
-            class="dark-mode-toggle focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-            :aria-label="theme === 'dark' ? '{{ __('Switch to light mode') }}' : '{{ __('Switch to dark mode') }}'"
-            type="button">
-        
-        {{-- Icona sole per tema chiaro --}}
-        <svg x-show="theme === 'light'" 
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-75"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-75"
-             class="absolute left-1.5 h-5 w-5 text-yellow-500"
-             fill="currentColor" 
-             viewBox="0 0 20 20"
-             aria-hidden="true">
-            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
-        </svg>
-        
-        {{-- Icona luna per tema scuro --}}
-        <svg x-show="theme === 'dark'"
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-75"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-75"
-             class="absolute right-1.5 h-5 w-5 text-blue-400"
-             fill="currentColor" 
-             viewBox="0 0 20 20"
-             aria-hidden="true">
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-        </svg>
-        
-        {{-- Thumb del toggle --}}
-        <span class="dark-mode-toggle-thumb"
-              :class="theme === 'dark' ? 'translate-x-10' : 'translate-x-0'"></span>
-    </button>
+    <button @click="
+    theme = theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+" 
+class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-400 hover:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
+aria-label="{{ theme === 'light' ? __('Tema Scuro') : __('Tema Chiaro') }}"
+title="{{ theme === 'light' ? __('Tema Scuro') : __('Tema Chiaro') }}">
+    
+    <!-- Sun icon for dark mode toggle -->
+    <svg x-show="theme === 'light'" 
+         class="w-5 h-5" 
+         fill="currentColor" 
+         viewBox="0 0 20 20" 
+         aria-hidden="true">
+        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+    </svg>
+    
+    <!-- Moon icon for light mode toggle -->
+    <svg x-show="theme === 'dark'" 
+         class="w-5 h-5" 
+         fill="currentColor" 
+         viewBox="0 0 20 20" 
+         aria-hidden="true">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+    </svg>
+</button>
 </div>
 
 <script>
