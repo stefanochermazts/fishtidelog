@@ -1,19 +1,18 @@
 {
     "welcome_title": "Willkommen bei FishTideLog",
-    "welcome_subtitle": "FishTideLog ist Ihr digitales Angeltagebuch. Beginnen Sie mit der Verfolgung Ihrer Abenteuer.",
+    "welcome_subtitle": "Ihre vollständige Angel-Tagebuch-Plattform",
     "read_dashboard": "Lesen Sie das",
-    "dashboard": "Dashboard",
-    "explore_features": "Entdecken Sie die Funktionen",
+    "explore_features": "Entdecken Sie Funktionen wie",
     "fishing_trips": "Angelausflüge",
     "start_now": "Jetzt starten",
+    "dashboard": "Dashboard",
     "login": "Anmelden",
     "register": "Registrieren",
     "language": "Sprache",
-    "theme": "Thema",
-    "light": "Hell",
-    "dark": "Dunkel",
     "italian": "Italienisch",
     "english": "Englisch",
     "german": "Deutsch",
-    "french": "Französisch"
+    "french": "Französisch",
+    "light": "Hell",
+    "dark": "Dunkel"
 } 

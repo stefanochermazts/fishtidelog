@@ -11,7 +11,7 @@
     }
 }" 
 @click="toggleTheme()"
-class="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+class="inline-flex items-center px-3 py-2 text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a19] focus:outline-none transition-colors duration-200"
 :aria-label="theme === 'light' ? '{{ __('dark') }}' : '{{ __('light') }}'">
     
     <!-- Sun icon for light mode -->

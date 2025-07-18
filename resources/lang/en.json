@@ -1,19 +1,18 @@
 {
     "welcome_title": "Welcome to FishTideLog",
-    "welcome_subtitle": "FishTideLog is your digital fishing diary. Start tracking your adventures.",
+    "welcome_subtitle": "Your complete fishing diary platform",
     "read_dashboard": "Read the",
-    "dashboard": "Dashboard",
-    "explore_features": "Explore the features",
-    "fishing_trips": "Fishing Trips",
+    "explore_features": "Explore features like",
+    "fishing_trips": "Fishing trips",
     "start_now": "Start now",
+    "dashboard": "Dashboard",
     "login": "Log in",
     "register": "Register",
     "language": "Language",
-    "theme": "Theme",
-    "light": "Light",
-    "dark": "Dark",
     "italian": "Italian",
     "english": "English",
     "german": "German",
-    "french": "French"
+    "french": "French",
+    "light": "Light",
+    "dark": "Dark"
 } 

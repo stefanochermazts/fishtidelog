@@ -1,19 +1,18 @@
 {
     "welcome_title": "Bienvenue sur FishTideLog",
-    "welcome_subtitle": "FishTideLog est votre journal de pêche numérique. Commencez à suivre vos aventures.",
+    "welcome_subtitle": "Votre plateforme complète de journal de pêche",
     "read_dashboard": "Lisez le",
-    "dashboard": "Tableau de bord",
-    "explore_features": "Explorez les fonctionnalités",
+    "explore_features": "Explorez les fonctionnalités comme",
     "fishing_trips": "Sorties de pêche",
     "start_now": "Commencer maintenant",
+    "dashboard": "Tableau de bord",
     "login": "Se connecter",
     "register": "S'inscrire",
     "language": "Langue",
-    "theme": "Thème",
-    "light": "Clair",
-    "dark": "Sombre",
     "italian": "Italien",
     "english": "Anglais",
     "german": "Allemand",
-    "french": "Français"
+    "french": "Français",
+    "light": "Clair",
+    "dark": "Sombre"
 } 
