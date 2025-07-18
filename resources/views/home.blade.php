@@ -18,7 +18,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-900 text-gray-100" 
+<body class="font-sans antialiased bg-gray-900 dark:bg-gray-900 text-gray-100 dark:text-gray-100" 
       x-data="{}" 
       x-init="
         // Initialize theme from localStorage
@@ -30,7 +30,7 @@
         }
       ">
     <!-- Navigation -->
-    <nav class="bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
+    <nav class="bg-gray-800/90 dark:bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 dark:border-gray-700 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -47,9 +47,9 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('features') }}" class="text-gray-300 hover:text-white transition-colors">Funzionalità</a>
-                    <a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition-colors">Prezzi</a>
-                    <a href="{{ route('contact') }}" class="text-gray-300 hover:text-white transition-colors">Contatti</a>
+                    <a href="{{ route('features') }}" class="text-gray-300 dark:text-gray-300 hover:text-white dark:hover:text-white transition-colors">{{ __('features') }}</a>
+                    <a href="{{ route('pricing') }}" class="text-gray-300 dark:text-gray-300 hover:text-white dark:hover:text-white transition-colors">{{ __('pricing') }}</a>
+                    <a href="{{ route('contact') }}" class="text-gray-300 dark:text-gray-300 hover:text-white dark:hover:text-white transition-colors">{{ __('contact') }}</a>
                     
                     <!-- Language and Theme Controls -->
                     <div class="flex items-center space-x-2">
@@ -58,10 +58,10 @@
                     </div>
                     
                     <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        Accedi
+                        {{ __('login') }}
                     </a>
                     <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        Registrati
+                        {{ __('register') }}
                     </a>
                 </div>
 
@@ -82,23 +82,21 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
-                    Il tuo <span class="text-blue-400">diario di pesca</span><br>
-                    digitale
+                    {{ __('home_hero_title') }}
                 </h1>
                 <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                    Registra le tue uscite di pesca, gestisci i punti di pesca preferiti, consulta le maree e analizza le tue statistiche. 
-                    Tutto in un'unica piattaforma moderna e intuitiva.
+                    {{ __('home_hero_subtitle') }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                        Inizia Gratis
+                        {{ __('start_free') }}
                     </a>
                     <a href="{{ route('features') }}" class="border border-gray-600 text-gray-300 hover:text-white hover:border-gray-500 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                        Scopri le Funzionalità
+                        {{ __('discover_features') }}
                     </a>
                 </div>
                 <p class="text-sm text-gray-400 mt-4">
-                    Gratuito fino al 31 dicembre 2025
+                    {{ __('free_until') }}
                 </p>
             </div>
         </div>
