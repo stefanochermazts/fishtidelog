@@ -389,79 +389,52 @@
     </style>
     
     <script>
-        // Aspetta che Alpine.js sia completamente inizializzato
-        document.addEventListener('alpine:init', function() {
-            // Aspetta un po' per assicurarsi che tutto sia pronto
-            setTimeout(function() {
-                console.log('Alpine.js inizializzato, inizializzo mappa...');
-                
-                // Verifica che Leaflet sia caricato
-                if (typeof L === 'undefined') {
-                    console.error('Leaflet non è caricato!');
-                    return;
-                }
-                
-                // Verifica che l'elemento mappa esista
-                const mapElement = document.getElementById('map');
-                if (!mapElement) {
-                    console.error('Elemento mappa non trovato!');
-                    return;
-                }
-                
-                console.log('Inizializzo mappa...');
-                
-                // Nascondi loading e mostra mappa
-                const mapLoading = document.getElementById('map-loading');
-                const mapError = document.getElementById('map-error');
-                
-                try {
-                    // Inizializza la mappa
-                    const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
-                    
-                    // Nascondi loading
-                    if (mapLoading) mapLoading.style.display = 'none';
-                    
-                    // Rimuovi background grigio
-                    const mapElement = document.getElementById('map');
-                    mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
+        // Funzione per inizializzare la mappa
+        function initializeMap() {
+            console.log('Inizializzazione mappa...');
             
-            // Aggiungi layer OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-            
-            let marker = null;
-            const latInput = document.getElementById('latitude');
-            const lngInput = document.getElementById('longitude');
-            
-            // Se ci sono valori esistenti, posiziona il marker
-            if (latInput.value && lngInput.value) {
-                const lat = parseFloat(latInput.value);
-                const lng = parseFloat(lngInput.value);
-                marker = L.marker([lat, lng], {
-                    icon: L.divIcon({
-                        className: 'custom-marker',
-                        html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
-                        iconSize: [48, 48],
-                        iconAnchor: [24, 24]
-                    })
-                }).addTo(map);
-                map.setView([lat, lng], 13);
+            // Verifica che Leaflet sia caricato
+            if (typeof L === 'undefined') {
+                console.error('Leaflet non è caricato!');
+                showMapError('Leaflet non è disponibile');
+                return;
             }
             
-            // Gestione click sulla mappa
-            map.on('click', function(e) {
-                const lat = e.latlng.lat;
-                const lng = e.latlng.lng;
+            // Verifica che l'elemento mappa esista
+            const mapElement = document.getElementById('map');
+            if (!mapElement) {
+                console.error('Elemento mappa non trovato!');
+                return;
+            }
+            
+            // Nascondi loading e mostra mappa
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            try {
+                // Inizializza la mappa
+                const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
                 
-                // Aggiorna i campi input
-                latInput.value = lat.toFixed(6);
-                lngInput.value = lng.toFixed(6);
+                // Nascondi loading
+                if (mapLoading) mapLoading.style.display = 'none';
                 
-                // Aggiorna o crea il marker
-                if (marker) {
-                    marker.setLatLng([lat, lng]);
-                } else {
+                // Rimuovi background grigio
+                const mapElement = document.getElementById('map');
+                mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
+            
+                // Aggiungi layer OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                
+                let marker = null;
+                const latInput = document.getElementById('latitude');
+                const lngInput = document.getElementById('longitude');
+                
+                // Se ci sono valori esistenti, posiziona il marker
+                if (latInput.value && lngInput.value) {
+                    const lat = parseFloat(latInput.value);
+                    const lng = parseFloat(lngInput.value);
                     marker = L.marker([lat, lng], {
                         icon: L.divIcon({
                             className: 'custom-marker',
@@ -470,463 +443,510 @@
                             iconAnchor: [24, 24]
                         })
                     }).addTo(map);
+                    map.setView([lat, lng], 13);
                 }
-            });
-            
-            // Gestione selezione punto di pesca esistente
-            const spotSelect = document.getElementById('fishing_spot_id');
-            if (spotSelect) {
-                spotSelect.addEventListener('change', function() {
-                    const selectedOption = this.options[this.selectedIndex];
-                    const lat = selectedOption.dataset.lat;
-                    const lng = selectedOption.dataset.lng;
+                
+                // Gestione click sulla mappa
+                map.on('click', function(e) {
+                    const lat = e.latlng.lat;
+                    const lng = e.latlng.lng;
                     
-                    if (lat && lng) {
-                        const latFloat = parseFloat(lat);
-                        const lngFloat = parseFloat(lng);
-                        
-                        // Aggiorna i campi input
-                        latInput.value = latFloat.toFixed(6);
-                        lngInput.value = lngFloat.toFixed(6);
-                        
-                        // Copia automaticamente le coordinate nei campi delle maree
-                        tideLatitude.value = latFloat.toFixed(6);
-                        tideLongitude.value = lngFloat.toFixed(6);
-                        
-                        // Aggiorna la mappa
-                        if (marker) {
-                            marker.setLatLng([latFloat, lngFloat]);
-                        } else {
-                            marker = L.marker([latFloat, lngFloat], {
-                                icon: L.divIcon({
-                                    className: 'custom-marker',
-                                    html: '<div style="background-color: #10b981; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
-                                    iconSize: [24, 24],
-                                    iconAnchor: [12, 12]
-                                })
-                            }).addTo(map);
-                        }
-                        
-                        map.setView([latFloat, lngFloat], 15);
+                    // Aggiorna i campi input
+                    latInput.value = lat.toFixed(6);
+                    lngInput.value = lng.toFixed(6);
+                    
+                    // Aggiorna o crea il marker
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                iconSize: [48, 48],
+                                iconAnchor: [24, 24]
+                            })
+                        }).addTo(map);
                     }
                 });
-            }
-            
-            // Gestione geocoding
-            const geocodeBtn = document.getElementById('geocode-btn');
-            const locationInput = document.getElementById('location_name');
-            
-            if (geocodeBtn && locationInput) {
-                geocodeBtn.addEventListener('click', function() {
-                    const location = locationInput.value.trim();
-                    if (!location) {
-                        alert('{{ __("messages.enter_location_first") }}');
-                        return;
+                
+                // Gestione selezione punto di pesca esistente
+                const spotSelect = document.getElementById('fishing_spot_id');
+                if (spotSelect) {
+                    spotSelect.addEventListener('change', function() {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const lat = selectedOption.dataset.lat;
+                        const lng = selectedOption.dataset.lng;
+                        
+                        if (lat && lng) {
+                            const latFloat = parseFloat(lat);
+                            const lngFloat = parseFloat(lng);
+                            
+                            // Aggiorna i campi input
+                            latInput.value = latFloat.toFixed(6);
+                            lngInput.value = lngFloat.toFixed(6);
+                            
+                            // Copia automaticamente le coordinate nei campi delle maree
+                            tideLatitude.value = latFloat.toFixed(6);
+                            tideLongitude.value = lngFloat.toFixed(6);
+                            
+                            // Aggiorna la mappa
+                            if (marker) {
+                                marker.setLatLng([latFloat, lngFloat]);
+                            } else {
+                                marker = L.marker([latFloat, lngFloat], {
+                                    icon: L.divIcon({
+                                        className: 'custom-marker',
+                                        html: '<div style="background-color: #10b981; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                        iconSize: [24, 24],
+                                        iconAnchor: [12, 12]
+                                    })
+                                }).addTo(map);
+                            }
+                            
+                            map.setView([latFloat, lngFloat], 15);
+                        }
+                    });
+                }
+                
+                // Gestione geocoding
+                const geocodeBtn = document.getElementById('geocode-btn');
+                const locationInput = document.getElementById('location_name');
+                
+                if (geocodeBtn && locationInput) {
+                    geocodeBtn.addEventListener('click', function() {
+                        const location = locationInput.value.trim();
+                        if (!location) {
+                            alert('{{ __("messages.enter_location_first") }}');
+                            return;
+                        }
+                        
+                        geocodeBtn.disabled = true;
+                        geocodeBtn.textContent = '{{ __("messages.searching") }}...';
+                        
+                        // Simula geocoding (in produzione usare un servizio reale)
+                        setTimeout(() => {
+                            // Per ora, usa coordinate di esempio per Roma
+                            const lat = 41.9028;
+                            const lng = 12.4964;
+                            
+                            latInput.value = lat.toFixed(6);
+                            lngInput.value = lng.toFixed(6);
+                            
+                            if (marker) {
+                                marker.setLatLng([lat, lng]);
+                            } else {
+                                marker = L.marker([lat, lng], {
+                                    icon: L.divIcon({
+                                        className: 'custom-marker',
+                                        html: '<div style="background-color: #10b981; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                        iconSize: [24, 24],
+                                        iconAnchor: [12, 12]
+                                    })
+                                }).addTo(map);
+                            }
+                            
+                            map.setView([lat, lng], 12);
+                            
+                            geocodeBtn.disabled = false;
+                            geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
+                        }, 1000);
+                    });
+                }
+                
+                // Gestione maree
+                const getTidesBtn = document.getElementById('get-tides-btn');
+                const tideLatitude = document.getElementById('tide_latitude');
+                const tideLongitude = document.getElementById('tide_longitude');
+                const tideDate = document.getElementById('tide_date');
+                const tideResults = document.getElementById('tide-results');
+                const tideLoading = document.getElementById('tide-loading');
+                const tideError = document.getElementById('tide-error');
+                const tideData = document.getElementById('tide-data');
+                const tideErrorMessage = document.getElementById('tide-error-message');
+                
+                if (getTidesBtn) {
+                    getTidesBtn.addEventListener('click', function() {
+                        // Copia automaticamente le coordinate e la data se sono vuote
+                        if (!tideLatitude.value && latInput.value) {
+                            tideLatitude.value = latInput.value;
+                        }
+                        if (!tideLongitude.value && lngInput.value) {
+                            tideLongitude.value = lngInput.value;
+                        }
+                        if (!tideDate.value && startTimeInput.value) {
+                            tideDate.value = startTimeInput.value.split('T')[0];
+                        }
+                        
+                        const latitude = tideLatitude.value;
+                        const longitude = tideLongitude.value;
+                        const date = tideDate.value;
+                        
+                        if (!latitude || !longitude) {
+                            showTideError('Inserisci latitudine e longitudine');
+                            return;
+                        }
+                        
+                        showTideLoading();
+                        
+                        fetch('{{ route("tides.get-by-coordinates") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                latitude: parseFloat(latitude),
+                                longitude: parseFloat(longitude),
+                                date: date
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            hideTideLoading();
+                            if (data.success) {
+                                showTideResults(data.data);
+                            } else {
+                                showTideError(data.message || 'Errore nel caricamento dei dati');
+                            }
+                        })
+                        .catch(error => {
+                            hideTideLoading();
+                            showTideError('Errore di connessione');
+                        });
+                    });
+                }
+                
+                function showTideLoading() {
+                    tideLoading.classList.remove('hidden');
+                    tideResults.classList.add('hidden');
+                    tideError.classList.add('hidden');
+                }
+                
+                function hideTideLoading() {
+                    tideLoading.classList.add('hidden');
+                }
+                
+                function showTideError(message) {
+                    tideErrorMessage.textContent = message;
+                    tideError.classList.remove('hidden');
+                    tideResults.classList.add('hidden');
+                }
+                
+                function showTideResults(data) {
+                    let html = '';
+                    
+                    if (data.current) {
+                        html += `
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.height}m</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Altezza attuale</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.time}</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Ora</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current_status}</div>
+                                    <div class="text-sm text-blue-700 dark:text-blue-300">Stato</div>
+                                </div>
+                            </div>
+                        `;
                     }
                     
-                    geocodeBtn.disabled = true;
-                    geocodeBtn.textContent = '{{ __("messages.searching") }}...';
+                    if (data.next_high || data.next_low) {
+                        html += `
+                            <div class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
+                                <h5 class="font-medium text-blue-900 dark:text-blue-100 mb-3">Prossimi estremi</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        `;
+                        
+                        if (data.next_high) {
+                            html += `
+                                <div class="text-center">
+                                    <div class="text-sm font-medium text-green-600 dark:text-green-400">Alta marea</div>
+                                    <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_high.height}m</div>
+                                    <div class="text-sm text-green-700 dark:text-green-300">${data.next_high.time}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        if (data.next_low) {
+                            html += `
+                                <div class="text-center">
+                                    <div class="text-sm font-medium text-green-600 dark:text-green-400">Bassa marea</div>
+                                    <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_low.height}m</div>
+                                    <div class="text-sm text-green-700 dark:text-green-300">${data.next_low.time}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    }
                     
-                    // Simula geocoding (in produzione usare un servizio reale)
+                    tideData.innerHTML = html;
+                    tideResults.classList.remove('hidden');
+                }
+
+                // Gestione dati ambientali
+                const startTimeInput = document.getElementById('start_time');
+                const environmentalData = document.getElementById('environmental-data');
+                const envLoading = document.getElementById('env-loading');
+                const envError = document.getElementById('env-error');
+                const envErrorMessage = document.getElementById('env-error-message');
+                const moonData = document.getElementById('moon-data');
+                const sunData = document.getElementById('sun-data');
+                const weatherData = document.getElementById('weather-data');
+
+                // Copia automatica coordinate e data
+                [tideLatitude, tideLongitude, tideDate].forEach(input => {
+                    input.addEventListener('focus', function() {
+                        if (this === tideLatitude && !this.value && latInput.value) {
+                            this.value = latInput.value;
+                        }
+                        if (this === tideLongitude && !this.value && lngInput.value) {
+                            this.value = lngInput.value;
+                        }
+                        if (this === tideDate && !this.value && startTimeInput.value) {
+                            this.value = startTimeInput.value.split('T')[0];
+                        }
+                        
+                        // Mostra messaggio di feedback
+                        showCopyFeedback();
+                    });
+                });
+
+                // Funzione per mostrare feedback visivo della copia automatica
+                function showCopyFeedback() {
+                    // Crea un elemento di feedback se non esiste
+                    let feedback = document.getElementById('copy-feedback');
+                    if (!feedback) {
+                        feedback = document.createElement('div');
+                        feedback.id = 'copy-feedback';
+                        feedback.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300';
+                        feedback.textContent = 'Coordinate e data copiate automaticamente!';
+                        document.body.appendChild(feedback);
+                    }
+                    
+                    // Mostra il feedback
+                    feedback.style.transform = 'translateX(0)';
+                    feedback.style.opacity = '1';
+                    
+                    // Nascondi dopo 3 secondi
                     setTimeout(() => {
-                        // Per ora, usa coordinate di esempio per Roma
-                        const lat = 41.9028;
-                        const lng = 12.4964;
-                        
-                        latInput.value = lat.toFixed(6);
-                        lngInput.value = lng.toFixed(6);
-                        
-                        if (marker) {
-                            marker.setLatLng([lat, lng]);
-                        } else {
-                            marker = L.marker([lat, lng]).addTo(map);
-                        }
-                        
-                        map.setView([lat, lng], 12);
-                        
-                        geocodeBtn.disabled = false;
-                        geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
-                    }, 1000);
-                });
-            }
-            
-            } catch (error) {
-                console.error('Errore nell\'inizializzazione della mappa:', error);
-                if (mapLoading) mapLoading.style.display = 'none';
-                if (mapError) mapError.classList.remove('hidden');
-            }
-            
-            // Gestione maree
-            const getTidesBtn = document.getElementById('get-tides-btn');
-            const tideLatitude = document.getElementById('tide_latitude');
-            const tideLongitude = document.getElementById('tide_longitude');
-            const tideDate = document.getElementById('tide_date');
-            const tideResults = document.getElementById('tide-results');
-            const tideLoading = document.getElementById('tide-loading');
-            const tideError = document.getElementById('tide-error');
-            const tideData = document.getElementById('tide-data');
-            const tideErrorMessage = document.getElementById('tide-error-message');
-            
-            if (getTidesBtn) {
-                getTidesBtn.addEventListener('click', function() {
-                    // Copia automaticamente le coordinate e la data se sono vuote
-                    if (!tideLatitude.value && latInput.value) {
-                        tideLatitude.value = latInput.value;
-                    }
-                    if (!tideLongitude.value && lngInput.value) {
-                        tideLongitude.value = lngInput.value;
-                    }
-                    if (!tideDate.value && startTimeInput.value) {
-                        tideDate.value = startTimeInput.value.split('T')[0];
-                    }
-                    
-                    const latitude = tideLatitude.value;
-                    const longitude = tideLongitude.value;
-                    const date = tideDate.value;
-                    
+                        feedback.style.transform = 'translateX(100%)';
+                        feedback.style.opacity = '0';
+                    }, 3000);
+                }
+
+                function loadEnvironmentalData(date) {
+                    // Usa coordinate di default (Roma) se non sono state selezionate
+                    const latitude = latInput.value || 41.9028;
+                    const longitude = lngInput.value || 12.4964;
+
                     if (!latitude || !longitude) {
-                        showTideError('Inserisci latitudine e longitudine');
+                        showEnvError('Seleziona prima una posizione sulla mappa');
                         return;
                     }
-                    
-                    showTideLoading();
-                    
-                    fetch('{{ route("tides.get-by-coordinates") }}', {
+
+                    showEnvLoading();
+
+                    fetch('{{ route("environmental-data.get") }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
+                            date: date,
                             latitude: parseFloat(latitude),
-                            longitude: parseFloat(longitude),
-                            date: date
+                            longitude: parseFloat(longitude)
                         })
                     })
                     .then(response => response.json())
                     .then(data => {
-                        hideTideLoading();
+                        hideEnvLoading();
                         if (data.success) {
-                            showTideResults(data.data);
+                            showEnvironmentalData(data.data);
                         } else {
-                            showTideError(data.message || 'Errore nel caricamento dei dati');
+                            showEnvError(data.message || 'Errore nel caricamento dei dati ambientali');
                         }
                     })
                     .catch(error => {
-                        hideTideLoading();
-                        showTideError('Errore di connessione');
+                        hideEnvLoading();
+                        showEnvError('Errore di connessione');
                     });
-                });
-            }
-            
-            function showTideLoading() {
-                tideLoading.classList.remove('hidden');
-                tideResults.classList.add('hidden');
-                tideError.classList.add('hidden');
-            }
-            
-            function hideTideLoading() {
-                tideLoading.classList.add('hidden');
-            }
-            
-            function showTideError(message) {
-                tideErrorMessage.textContent = message;
-                tideError.classList.remove('hidden');
-                tideResults.classList.add('hidden');
-            }
-            
-            function showTideResults(data) {
-                let html = '';
-                
-                if (data.current) {
-                    html += `
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.height}m</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Altezza attuale</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current.time}</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Ora</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-lg font-semibold text-blue-600 dark:text-blue-400">${data.current_status}</div>
-                                <div class="text-sm text-blue-700 dark:text-blue-300">Stato</div>
-                            </div>
-                        </div>
-                    `;
                 }
-                
-                if (data.next_high || data.next_low) {
-                    html += `
-                        <div class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
-                            <h5 class="font-medium text-blue-900 dark:text-blue-100 mb-3">Prossimi estremi</h5>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    `;
-                    
-                    if (data.next_high) {
-                        html += `
-                            <div class="text-center">
-                                <div class="text-sm font-medium text-green-600 dark:text-green-400">Alta marea</div>
-                                <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_high.height}m</div>
-                                <div class="text-sm text-green-700 dark:text-green-300">${data.next_high.time}</div>
-                            </div>
-                        `;
-                    }
-                    
-                    if (data.next_low) {
-                        html += `
-                            <div class="text-center">
-                                <div class="text-sm font-medium text-green-600 dark:text-green-400">Bassa marea</div>
-                                <div class="text-lg font-bold text-green-600 dark:text-green-400">${data.next_low.height}m</div>
-                                <div class="text-sm text-green-700 dark:text-green-300">${data.next_low.time}</div>
-                            </div>
-                        `;
-                    }
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
+
+                function showEnvLoading() {
+                    environmentalData.classList.remove('hidden');
+                    envLoading.classList.remove('hidden');
+                    envError.classList.add('hidden');
+                    moonData.classList.add('hidden');
+                    sunData.classList.add('hidden');
+                    weatherData.classList.add('hidden');
                 }
-                
-                tideData.innerHTML = html;
-                tideResults.classList.remove('hidden');
-            }
 
-            // Gestione dati ambientali
-            const startTimeInput = document.getElementById('start_time');
-            const environmentalData = document.getElementById('environmental-data');
-            const envLoading = document.getElementById('env-loading');
-            const envError = document.getElementById('env-error');
-            const envErrorMessage = document.getElementById('env-error-message');
-            const moonData = document.getElementById('moon-data');
-            const sunData = document.getElementById('sun-data');
-            const weatherData = document.getElementById('weather-data');
+                function hideEnvLoading() {
+                    envLoading.classList.add('hidden');
+                }
 
-            if (startTimeInput) {
-                startTimeInput.addEventListener('change', function() {
-                    const dateTime = this.value;
-                    if (dateTime) {
-                        // Estrai solo la data dal datetime-local
-                        const date = dateTime.split('T')[0];
-                        loadEnvironmentalData(date);
-                        
-                        // Copia automaticamente la data nel campo delle maree se è vuoto
-                        if (!tideDate.value) {
-                            tideDate.value = date;
+                function showEnvError(message) {
+                    envErrorMessage.textContent = message;
+                    envError.classList.remove('hidden');
+                    envLoading.classList.add('hidden');
+                    moonData.classList.add('hidden');
+                    sunData.classList.add('hidden');
+                    weatherData.classList.add('hidden');
+                }
+
+                function showEnvironmentalData(data) {
+                    // Mostra dati lunari
+                    if (data.moon && data.moon.success) {
+                        document.getElementById('moon-phase').textContent = data.moon.data.phase;
+                        document.getElementById('moon-illumination').textContent = data.moon.data.illumination + '%';
+                        moonData.classList.remove('hidden');
+                    }
+
+                    // Mostra dati solari
+                    if (data.sun && data.sun.success) {
+                        document.getElementById('sunrise-time').textContent = data.sun.data.sunrise;
+                        document.getElementById('sunset-time').textContent = data.sun.data.sunset;
+                        document.getElementById('day-length').textContent = data.sun.data.day_length;
+                        document.getElementById('solar-noon').textContent = data.sun.data.solar_noon;
+                        sunData.classList.remove('hidden');
+                    }
+
+                    // Mostra dati meteo
+                    if (data.weather && data.weather.success) {
+                        document.getElementById('weather-temp').textContent = data.weather.data.temperature + '°C';
+                        document.getElementById('weather-desc').textContent = data.weather.data.description;
+                        document.getElementById('weather-humidity').textContent = data.weather.data.humidity + '%';
+                        document.getElementById('weather-wind').textContent = data.weather.data.wind_speed + ' km/h';
+                        weatherData.classList.remove('hidden');
+                    }
+
+                    // Nascondi errori
+                    envError.classList.add('hidden');
+                }
+
+                // Aggiorna dati ambientali quando cambia la posizione
+                if (latInput && lngInput) {
+                    const updateEnvironmentalData = () => {
+                        const dateTime = startTimeInput.value;
+                        if (dateTime && latInput.value && lngInput.value) {
+                            const date = dateTime.split('T')[0];
+                            loadEnvironmentalData(date);
                         }
-                    }
-                });
-            }
+                    };
 
-            // Copia automatica delle coordinate e data quando si interagisce con i campi delle maree
-            const tideFields = [tideLatitude, tideLongitude, tideDate];
-            tideFields.forEach(field => {
-                field.addEventListener('focus', function() {
-                    // Copia le coordinate dell'uscita se i campi delle maree sono vuoti
-                    if (this === tideLatitude && !this.value && latInput.value) {
-                        this.value = latInput.value;
-                    }
-                    if (this === tideLongitude && !this.value && lngInput.value) {
-                        this.value = lngInput.value;
-                    }
-                    if (this === tideDate && !this.value && startTimeInput.value) {
-                        this.value = startTimeInput.value.split('T')[0];
-                    }
-                    
-                    // Mostra messaggio di feedback
-                    showCopyFeedback();
-                });
-            });
-
-            // Funzione per mostrare feedback visivo della copia automatica
-            function showCopyFeedback() {
-                // Crea un elemento di feedback se non esiste
-                let feedback = document.getElementById('copy-feedback');
-                if (!feedback) {
-                    feedback = document.createElement('div');
-                    feedback.id = 'copy-feedback';
-                    feedback.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300';
-                    feedback.textContent = 'Coordinate e data copiate automaticamente!';
-                    document.body.appendChild(feedback);
-                }
-                
-                // Mostra il feedback
-                feedback.style.transform = 'translateX(0)';
-                feedback.style.opacity = '1';
-                
-                // Nascondi dopo 3 secondi
-                setTimeout(() => {
-                    feedback.style.transform = 'translateX(100%)';
-                    feedback.style.opacity = '0';
-                }, 3000);
-            }
-
-            function loadEnvironmentalData(date) {
-                // Usa coordinate di default (Roma) se non sono state selezionate
-                const latitude = latInput.value || 41.9028;
-                const longitude = lngInput.value || 12.4964;
-
-                if (!latitude || !longitude) {
-                    showEnvError('Seleziona prima una posizione sulla mappa');
-                    return;
+                    latInput.addEventListener('change', updateEnvironmentalData);
+                    lngInput.addEventListener('change', updateEnvironmentalData);
                 }
 
-                showEnvLoading();
-
-                fetch('{{ route("environmental-data.get") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        date: date,
-                        latitude: parseFloat(latitude),
-                        longitude: parseFloat(longitude)
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    hideEnvLoading();
-                    if (data.success) {
-                        showEnvironmentalData(data.data);
-                    } else {
-                        showEnvError(data.message || 'Errore nel caricamento dei dati ambientali');
-                    }
-                })
-                .catch(error => {
-                    hideEnvLoading();
-                    showEnvError('Errore di connessione');
-                });
-            }
-
-            function showEnvLoading() {
-                environmentalData.classList.remove('hidden');
-                envLoading.classList.remove('hidden');
-                envError.classList.add('hidden');
-                moonData.classList.add('hidden');
-                sunData.classList.add('hidden');
-                weatherData.classList.add('hidden');
-            }
-
-            function hideEnvLoading() {
-                envLoading.classList.add('hidden');
-            }
-
-            function showEnvError(message) {
-                envErrorMessage.textContent = message;
-                envError.classList.remove('hidden');
-                envLoading.classList.add('hidden');
-                moonData.classList.add('hidden');
-                sunData.classList.add('hidden');
-                weatherData.classList.add('hidden');
-            }
-
-            function showEnvironmentalData(data) {
-                // Mostra dati lunari
-                if (data.moon && data.moon.success) {
-                    document.getElementById('moon-phase').textContent = data.moon.data.phase;
-                    document.getElementById('moon-illumination').textContent = data.moon.data.illumination + '%';
-                    moonData.classList.remove('hidden');
-                }
-
-                // Mostra dati solari
-                if (data.sun && data.sun.success) {
-                    document.getElementById('sunrise-time').textContent = data.sun.data.sunrise;
-                    document.getElementById('sunset-time').textContent = data.sun.data.sunset;
-                    document.getElementById('day-length').textContent = data.sun.data.day_length;
-                    document.getElementById('solar-noon').textContent = data.sun.data.solar_noon;
-                    sunData.classList.remove('hidden');
-                }
-
-                // Mostra dati meteo
-                if (data.weather && data.weather.success) {
-                    document.getElementById('weather-temp').textContent = data.weather.data.temperature + '°C';
-                    document.getElementById('weather-desc').textContent = data.weather.data.description;
-                    document.getElementById('weather-humidity').textContent = data.weather.data.humidity + '%';
-                    document.getElementById('weather-wind').textContent = data.weather.data.wind_speed + ' km/h';
-                    weatherData.classList.remove('hidden');
-                }
-
-                // Nascondi errori
-                envError.classList.add('hidden');
-            }
-
-            // Aggiorna dati ambientali quando cambia la posizione
-            if (latInput && lngInput) {
-                const updateEnvironmentalData = () => {
-                    const dateTime = startTimeInput.value;
-                    if (dateTime && latInput.value && lngInput.value) {
-                        const date = dateTime.split('T')[0];
-                        loadEnvironmentalData(date);
-                    }
-                };
-
-                latInput.addEventListener('change', updateEnvironmentalData);
-                lngInput.addEventListener('change', updateEnvironmentalData);
-            }
-
-            // Autocaricamento dati ambientali se c'è un punto di pesca preselezionato
-            @if(isset($selectedSpotId) && $selectedSpotId)
-                // Aspetta che il DOM sia completamente caricato e che la mappa sia inizializzata
-                setTimeout(() => {
-                    const dateTime = startTimeInput.value;
-                    const latitude = latInput.value;
-                    const longitude = lngInput.value;
-                    
-                    if (dateTime && latitude && longitude) {
-                        const date = dateTime.split('T')[0];
-                        loadEnvironmentalData(date);
-                    }
-                }, 1000); // Attendi 1 secondo per assicurarsi che tutto sia caricato
-            @endif
-
-            // Autocaricamento maree se c'è un punto di pesca preselezionato
-            @if(isset($selectedSpotId) && $selectedSpotId)
-                setTimeout(() => {
-                    const tideLat = tideLatitude.value;
-                    const tideLng = tideLongitude.value;
-                    const tideDate = tideDate.value;
-                    
-                    if (tideLat && tideLng) {
-                        // Se non c'è una data specifica per le maree, usa la data di inizio
-                        const date = tideDate || (startTimeInput.value ? startTimeInput.value.split('T')[0] : null);
+                // Autocaricamento dati ambientali se c'è un punto di pesca preselezionato
+                @if(isset($selectedSpotId) && $selectedSpotId)
+                    // Aspetta che il DOM sia completamente caricato e che la mappa sia inizializzata
+                    setTimeout(() => {
+                        const dateTime = startTimeInput.value;
+                        const latitude = latInput.value;
+                        const longitude = lngInput.value;
                         
-                        if (date) {
-                            showTideLoading();
+                        if (dateTime && latitude && longitude) {
+                            const date = dateTime.split('T')[0];
+                            loadEnvironmentalData(date);
+                        }
+                    }, 1000); // Attendi 1 secondo per assicurarsi che tutto sia caricato
+                @endif
+
+                // Autocaricamento maree se c'è un punto di pesca preselezionato
+                @if(isset($selectedSpotId) && $selectedSpotId)
+                    setTimeout(() => {
+                        const tideLat = tideLatitude.value;
+                        const tideLng = tideLongitude.value;
+                        const tideDate = tideDate.value;
+                        
+                        if (tideLat && tideLng) {
+                            // Se non c'è una data specifica per le maree, usa la data di inizio
+                            const date = tideDate || (startTimeInput.value ? startTimeInput.value.split('T')[0] : null);
                             
-                            fetch('{{ route("tides.get-by-coordinates") }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    latitude: parseFloat(tideLat),
-                                    longitude: parseFloat(tideLng),
-                                    date: date
+                            if (date) {
+                                showTideLoading();
+                                
+                                fetch('{{ route("tides.get-by-coordinates") }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        latitude: parseFloat(tideLat),
+                                        longitude: parseFloat(tideLng),
+                                        date: date
+                                    })
                                 })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                hideTideLoading();
-                                if (data.success) {
-                                    showTideResults(data.data);
-                                } else {
-                                    showTideError(data.message || 'Errore nel caricamento dei dati maree');
-                                }
-                            })
-                            .catch(error => {
-                                hideTideLoading();
-                                showTideError('Errore di connessione per i dati maree');
-                            });
+                                .then(response => response.json())
+                                .then(data => {
+                                    hideTideLoading();
+                                    if (data.success) {
+                                        showTideResults(data.data);
+                                    } else {
+                                        showTideError(data.message || 'Errore nel caricamento dei dati maree');
+                                    }
+                                })
+                                .catch(error => {
+                                    hideTideLoading();
+                                    showTideError('Errore di connessione per i dati maree');
+                                });
+                            }
                         }
-                    }
-                }, 1500); // Attendi 1.5 secondi per assicurarsi che tutto sia caricato
-            @endif
-            }, 100); // Piccolo delay per assicurarsi che Alpine.js sia pronto
+                    }, 1500); // Attendi 1.5 secondi per assicurarsi che tutto sia caricato
+                @endif
+                
+            } catch (error) {
+                console.error('Errore nell\'inizializzazione della mappa:', error);
+                showMapError('Errore nell\'inizializzazione della mappa: ' + error.message);
+            }
+        }
+        
+        // Funzione per mostrare errore mappa
+        function showMapError(message) {
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            if (mapLoading) mapLoading.style.display = 'none';
+            if (mapError) {
+                mapError.textContent = message;
+                mapError.classList.remove('hidden');
+            }
+        }
+        
+        // Prova prima con Alpine.js
+        document.addEventListener('alpine:init', function() {
+            console.log('Alpine.js inizializzato, inizializzo mappa...');
+            setTimeout(initializeMap, 100);
+        });
+        
+        // Fallback se Alpine.js non è disponibile o non emette l'evento
+        setTimeout(function() {
+            if (document.getElementById('map-loading') && document.getElementById('map-loading').style.display !== 'none') {
+                console.log('Fallback: Alpine.js non ha emesso alpine:init, inizializzo comunque...');
+                initializeMap();
+            }
+        }, 2000);
+        
+        // Fallback aggiuntivo con DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (document.getElementById('map-loading') && document.getElementById('map-loading').style.display !== 'none') {
+                    console.log('Fallback DOMContentLoaded: inizializzo mappa...');
+                    initializeMap();
+                }
+            }, 1000);
         });
     </script>
 </x-app-layout> 

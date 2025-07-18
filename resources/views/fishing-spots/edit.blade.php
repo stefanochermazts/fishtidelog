@@ -265,42 +265,39 @@
     
     @push('scripts')
     <script>
-        // Aspetta che Alpine.js sia completamente inizializzato
-        document.addEventListener('alpine:init', function() {
-            // Aspetta un po' per assicurarsi che tutto sia pronto
-            setTimeout(function() {
-                console.log('Alpine.js inizializzato, inizializzo mappa...');
+        // Funzione per inizializzare la mappa
+        function initializeMap() {
+            console.log('Inizializzazione mappa...');
+            
+            // Verifica che Leaflet sia caricato
+            if (typeof L === 'undefined') {
+                console.error('Leaflet non è caricato!');
+                showMapError('Leaflet non è disponibile');
+                return;
+            }
+            
+            // Verifica che l'elemento mappa esista
+            const mapElement = document.getElementById('map');
+            if (!mapElement) {
+                console.error('Elemento mappa non trovato!');
+                return;
+            }
+            
+            // Nascondi loading e mostra mappa
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            try {
+                // Inizializza la mappa
+                const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
                 
-                // Verifica che Leaflet sia caricato
-                if (typeof L === 'undefined') {
-                    console.error('Leaflet non è caricato!');
-                    return;
-                }
+                // Nascondi loading
+                if (mapLoading) mapLoading.style.display = 'none';
                 
-                // Verifica che l'elemento mappa esista
+                // Rimuovi background grigio
                 const mapElement = document.getElementById('map');
-                if (!mapElement) {
-                    console.error('Elemento mappa non trovato!');
-                    return;
-                }
-                
-                console.log('Inizializzo mappa...');
-                
-                // Nascondi loading e mostra mappa
-                const mapLoading = document.getElementById('map-loading');
-                const mapError = document.getElementById('map-error');
-                
-                try {
-                    // Inizializza la mappa
-                    const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
-                    
-                    // Nascondi loading
-                    if (mapLoading) mapLoading.style.display = 'none';
-                    
-                    // Rimuovi background grigio
-                    const mapElement = document.getElementById('map');
-                    mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
-                
+                mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
+            
                 // Aggiungi layer OpenStreetMap
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
@@ -392,12 +389,6 @@
                             geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
                         }, 1000);
                     });
-                }
-                
-                } catch (error) {
-                    console.error('Errore nell\'inizializzazione della mappa:', error);
-                    if (mapLoading) mapLoading.style.display = 'none';
-                    if (mapError) mapError.classList.remove('hidden');
                 }
                 
                 // Gestione maree
@@ -526,7 +517,47 @@
                     tideData.innerHTML = html;
                     tideResults.classList.remove('hidden');
                 }
-            }, 100); // Piccolo delay per assicurarsi che Alpine.js sia pronto
+                
+            } catch (error) {
+                console.error('Errore nell\'inizializzazione della mappa:', error);
+                showMapError('Errore nell\'inizializzazione della mappa: ' + error.message);
+            }
+        }
+        
+        // Funzione per mostrare errore mappa
+        function showMapError(message) {
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            if (mapLoading) mapLoading.style.display = 'none';
+            if (mapError) {
+                mapError.textContent = message;
+                mapError.classList.remove('hidden');
+            }
+        }
+        
+        // Prova prima con Alpine.js
+        document.addEventListener('alpine:init', function() {
+            console.log('Alpine.js inizializzato, inizializzo mappa...');
+            setTimeout(initializeMap, 100);
+        });
+        
+        // Fallback se Alpine.js non è disponibile o non emette l'evento
+        setTimeout(function() {
+            if (document.getElementById('map-loading') && document.getElementById('map-loading').style.display !== 'none') {
+                console.log('Fallback: Alpine.js non ha emesso alpine:init, inizializzo comunque...');
+                initializeMap();
+            }
+        }, 2000);
+        
+        // Fallback aggiuntivo con DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (document.getElementById('map-loading') && document.getElementById('map-loading').style.display !== 'none') {
+                    console.log('Fallback DOMContentLoaded: inizializzo mappa...');
+                    initializeMap();
+                }
+            }, 1000);
         });
     </script>
     @endpush
