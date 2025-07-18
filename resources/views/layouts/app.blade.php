@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
       class="scroll-smooth"
-      x-data="{ theme: localStorage.getItem('theme') || 'light' }"
+      x-data="{ 
+        theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      }"
       x-init="
-        theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (theme === 'dark') document.documentElement.classList.add('dark');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       ">
     <head>
         <meta charset="utf-8">
@@ -143,15 +148,6 @@
         {{-- Stack per script aggiuntivi --}}
         @stack('scripts')
         
-        {{-- Script per inizializzazione tema --}}
-        <script>
-            // Inizializzazione tema al caricamento della pagina
-            document.addEventListener('DOMContentLoaded', function() {
-                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                }
-            });
-        </script>
+
     </body>
 </html>
