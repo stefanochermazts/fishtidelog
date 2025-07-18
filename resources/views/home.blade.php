@@ -12,10 +12,23 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-900 text-gray-100">
+<body class="font-sans antialiased bg-gray-900 text-gray-100" 
+      x-data="{}" 
+      x-init="
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+      ">
     <!-- Navigation -->
     <nav class="bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,6 +50,13 @@
                     <a href="{{ route('features') }}" class="text-gray-300 hover:text-white transition-colors">Funzionalità</a>
                     <a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition-colors">Prezzi</a>
                     <a href="{{ route('contact') }}" class="text-gray-300 hover:text-white transition-colors">Contatti</a>
+                    
+                    <!-- Language and Theme Controls -->
+                    <div class="flex items-center space-x-2">
+                        <x-public-language-selector />
+                        <x-public-theme-toggle />
+                    </div>
+                    
                     <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                         Accedi
                     </a>
