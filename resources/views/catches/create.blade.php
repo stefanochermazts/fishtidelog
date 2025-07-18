@@ -12,6 +12,11 @@
                     <form action="{{ route('catches.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
+                        <!-- Campo nascosto per il redirect -->
+                        @if(isset($redirectTo))
+                            <input type="hidden" name="redirect_to" value="{{ $redirectTo }}">
+                        @endif
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Colonna sinistra -->
                             <div class="space-y-6">
@@ -22,7 +27,8 @@
                                             class="form-input">
                                         <option value="">{{ __('messages.select_trip') }}</option>
                                         @foreach($trips as $trip)
-                                            <option value="{{ $trip->id }}" {{ old('fishing_trip_id') == $trip->id ? 'selected' : '' }}>
+                                            <option value="{{ $trip->id }}" 
+                                                {{ old('fishing_trip_id', $selectedTripId ?? '') == $trip->id ? 'selected' : '' }}>
                                                 {{ $trip->title }} - {{ $trip->start_time->format('d/m/Y H:i') }}
                                             </option>
                                         @endforeach
@@ -154,10 +160,17 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-6 space-x-4">
-                            <a href="{{ route('catches.index') }}" 
-                               class="btn-secondary">
-                                {{ __('messages.cancel') }}
-                            </a>
+                            @if(isset($redirectTo) && $redirectTo === 'fishing-trip' && isset($selectedTripId))
+                                <a href="{{ route('fishing-trips.show', $selectedTripId) }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @else
+                                <a href="{{ route('catches.index') }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @endif
                             <button type="submit" class="btn-primary">
                                 {{ __('messages.save_catch') }}
                             </button>

@@ -98,7 +98,16 @@
                     
                     @if($fishingTrip->catches->count() > 0)
                         <div class="mt-8">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('messages.trip_catches') }}</h3>
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900">{{ __('messages.trip_catches') }}</h3>
+                                <a href="{{ route('catches.create', ['fishing_trip_id' => $fishingTrip->id, 'redirect_to' => 'fishing-trip']) }}" 
+                                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    {{ __('messages.new_catch') }}
+                                </a>
+                            </div>
                             <div class="space-y-3">
                                 @foreach($fishingTrip->catches as $catch)
                                     <div class="border border-gray-200 rounded-lg p-4">
@@ -107,13 +116,19 @@
                                                 <h4 class="font-medium text-gray-900">{{ $catch->species }}</h4>
                                                 <p class="text-sm text-gray-600">{{ $catch->catch_time->format('H:i') }}</p>
                                             </div>
-                                            <div class="text-right">
-                                                @if($catch->weight)
-                                                    <p class="text-sm font-medium text-gray-900">{{ $catch->formatted_weight }}</p>
-                                                @endif
-                                                @if($catch->length)
-                                                    <p class="text-sm text-gray-600">{{ $catch->formatted_length }}</p>
-                                                @endif
+                                            <div class="flex items-center space-x-3">
+                                                <div class="text-right">
+                                                    @if($catch->weight)
+                                                        <p class="text-sm font-medium text-gray-900">{{ $catch->formatted_weight }}</p>
+                                                    @endif
+                                                    @if($catch->length)
+                                                        <p class="text-sm text-gray-600">{{ $catch->formatted_length }}</p>
+                                                    @endif
+                                                </div>
+                                                <a href="{{ route('catches.edit', ['catch' => $catch, 'redirect_to' => 'fishing-trip']) }}" 
+                                                   class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                    {{ __('messages.edit') }}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +140,14 @@
                             <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
                             </svg>
-                            <p class="text-gray-600">{{ __('messages.no_catches_recorded') }}</p>
+                            <p class="text-gray-600 mb-4">{{ __('messages.no_catches_recorded') }}</p>
+                            <a href="{{ route('catches.create', ['fishing_trip_id' => $fishingTrip->id, 'redirect_to' => 'fishing-trip']) }}" 
+                               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                {{ __('messages.new_catch') }}
+                            </a>
                         </div>
                     @endif
                     

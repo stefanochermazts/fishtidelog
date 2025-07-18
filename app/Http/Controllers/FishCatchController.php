@@ -28,7 +28,7 @@ class FishCatchController extends Controller
         return view('catches.index', compact('catches'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $user = Auth::user();
         $trips = $user->fishingTrips()
@@ -36,7 +36,11 @@ class FishCatchController extends Controller
             ->orderBy('start_time', 'desc')
             ->get();
             
-        return view('catches.create', compact('trips'));
+        // Se viene passato un fishing_trip_id, preseleziona quella uscita
+        $selectedTripId = $request->get('fishing_trip_id');
+        $redirectTo = $request->get('redirect_to', 'catches');
+            
+        return view('catches.create', compact('trips', 'selectedTripId', 'redirectTo'));
     }
 
     public function store(Request $request)
@@ -70,8 +74,16 @@ class FishCatchController extends Controller
 
         $catch = $trip->catches()->create($data);
 
-        return redirect()->route('catches.show', $catch)
-            ->with('success', __('messages.catch_created'));
+        // Gestione redirect
+        $redirectTo = $request->get('redirect_to', 'catches');
+        
+        if ($redirectTo === 'fishing-trip') {
+            return redirect()->route('fishing-trips.show', $trip)
+                ->with('success', __('messages.catch_created'));
+        } else {
+            return redirect()->route('catches.show', $catch)
+                ->with('success', __('messages.catch_created'));
+        }
     }
 
     public function show(FishCatch $catch)
@@ -134,8 +146,16 @@ class FishCatchController extends Controller
 
         $catch->update($data);
 
-        return redirect()->route('catches.show', $catch)
-            ->with('success', __('messages.catch_updated'));
+        // Gestione redirect
+        $redirectTo = $request->get('redirect_to', 'catches');
+        
+        if ($redirectTo === 'fishing-trip') {
+            return redirect()->route('fishing-trips.show', $trip)
+                ->with('success', __('messages.catch_updated'));
+        } else {
+            return redirect()->route('catches.show', $catch)
+                ->with('success', __('messages.catch_updated'));
+        }
     }
 
     public function destroy(FishCatch $catch)

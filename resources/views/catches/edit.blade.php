@@ -13,6 +13,11 @@
                         @csrf
                         @method('PUT')
                         
+                        <!-- Campo nascosto per il redirect -->
+                        @if(request()->get('redirect_to'))
+                            <input type="hidden" name="redirect_to" value="{{ request()->get('redirect_to') }}">
+                        @endif
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Colonna sinistra -->
                             <div class="space-y-6">
@@ -142,10 +147,17 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-6 space-x-4">
-                            <a href="{{ route('catches.show', $catch) }}" 
-                               class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                {{ __('messages.cancel') }}
-                            </a>
+                            @if(request()->get('redirect_to') === 'fishing-trip')
+                                <a href="{{ route('fishing-trips.show', $catch->fishing_trip_id) }}" 
+                                   class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @else
+                                <a href="{{ route('catches.show', $catch) }}" 
+                                   class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @endif
                             <x-primary-button>
                                 {{ __('messages.save') }}
                             </x-primary-button>
