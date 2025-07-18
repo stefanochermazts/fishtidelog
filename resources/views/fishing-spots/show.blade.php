@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     
-                    @if($fishingSpot->trips && $fishingSpot->trips->count() > 0)
+                    @if($fishingSpot->fishingTrips && $fishingSpot->fishingTrips->count() > 0)
                         <div class="mt-8">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-semibold text-gray-900">{{ __('messages.recent_trips') }}</h3>
@@ -101,7 +101,7 @@
                                 </a>
                             </div>
                             <div class="space-y-3">
-                                @foreach($fishingSpot->trips->take(5) as $trip)
+                                @foreach($fishingSpot->fishingTrips->take(5) as $trip)
                                     <div class="border border-gray-200 rounded-lg p-4">
                                         <div class="flex justify-between items-center">
                                             <div>

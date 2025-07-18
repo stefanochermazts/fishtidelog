@@ -73,6 +73,22 @@ class FishingSpotController extends Controller
     {
         $this->authorize('view', $fishingSpot);
         
+        // Carica le uscite collegate con le statistiche
+        $fishingSpot->load(['fishingTrips' => function($query) {
+            $query->with('catches')
+                  ->latest('start_time')
+                  ->take(5); // Prendi solo le ultime 5 uscite
+        }]);
+        
+        // Calcola le statistiche
+        $fishingSpot->trips_count = $fishingSpot->fishingTrips()->count();
+        $fishingSpot->total_weight = $fishingSpot->fishingTrips()
+            ->with('catches')
+            ->get()
+            ->sum(function($trip) {
+                return $trip->catches->sum('weight');
+            });
+        
         return view('fishing-spots.show', compact('fishingSpot'));
     }
 
