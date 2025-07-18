@@ -116,7 +116,7 @@
                                                     <a href="{{ route('fishing-trips.show', $trip) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                                         {{ __('messages.view') }}
                                                     </a>
-                                                    <a href="{{ route('fishing-trips.edit', ['fishingTrip' => $trip, 'redirect_to' => 'fishing-spot']) }}" 
+                                                    <a href="{{ route('fishing-trips.edit', $trip) }}?redirect_to=fishing-spot" 
                                                        class="text-green-600 hover:text-green-800 text-sm font-medium">
                                                         {{ __('messages.edit') }}
                                                     </a>
