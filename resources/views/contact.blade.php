@@ -83,178 +83,155 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Form and Info -->
     <section class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <!-- Contact Form -->
                 <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ __('send_message') }}</h2>
-                    
                     <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    {{ __('first_name') }}
-                                </label>
-                                <input type="text" id="first_name" name="first_name" 
-                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('first_name') }}</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                             </div>
                             <div>
-                                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    {{ __('last_name') }}
-                                </label>
-                                <input type="text" id="last_name" name="last_name" 
-                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('last_name') }}</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                             </div>
                         </div>
-
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('email') }}
-                            </label>
-                            <input type="email" id="email" name="email" 
-                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('email') }}</label>
+                            <input type="email" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                         </div>
-
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('subject') }}
-                            </label>
-                            <select id="subject" name="subject" 
-                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">{{ __('select_subject') }}</option>
-                                <option value="support">{{ __('technical_support') }}</option>
-                                <option value="feature">{{ __('feature_request') }}</option>
-                                <option value="bug">{{ __('bug_report') }}</option>
-                                <option value="partnership">{{ __('partnership') }}</option>
-                                <option value="other">{{ __('other') }}</option>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('subject') }}</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                <option>{{ __('select_subject') }}</option>
+                                <option>{{ __('technical_support') }}</option>
+                                <option>{{ __('feature_request') }}</option>
+                                <option>{{ __('bug_report') }}</option>
+                                <option>{{ __('partnership') }}</option>
+                                <option>{{ __('other') }}</option>
                             </select>
                         </div>
-
                         <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('message') }}
-                            </label>
-                            <textarea id="message" name="message" rows="6" 
-                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="{{ __('describe_message') }}"></textarea>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('message') }}</label>
+                            <textarea rows="6" placeholder="{{ __('describe_message') }}" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
                         </div>
-
-                        <button type="submit" 
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
                             {{ __('send_message') }}
                         </button>
                     </form>
                 </div>
 
-                <!-- Contact Info -->
+                <!-- Contact Information -->
                 <div class="space-y-8">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ __('contact_information') }}</h2>
-                        <p class="text-gray-600 dark:text-gray-300 mb-8">
-                            {{ __('contact_description') }}
-                        </p>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ __('contact_information') }}</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">{{ __('contact_description') }}</p>
                     </div>
 
                     <div class="space-y-6">
-                        <!-- Email -->
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('email') }}</h3>
-                                <p class="text-gray-600 dark:text-gray-300">support@fishtidelog.com</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('response_24h') }}</p>
-                            </div>
-                        </div>
-
                         <!-- Support -->
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-.08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c.954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12.862 7.246a4.002 4.002 0 012.08-.041l1.562 1.562a5.976 5.976 0 00-1.54 1.54l-1.53-1.533a4.002 4.002 0 00-1.572.432z" clip-rule="evenodd"/>
-                                </svg>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-.08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c.954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('technical_support') }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('technical_support_desc') }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('technical_support') }}</h3>
-                                <p class="text-gray-600 dark:text-gray-300">{{ __('technical_support_desc') }}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('support_hours') }}</p>
+                            <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+                                <span>{{ __('response_24h') }}</span>
+                                <span>{{ __('support_hours') }}</span>
                             </div>
                         </div>
 
                         <!-- Community -->
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-                                </svg>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('community') }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('community_desc') }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('community') }}</h3>
-                                <p class="text-gray-600 dark:text-gray-300">{{ __('community_desc') }}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('share_experiences') }}</p>
-                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('share_experiences') }}</p>
                         </div>
-                    </div>
 
-                    <!-- FAQ Link -->
-                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ __('faq_title') }}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">
-                            {{ __('faq_contact_desc') }}
-                        </p>
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 font-semibold">
-                            {{ __('view_faq') }} →
-                        </a>
+                        <!-- FAQ -->
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">FAQ</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('faq_contact_desc') }}</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium">{{ __('view_faq') }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Additional Info -->
+    <!-- Support Features -->
     <section class="py-20 bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    {{ __('expert_support') }}
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">
+                    {{ __('expert_support_desc') }}
+                </p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('quick_response') }}</h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('quick_response_desc') }}
-                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('quick_response_desc') }}</p>
                 </div>
 
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('expert_support') }}</h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('expert_support_desc') }}
-                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('expert_support_desc') }}</p>
                 </div>
 
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-16 h-16 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('documentation') }}</h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('documentation_desc') }}
-                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('documentation_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -277,6 +254,9 @@
                     {{ __('login') }}
                 </a>
             </div>
+            <p class="text-sm text-blue-200 mt-4">
+                {{ __('free_until_2025') }}
+            </p>
         </div>
     </section>
 

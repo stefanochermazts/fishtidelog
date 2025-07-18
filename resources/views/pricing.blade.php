@@ -276,21 +276,21 @@
     <section class="py-20 bg-gradient-to-r from-blue-600 to-green-600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                Inizia Subito Gratuitamente
+                {{ __('start_free_now') }}
             </h2>
             <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Unisciti a migliaia di pescatori che già utilizzano FishTideLog. Nessuna carta di credito richiesta.
+                {{ __('join_thousands_fishers') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('register') }}" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    Registrati Ora
+                    {{ __('register_now') }}
                 </a>
                 <a href="{{ route('login') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    Accedi
+                    {{ __('login') }}
                 </a>
             </div>
             <p class="text-sm text-blue-200 mt-4">
-                Gratuito fino al 31 dicembre 2025 • Registrazione in meno di 2 minuti
+                {{ __('free_until_2025') }} • {{ __('registration_2_minutes') }}
             </p>
         </div>
     </section>
