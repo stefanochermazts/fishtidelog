@@ -1,126 +1,149 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Contatti - {{ config('app.name', 'FishTideLog') }}</title>
-    <meta name="description" content="Contattaci per supporto, suggerimenti o collaborazioni. Siamo qui per aiutarti.">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>{{ __('contact') }} - {{ config('app.name', 'FishTideLog') }}</title>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
 </head>
-<body class="font-sans antialiased bg-gray-900 text-gray-100">
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
     <!-- Navigation -->
-    <nav class="bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <a href="{{ route('home') }}" class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <span class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
-                            {{ config('app.name', 'FishTideLog') }}
-                        </span>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">{{ config('app.name', 'FishTideLog') }}</span>
                     </a>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('features') }}" class="text-gray-300 hover:text-white transition-colors">Funzionalità</a>
-                    <a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition-colors">Prezzi</a>
-                    <a href="{{ route('contact') }}" class="text-blue-400 font-semibold">Contatti</a>
-                    <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        Accedi
-                    </a>
-                    <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        Registrati
-                    </a>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('home') }}</a>
+                    <a href="{{ route('features') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('features') }}</a>
+                    <a href="{{ route('pricing') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('pricing') }}</a>
+                    <a href="{{ route('contact') }}" class="text-blue-600 dark:text-blue-400 font-semibold">{{ __('contact') }}</a>
+                    
+                    <!-- Language Selector -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            <span>{{ __('language') }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg z-50">
+                            <a href="{{ route('locale.change', 'it') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Italiano</a>
+                            <a href="{{ route('locale.change', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">English</a>
+                            <a href="{{ route('locale.change', 'de') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Deutsch</a>
+                            <a href="{{ route('locale.change', 'fr') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Français</a>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+
+                    <a href="{{ route('login') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('login') }}</a>
+                    <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">{{ __('register') }}</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 py-20">
+    <section class="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-gray-900 dark:via-blue-900 dark:to-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
-                Contattaci
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                {{ __('contact_us') }}
             </h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Hai domande, suggerimenti o bisogno di supporto? Siamo qui per aiutarti.
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                {{ __('contact_subtitle') }}
             </p>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="py-20 bg-gray-800">
+    <section class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <!-- Contact Form -->
-                <div class="bg-gray-700 rounded-xl p-8">
-                    <h2 class="text-2xl font-bold text-white mb-6">Invia un Messaggio</h2>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ __('send_message') }}</h2>
                     
                     <form class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">
-                                    Nome
+                                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('first_name') }}
                                 </label>
                                 <input type="text" id="first_name" name="first_name" 
-                                    class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             </div>
                             <div>
-                                <label for="last_name" class="block text-sm font-medium text-gray-300 mb-2">
-                                    Cognome
+                                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('last_name') }}
                                 </label>
                                 <input type="text" id="last_name" name="last_name" 
-                                    class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             </div>
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                                Email
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('email') }}
                             </label>
                             <input type="email" id="email" name="email" 
-                                class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">
-                                Oggetto
+                            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('subject') }}
                             </label>
                             <select id="subject" name="subject" 
-                                class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Seleziona un oggetto</option>
-                                <option value="support">Supporto Tecnico</option>
-                                <option value="feature">Richiesta Funzionalità</option>
-                                <option value="bug">Segnalazione Bug</option>
-                                <option value="partnership">Collaborazione</option>
-                                <option value="other">Altro</option>
+                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">{{ __('select_subject') }}</option>
+                                <option value="support">{{ __('technical_support') }}</option>
+                                <option value="feature">{{ __('feature_request') }}</option>
+                                <option value="bug">{{ __('bug_report') }}</option>
+                                <option value="partnership">{{ __('partnership') }}</option>
+                                <option value="other">{{ __('other') }}</option>
                             </select>
                         </div>
 
                         <div>
-                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">
-                                Messaggio
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('message') }}
                             </label>
                             <textarea id="message" name="message" rows="6" 
-                                class="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Descrivi il tuo messaggio..."></textarea>
+                                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="{{ __('describe_message') }}"></textarea>
                         </div>
 
                         <button type="submit" 
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
-                            Invia Messaggio
+                            {{ __('send_message') }}
                         </button>
                     </form>
                 </div>
@@ -128,9 +151,9 @@
                 <!-- Contact Info -->
                 <div class="space-y-8">
                     <div>
-                        <h2 class="text-2xl font-bold text-white mb-6">Informazioni di Contatto</h2>
-                        <p class="text-gray-300 mb-8">
-                            Siamo qui per aiutarti con qualsiasi domanda o richiesta riguardo FishTideLog.
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ __('contact_information') }}</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-8">
+                            {{ __('contact_description') }}
                         </p>
                     </div>
 
@@ -144,9 +167,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-white mb-1">Email</h3>
-                                <p class="text-gray-300">support@fishtidelog.com</p>
-                                <p class="text-sm text-gray-400">Risposta entro 24 ore</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('email') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-300">support@fishtidelog.com</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('response_24h') }}</p>
                             </div>
                         </div>
 
@@ -158,9 +181,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-white mb-1">Supporto Tecnico</h3>
-                                <p class="text-gray-300">Assistenza per problemi tecnici</p>
-                                <p class="text-sm text-gray-400">Lun-Ven 9:00-18:00</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('technical_support') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-300">{{ __('technical_support_desc') }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('support_hours') }}</p>
                             </div>
                         </div>
 
@@ -172,21 +195,21 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-white mb-1">Community</h3>
-                                <p class="text-gray-300">Forum e gruppi di discussione</p>
-                                <p class="text-sm text-gray-400">Condividi esperienze</p>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ __('community') }}</h3>
+                                <p class="text-gray-600 dark:text-gray-300">{{ __('community_desc') }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('share_experiences') }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- FAQ Link -->
-                    <div class="bg-gray-700 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-white mb-3">Domande Frequenti</h3>
-                        <p class="text-gray-300 mb-4">
-                            Prima di contattarci, dai un'occhiata alle nostre FAQ per risposte rapide.
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ __('faq_title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            {{ __('faq_contact_desc') }}
                         </p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-semibold">
-                            Vedi FAQ →
+                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 font-semibold">
+                            {{ __('view_faq') }} →
                         </a>
                     </div>
                 </div>
@@ -195,7 +218,7 @@
     </section>
 
     <!-- Additional Info -->
-    <section class="py-20 bg-gray-900">
+    <section class="py-20 bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
@@ -204,9 +227,9 @@
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Risposta Rapida</h3>
-                    <p class="text-gray-300">
-                        Rispondiamo a tutte le email entro 24 ore nei giorni lavorativi.
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('quick_response') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        {{ __('quick_response_desc') }}
                     </p>
                 </div>
 
@@ -216,9 +239,9 @@
                             <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Supporto Esperto</h3>
-                    <p class="text-gray-300">
-                        Il nostro team di esperti è pronto ad aiutarti con qualsiasi problema.
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('expert_support') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        {{ __('expert_support_desc') }}
                     </p>
                 </div>
 
@@ -228,9 +251,9 @@
                             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Documentazione</h3>
-                    <p class="text-gray-300">
-                        Guide complete e tutorial per utilizzare al meglio FishTideLog.
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ __('documentation') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        {{ __('documentation_desc') }}
                     </p>
                 </div>
             </div>
@@ -241,24 +264,24 @@
     <section class="py-20 bg-gradient-to-r from-blue-600 to-green-600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                Pronto a Iniziare?
+                {{ __('ready_to_start') }}
             </h2>
             <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Registrati gratuitamente e inizia a documentare le tue avventure di pesca.
+                {{ __('register_free_start') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('register') }}" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    Registrati Ora
+                    {{ __('register_now') }}
                 </a>
                 <a href="{{ route('login') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    Accedi
+                    {{ __('login') }}
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 py-12">
+    <footer class="bg-gray-100 dark:bg-gray-800 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -268,44 +291,44 @@
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <span class="text-lg font-bold text-white">{{ config('app.name', 'FishTideLog') }}</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">{{ config('app.name', 'FishTideLog') }}</span>
                     </div>
-                    <p class="text-gray-300">
-                        La piattaforma completa per i pescatori che vogliono documentare e analizzare le loro esperienze.
+                    <p class="text-gray-600 dark:text-gray-300">
+                        {{ __('footer_description') }}
                     </p>
                 </div>
 
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Prodotto</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-4">{{ __('product') }}</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('features') }}" class="text-gray-300 hover:text-white transition-colors">Funzionalità</a></li>
-                        <li><a href="{{ route('pricing') }}" class="text-gray-300 hover:text-white transition-colors">Prezzi</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">API</a></li>
+                        <li><a href="{{ route('features') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('features') }}</a></li>
+                        <li><a href="{{ route('pricing') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('pricing') }}</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">API</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Supporto</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-4">{{ __('support') }}</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('contact') }}" class="text-gray-300 hover:text-white transition-colors">Contatti</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Documentazione</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('contact') }}</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('documentation') }}</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">FAQ</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Legale</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-4">{{ __('legal') }}</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Privacy</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Termini</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Cookie</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('privacy') }}</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('terms') }}</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('cookies') }}</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-400">
-                    © {{ date('Y') }} {{ config('app.name', 'FishTideLog') }}. Tutti i diritti riservati.
+            <div class="border-t border-gray-300 dark:border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-500 dark:text-gray-400">
+                    © {{ date('Y') }} {{ config('app.name', 'FishTideLog') }}. {{ __('all_rights_reserved') }}.
                 </p>
             </div>
         </div>
