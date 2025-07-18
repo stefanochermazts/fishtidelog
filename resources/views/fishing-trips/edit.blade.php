@@ -13,6 +13,11 @@
                         @csrf
                         @method('PUT')
                         
+                        <!-- Campo nascosto per il redirect -->
+                        @if(request()->get('redirect_to'))
+                            <input type="hidden" name="redirect_to" value="{{ request()->get('redirect_to') }}">
+                        @endif
+                        
                         <div>
                             <label for="title" class="form-label">{{ __('messages.title') }} *</label>
                             <input type="text" name="title" id="title" value="{{ old('title', $fishingTrip->title) }}" required
@@ -186,10 +191,17 @@
                         </div>
 
                         <div class="flex justify-end space-x-3 mt-6">
-                            <a href="{{ route('fishing-trips.show', $fishingTrip) }}" 
-                                class="btn-secondary">
-                                {{ __('messages.cancel') }}
-                            </a>
+                            @if(request()->get('redirect_to') === 'fishing-spot' && $fishingTrip->fishing_spot_id)
+                                <a href="{{ route('fishing-spots.show', $fishingTrip->fishing_spot_id) }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @else
+                                <a href="{{ route('fishing-trips.show', $fishingTrip) }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @endif
                             <button type="submit" 
                                 class="btn-primary">
                                 {{ __('messages.save') }}

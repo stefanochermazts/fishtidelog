@@ -90,7 +90,16 @@
                     
                     @if($fishingSpot->trips && $fishingSpot->trips->count() > 0)
                         <div class="mt-8">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('messages.recent_trips') }}</h3>
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900">{{ __('messages.recent_trips') }}</h3>
+                                <a href="{{ route('fishing-trips.create', ['fishing_spot_id' => $fishingSpot->id, 'redirect_to' => 'fishing-spot']) }}" 
+                                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    {{ __('messages.new_trip') }}
+                                </a>
+                            </div>
                             <div class="space-y-3">
                                 @foreach($fishingSpot->trips->take(5) as $trip)
                                     <div class="border border-gray-200 rounded-lg p-4">
@@ -99,9 +108,19 @@
                                                 <h4 class="font-medium text-gray-900">{{ $trip->title }}</h4>
                                                 <p class="text-sm text-gray-600">{{ $trip->start_time->format('d/m/Y H:i') }}</p>
                                             </div>
-                                            <div class="text-right">
-                                                <p class="text-sm font-medium text-gray-900">{{ $trip->total_catches }} {{ __('messages.total_catches') }}</p>
-                                                <a href="{{ route('fishing-trips.show', $trip) }}" class="text-blue-600 hover:text-blue-800 text-sm">{{ __('messages.view') }}</a>
+                                            <div class="flex items-center space-x-3">
+                                                <div class="text-right">
+                                                    <p class="text-sm font-medium text-gray-900">{{ $trip->total_catches }} {{ __('messages.total_catches') }}</p>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <a href="{{ route('fishing-trips.show', $trip) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                        {{ __('messages.view') }}
+                                                    </a>
+                                                    <a href="{{ route('fishing-trips.edit', ['fishingTrip' => $trip, 'redirect_to' => 'fishing-spot']) }}" 
+                                                       class="text-green-600 hover:text-green-800 text-sm font-medium">
+                                                        {{ __('messages.edit') }}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +132,14 @@
                             <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
-                            <p class="text-gray-600">{{ __('messages.no_trips_recorded') }}</p>
+                            <p class="text-gray-600 mb-4">{{ __('messages.no_trips_recorded') }}</p>
+                            <a href="{{ route('fishing-trips.create', ['fishing_spot_id' => $fishingSpot->id, 'redirect_to' => 'fishing-spot']) }}" 
+                               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                {{ __('messages.new_trip') }}
+                            </a>
                         </div>
                     @endif
                 </div>

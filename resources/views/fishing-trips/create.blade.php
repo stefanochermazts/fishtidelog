@@ -12,6 +12,11 @@
                     <form method="POST" action="{{ route('fishing-trips.store') }}" class="space-y-6">
                         @csrf
                         
+                        <!-- Campo nascosto per il redirect -->
+                        @if(isset($redirectTo))
+                            <input type="hidden" name="redirect_to" value="{{ $redirectTo }}">
+                        @endif
+                        
                         <div>
                             <label for="title" class="form-label">{{ __('messages.title') }} *</label>
                             <input type="text" name="title" id="title" value="{{ old('title') }}" required
@@ -156,7 +161,8 @@
                                     class="form-input">
                                     <option value="">{{ __('messages.select_fishing_spot_placeholder') }}</option>
                                     @foreach($fishingSpots as $spot)
-                                        <option value="{{ $spot->id }}" {{ old('fishing_spot_id') == $spot->id ? 'selected' : '' }}
+                                        <option value="{{ $spot->id }}" 
+                                            {{ old('fishing_spot_id', $selectedSpotId ?? '') == $spot->id ? 'selected' : '' }}
                                             data-lat="{{ $spot->latitude }}" 
                                             data-lng="{{ $spot->longitude }}"
                                             data-name="{{ $spot->name }}"
@@ -298,10 +304,17 @@
                         </div>
 
                         <div class="flex justify-end space-x-3 mt-6">
-                            <a href="{{ route('fishing-trips.index') }}" 
-                                class="btn-secondary">
-                                {{ __('messages.cancel') }}
-                            </a>
+                            @if(isset($redirectTo) && $redirectTo === 'fishing-spot' && isset($selectedSpotId))
+                                <a href="{{ route('fishing-spots.show', $selectedSpotId) }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @else
+                                <a href="{{ route('fishing-trips.index') }}" 
+                                   class="btn-secondary">
+                                    {{ __('messages.cancel') }}
+                                </a>
+                            @endif
                             <button type="submit" 
                                 class="btn-primary">
                                 {{ __('messages.create') }}

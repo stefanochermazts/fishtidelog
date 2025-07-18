@@ -34,14 +34,18 @@ class FishingTripController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $fishingSpots = Auth::user()->fishingSpots()
             ->select('id', 'name', 'type', 'latitude', 'longitude', 'address')
             ->orderBy('name')
             ->get();
             
-        return view('fishing-trips.create', compact('fishingSpots'));
+        // Se viene passato un fishing_spot_id, preseleziona quel punto di pesca
+        $selectedSpotId = $request->get('fishing_spot_id');
+        $redirectTo = $request->get('redirect_to', 'fishing-trips');
+            
+        return view('fishing-trips.create', compact('fishingSpots', 'selectedSpotId', 'redirectTo'));
     }
 
     /**
@@ -74,8 +78,16 @@ class FishingTripController extends Controller
 
         $trip = FishingTrip::create($validated);
 
-        return redirect()->route('fishing-trips.show', $trip)
-            ->with('success', __('messages.trip_created'));
+        // Gestione redirect
+        $redirectTo = $request->get('redirect_to', 'fishing-trips');
+        
+        if ($redirectTo === 'fishing-spot' && $trip->fishing_spot_id) {
+            return redirect()->route('fishing-spots.show', $trip->fishing_spot_id)
+                ->with('success', __('messages.trip_created'));
+        } else {
+            return redirect()->route('fishing-trips.show', $trip)
+                ->with('success', __('messages.trip_created'));
+        }
     }
 
     /**
@@ -137,8 +149,16 @@ class FishingTripController extends Controller
 
         $fishingTrip->update($validated);
 
-        return redirect()->route('fishing-trips.show', $fishingTrip)
-            ->with('success', __('messages.trip_updated'));
+        // Gestione redirect
+        $redirectTo = $request->get('redirect_to', 'fishing-trips');
+        
+        if ($redirectTo === 'fishing-spot' && $fishingTrip->fishing_spot_id) {
+            return redirect()->route('fishing-spots.show', $fishingTrip->fishing_spot_id)
+                ->with('success', __('messages.trip_updated'));
+        } else {
+            return redirect()->route('fishing-trips.show', $fishingTrip)
+                ->with('success', __('messages.trip_updated'));
+        }
     }
 
     /**
