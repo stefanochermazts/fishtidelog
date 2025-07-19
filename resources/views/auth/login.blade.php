@@ -15,10 +15,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Benvenuto di nuovo') }}
+                {{ __('auth.welcome_back') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Accedi al tuo account FishTideLog') }}
+                {{ __('auth.login_to_account') }}
             </p>
         </div>
 
@@ -41,7 +41,7 @@
 
                 <!-- Email Address -->
                 <div>
-                    <x-input-label for="email" :value="__('Email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="email" :value="__('auth.email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="email" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
@@ -51,14 +51,14 @@
                                      required 
                                      autofocus 
                                      autocomplete="username" 
-                                     placeholder="{{ __('Inserisci la tua email') }}" />
+                                     placeholder="{{ __('auth.enter_email') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <x-input-label for="password" :value="__('Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password" :value="__('auth.password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -66,7 +66,7 @@
                                      name="password"
                                      required 
                                      autocomplete="current-password" 
-                                     placeholder="{{ __('Inserisci la tua password') }}" />
+                                     placeholder="{{ __('auth.enter_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
@@ -78,12 +78,12 @@
                                type="checkbox" 
                                class="rounded border-neutral-300 dark:border-neutral-600 text-primary-600 dark:text-primary-400 shadow-sm focus:ring-primary-500 dark:focus:ring-primary-400 bg-white dark:bg-neutral-700" 
                                name="remember">
-                        <span class="ms-2 text-sm text-neutral-600 dark:text-neutral-400">{{ __('Ricordami') }}</span>
+                        <span class="ms-2 text-sm text-neutral-600 dark:text-neutral-400">{{ __('auth.remember_me') }}</span>
                     </label>
 
                     @if (Route::has('password.request'))
                         <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-200" href="{{ route('password.request') }}">
-                            {{ __('Password dimenticata?') }}
+                            {{ __('auth.forgot_password') }}
                         </a>
                     @endif
                 </div>
@@ -94,7 +94,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Accedi') }}
+                        {{ __('auth.login') }}
                     </x-primary-button>
                 </div>
             </form>
@@ -106,7 +106,7 @@
                         <div class="w-full border-t border-neutral-300 dark:border-neutral-600"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('Non hai ancora un account?') }}</span>
+                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('auth.no_account') }}</span>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
             <div class="mt-6">
                 <a href="{{ route('register') }}" 
                    class="w-full flex justify-center py-3 px-6 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 font-semibold rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all duration-200">
-                    {{ __('Crea un nuovo account') }}
+                    {{ __('auth.create_account') }}
                 </a>
             </div>
         </div>

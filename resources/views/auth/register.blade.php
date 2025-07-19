@@ -15,10 +15,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Crea il tuo account') }}
+                {{ __('auth.create_your_account') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Inizia a tracciare le tue avventure di pesca') }}
+                {{ __('auth.start_tracking') }}
             </p>
         </div>
 
@@ -29,7 +29,7 @@
 
                 <!-- Name -->
                 <div>
-                    <x-input-label for="name" :value="__('Nome')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="name" :value="__('auth.name')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="name" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
@@ -39,14 +39,14 @@
                                      required 
                                      autofocus 
                                      autocomplete="name" 
-                                     placeholder="{{ __('Inserisci il tuo nome') }}" />
+                                     placeholder="{{ __('auth.enter_name') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
                 <!-- Email Address -->
                 <div>
-                    <x-input-label for="email" :value="__('Email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="email" :value="__('auth.email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="email" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
@@ -55,14 +55,14 @@
                                      :value="old('email')" 
                                      required 
                                      autocomplete="username" 
-                                     placeholder="{{ __('Inserisci la tua email') }}" />
+                                     placeholder="{{ __('auth.enter_email') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Password with Validator -->
                 <div>
-                    <x-input-label for="password" :value="__('Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password" :value="__('auth.password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -70,7 +70,7 @@
                                      name="password"
                                      required 
                                      autocomplete="new-password" 
-                                     placeholder="{{ __('Crea una password sicura') }}" />
+                                     placeholder="{{ __('auth.create_secure_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     
@@ -82,7 +82,7 @@
 
                 <!-- Confirm Password -->
                 <div>
-                    <x-input-label for="password_confirmation" :value="__('Conferma Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password_confirmation" :value="__('auth.confirm_password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password_confirmation" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -90,7 +90,7 @@
                                      name="password_confirmation"
                                      required 
                                      autocomplete="new-password" 
-                                     placeholder="{{ __('Conferma la password') }}" />
+                                     placeholder="{{ __('auth.confirm_new_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
@@ -106,13 +106,13 @@
                     </div>
                     <div class="ml-3 text-sm">
                         <label for="terms" class="text-neutral-600 dark:text-neutral-400">
-                            {{ __('Accetto i') }} 
+                            {{ __('auth.accept_terms') }} 
                             <a href="#" class="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline">
-                                {{ __('Termini e Condizioni') }}
+                                {{ __('auth.terms_conditions') }}
                             </a> 
-                            {{ __('e la') }}
+                            {{ __('auth.and') }}
                             <a href="#" class="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline">
-                                {{ __('Privacy Policy') }}
+                                {{ __('auth.privacy_policy') }}
                             </a>
                         </label>
                     </div>
@@ -124,7 +124,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Crea Account') }}
+                        {{ __('auth.register') }}
                     </x-primary-button>
                 </div>
             </form>
@@ -136,7 +136,7 @@
                         <div class="w-full border-t border-neutral-300 dark:border-neutral-600"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('Hai già un account?') }}</span>
+                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('auth.already_registered') }}</span>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
             <div class="mt-6">
                 <a href="{{ route('login') }}" 
                    class="w-full flex justify-center py-3 px-6 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 font-semibold rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all duration-200">
-                    {{ __('Accedi al tuo account') }}
+                    {{ __('auth.login_to_account') }}
                 </a>
             </div>
         </div>
