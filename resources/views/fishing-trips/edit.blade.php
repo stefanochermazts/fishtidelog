@@ -116,21 +116,8 @@
                         <div class="border-t border-neutral-200 dark:border-neutral-600 pt-6">
                             <h3 class="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-4">Informazioni Maree</h3>
                             <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-                                💡 <strong>Suggerimento:</strong> Clicca su qualsiasi campo delle maree o sul pulsante "Consulta Maree" per copiare automaticamente la data di inizio e le coordinate dell'uscita.
+                                💡 <strong>Suggerimento:</strong> Le coordinate vengono prese automaticamente dalla posizione dell'uscita. Se manca la data, verrà utilizzata automaticamente la data di inizio.
                             </p>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="tide_latitude" class="form-label">Latitudine per le maree</label>
-                                    <input type="number" name="tide_latitude" id="tide_latitude" step="0.000001" class="form-input" placeholder="45.4371">
-                                    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Inserisci la latitudine per ottenere informazioni sulle maree</p>
-                                </div>
-                                <div>
-                                    <label for="tide_longitude" class="form-label">Longitudine per le maree</label>
-                                    <input type="number" name="tide_longitude" id="tide_longitude" step="0.000001" class="form-input" placeholder="12.3326">
-                                    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Inserisci la longitudine per ottenere informazioni sulle maree</p>
-                                </div>
-                            </div>
                             
                             <div class="mt-4">
                                 <label for="tide_date" class="form-label">Data per le maree</label>
@@ -217,8 +204,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Elementi per le maree
             const getTidesBtn = document.getElementById('get-tides-btn');
-            const tideLatitude = document.getElementById('tide_latitude');
-            const tideLongitude = document.getElementById('tide_longitude');
             const tideDate = document.getElementById('tide_date');
             const tideResults = document.getElementById('tide-results');
             const tideLoading = document.getElementById('tide-loading');
@@ -232,84 +217,6 @@
             const longitude = document.getElementById('longitude');
             const fishingSpotSelect = document.getElementById('fishing_spot_id');
             
-            // Funzione per copiare automaticamente i dati
-            function autoFillTideData() {
-                let dataCopied = false;
-                
-                // Copia la data di inizio nel campo data maree
-                if (startTime && startTime.value) {
-                    const startDate = new Date(startTime.value);
-                    const dateString = startDate.toISOString().split('T')[0];
-                    if (tideDate.value !== dateString) {
-                        tideDate.value = dateString;
-                        dataCopied = true;
-                    }
-                }
-                
-                // Copia le coordinate dell'uscita
-                if (latitude && longitude && latitude.value && longitude.value) {
-                    if (tideLatitude.value !== latitude.value || tideLongitude.value !== longitude.value) {
-                        tideLatitude.value = latitude.value;
-                        tideLongitude.value = longitude.value;
-                        dataCopied = true;
-                    }
-                }
-                
-                // Mostra feedback se i dati sono stati copiati
-                if (dataCopied) {
-                    showAutoFillFeedback();
-                }
-            }
-            
-            // Funzione per mostrare feedback di auto-fill
-            function showAutoFillFeedback() {
-                // Crea un elemento di feedback se non esiste
-                let feedback = document.getElementById('auto-fill-feedback');
-                if (!feedback) {
-                    feedback = document.createElement('div');
-                    feedback.id = 'auto-fill-feedback';
-                    feedback.className = 'mt-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-sm text-green-700 dark:text-green-300';
-                    feedback.innerHTML = `
-                        <div class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Dati copiati automaticamente dalla data di inizio e dalle coordinate dell'uscita
-                        </div>
-                    `;
-                    
-                    // Inserisci il feedback dopo la sezione maree
-                    const tideSection = document.querySelector('.border-t.border-neutral-200');
-                    if (tideSection) {
-                        tideSection.parentNode.insertBefore(feedback, tideSection.nextSibling);
-                    }
-                }
-                
-                // Mostra il feedback
-                feedback.classList.remove('hidden');
-                
-                // Nascondi il feedback dopo 3 secondi
-                setTimeout(() => {
-                    feedback.classList.add('hidden');
-                }, 3000);
-            }
-            
-            // Event listeners per i campi delle maree
-            if (tideLatitude) {
-                tideLatitude.addEventListener('focus', autoFillTideData);
-                tideLatitude.addEventListener('click', autoFillTideData);
-            }
-            
-            if (tideLongitude) {
-                tideLongitude.addEventListener('focus', autoFillTideData);
-                tideLongitude.addEventListener('click', autoFillTideData);
-            }
-            
-            if (tideDate) {
-                tideDate.addEventListener('focus', autoFillTideData);
-                tideDate.addEventListener('click', autoFillTideData);
-            }
-            
             // Event listener per il cambio del punto di pesca
             if (fishingSpotSelect) {
                 fishingSpotSelect.addEventListener('change', function() {
@@ -318,12 +225,6 @@
                         // Aggiorna le coordinate dell'uscita
                         latitude.value = selectedOption.dataset.lat;
                         longitude.value = selectedOption.dataset.lng;
-                        
-                        // Se i campi delle maree sono vuoti, copia le coordinate
-                        if (!tideLatitude.value || !tideLongitude.value) {
-                            tideLatitude.value = selectedOption.dataset.lat;
-                            tideLongitude.value = selectedOption.dataset.lng;
-                        }
                     }
                 });
             }
@@ -331,15 +232,18 @@
             // Gestione maree
             if (getTidesBtn) {
                 getTidesBtn.addEventListener('click', function() {
-                    // Prima di consultare le maree, assicurati che i dati siano copiati
-                    autoFillTideData();
+                    // Usa le coordinate dalla posizione dell'uscita
+                    const tripLatitude = latitude.value;
+                    const tripLongitude = longitude.value;
                     
-                    const latitude = tideLatitude.value;
-                    const longitude = tideLongitude.value;
-                    const date = tideDate.value;
+                    // Se non c'è una data per le maree, usa la data di inizio
+                    let date = tideDate.value;
+                    if (!date && startTime.value) {
+                        date = startTime.value.split('T')[0];
+                    }
                     
-                    if (!latitude || !longitude) {
-                        showTideError('Inserisci latitudine e longitudine');
+                    if (!tripLatitude || !tripLongitude) {
+                        showTideError('Prima aggiungi le coordinate dell\'uscita di pesca');
                         return;
                     }
                     
@@ -352,8 +256,8 @@
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
-                            latitude: parseFloat(latitude),
-                            longitude: parseFloat(longitude),
+                            latitude: parseFloat(tripLatitude),
+                            longitude: parseFloat(tripLongitude),
                             date: date
                         })
                     })

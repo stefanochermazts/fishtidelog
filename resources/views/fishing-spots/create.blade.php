@@ -103,19 +103,9 @@
                         <!-- Sezione Maree -->
                         <div class="border-t border-neutral-200 dark:border-neutral-600 pt-6">
                             <h3 class="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-4">Informazioni Maree</h3>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="tide_latitude" class="form-label">Latitudine per le maree</label>
-                                    <input type="number" name="tide_latitude" id="tide_latitude" step="0.000001" class="form-input" placeholder="45.4371">
-                                    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Inserisci la latitudine per ottenere informazioni sulle maree</p>
-                                </div>
-                                <div>
-                                    <label for="tide_longitude" class="form-label">Longitudine per le maree</label>
-                                    <input type="number" name="tide_longitude" id="tide_longitude" step="0.000001" class="form-input" placeholder="12.3326">
-                                    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Inserisci la longitudine per ottenere informazioni sulle maree</p>
-                                </div>
-                            </div>
+                            <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                                💡 <strong>Suggerimento:</strong> Le coordinate vengono prese automaticamente dalla posizione selezionata sulla mappa sopra.
+                            </p>
                             
                             <div class="mt-4">
                                 <label for="tide_date" class="form-label">Data per le maree</label>
@@ -359,40 +349,48 @@
                         geocodeBtn.disabled = true;
                         geocodeBtn.textContent = '{{ __("messages.searching") }}...';
                         
-                        // Simula geocoding (in produzione usare un servizio reale)
-                        setTimeout(() => {
-                            // Per ora, usa coordinate di esempio per Roma
-                            const lat = 41.9028;
-                            const lng = 12.4964;
-                            
-                            latInput.value = lat.toFixed(6);
-                            lngInput.value = lng.toFixed(6);
-                            
-                            if (marker) {
-                                marker.setLatLng([lat, lng]);
-                            } else {
-                                marker = L.marker([lat, lng], {
-                                    icon: L.divIcon({
-                                        className: 'custom-marker',
-                                        html: '<div style="background-color: #3b82f6; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
-                                        iconSize: [24, 24],
-                                        iconAnchor: [12, 12]
-                                    })
-                                }).addTo(map);
-                            }
-                            
-                            map.setView([lat, lng], 12);
-                            
-                            geocodeBtn.disabled = false;
-                            geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
-                        }, 1000);
+                        // Usa il servizio di geocoding reale
+                        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data && data.length > 0) {
+                                    const lat = parseFloat(data[0].lat);
+                                    const lng = parseFloat(data[0].lon);
+                                    
+                                    latInput.value = lat.toFixed(6);
+                                    lngInput.value = lng.toFixed(6);
+                                    
+                                    if (marker) {
+                                        marker.setLatLng([lat, lng]);
+                                    } else {
+                                        marker = L.marker([lat, lng], {
+                                            icon: L.divIcon({
+                                                className: 'custom-marker',
+                                                html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                                iconSize: [48, 48],
+                                                iconAnchor: [24, 24]
+                                            })
+                                        }).addTo(map);
+                                    }
+                                    
+                                    map.setView([lat, lng], 15);
+                                } else {
+                                    alert('{{ __("messages.address_not_found") }}');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Errore geocoding:', error);
+                                alert('{{ __("messages.geocoding_error") }}');
+                            })
+                            .finally(() => {
+                                geocodeBtn.disabled = false;
+                                geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
+                            });
                     });
                 }
                 
                 // Gestione maree
                 const getTidesBtn = document.getElementById('get-tides-btn');
-                const tideLatitude = document.getElementById('tide_latitude');
-                const tideLongitude = document.getElementById('tide_longitude');
                 const tideDate = document.getElementById('tide_date');
                 const tideResults = document.getElementById('tide-results');
                 const tideLoading = document.getElementById('tide-loading');
@@ -402,12 +400,13 @@
                 
                 if (getTidesBtn) {
                     getTidesBtn.addEventListener('click', function() {
-                        const latitude = tideLatitude.value;
-                        const longitude = tideLongitude.value;
+                        // Usa le coordinate dalla posizione principale
+                        const latitude = latInput.value;
+                        const longitude = lngInput.value;
                         const date = tideDate.value;
                         
                         if (!latitude || !longitude) {
-                            showTideError('Inserisci latitudine e longitudine');
+                            showTideError('Prima seleziona una posizione sulla mappa');
                             return;
                         }
                         

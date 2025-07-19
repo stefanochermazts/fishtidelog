@@ -10,7 +10,7 @@
             <div class="flex items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" 
+                    <a href="{{ Auth::check() ? route('dashboard') : route('home') }}" 
                        class="flex items-center space-x-3 group"
                        aria-label="{{ config('app.name', 'FishTideLog') }} - {{ __('Home') }}">
                         <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center shadow-soft group-hover:shadow-medium transition-all duration-200">
@@ -25,6 +25,7 @@
                 </div>
 
                 <!-- Navigation Links - Desktop -->
+                @auth
                 <div class="hidden lg:flex space-x-1 ml-8">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-link">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -77,6 +78,38 @@
                         </x-nav-link>
                     @endif
                 </div>
+                @else
+                <!-- Public Navigation Links for Guests -->
+                <div class="hidden lg:flex space-x-1 ml-8">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                        </svg>
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('features')" :active="request()->routeIs('features')" class="nav-link">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ __('Funzionalità') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')" class="nav-link">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+                        </svg>
+                        {{ __('Prezzi') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="nav-link">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ __('Contatti') }}
+                    </x-nav-link>
+                </div>
+                @endauth
             </div>
 
             <!-- Settings Dropdown e Theme Toggle - Desktop -->
@@ -87,6 +120,7 @@
                 <!-- Theme Toggle -->
                 <x-theme-toggle />
                 
+                @auth
                 <!-- User Dropdown -->
                 <div class="relative" x-data="{ open: false }">
                     <button @click="open = !open" 
@@ -143,6 +177,19 @@
                         </form>
                     </div>
                 </div>
+                @else
+                <!-- Auth Links for Guests -->
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('login') }}" 
+                       class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 font-medium">
+                        {{ __('Accedi') }}
+                    </a>
+                    <a href="{{ route('register') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-medium transition-all duration-200">
+                        {{ __('Registrati') }}
+                    </a>
+                </div>
+                @endauth
             </div>
 
             <!-- Mobile menu button -->
@@ -173,6 +220,7 @@
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}">
         
+        @auth
         <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -264,5 +312,51 @@
                 </form>
             </div>
         </div>
+        @else
+        <!-- Mobile Navigation for Guests -->
+        <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" class="nav-link">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+                {{ __('Funzionalità') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')" class="nav-link">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+                </svg>
+                {{ __('Prezzi') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="nav-link">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
+                </svg>
+                {{ __('Contatti') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <!-- Mobile Auth Links for Guests -->
+        <div class="pt-4 pb-1 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+            <div class="px-4 space-y-2">
+                <a href="{{ route('login') }}" 
+                   class="block w-full text-left px-4 py-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                    {{ __('Accedi') }}
+                </a>
+                <a href="{{ route('register') }}" 
+                   class="block w-full text-left px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-medium transition-all duration-200">
+                    {{ __('Registrati') }}
+                </a>
+            </div>
+        </div>
+        @endauth
     </div>
 </nav>
