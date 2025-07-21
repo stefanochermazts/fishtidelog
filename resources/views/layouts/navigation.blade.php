@@ -214,6 +214,8 @@
                         <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
+                    <!-- Debug: Menu state -->
+                    <span x-show="open" class="ml-2 text-xs text-primary-600">OPEN</span>
                 </button>
             </div>
         </div>
@@ -239,10 +241,15 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 transform translate-y-0"
          x-transition:leave-end="opacity-0 transform -translate-y-2"
-         class="lg:hidden absolute top-full left-0 right-0 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 shadow-strong z-50"
+         class="lg:hidden fixed top-16 left-0 right-0 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 shadow-strong z-50 max-h-[calc(100vh-4rem)] overflow-y-auto"
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}"
-         @click.away="open = false">
+         @click.away="open = false"
+         style="display: none;">
+         <!-- Debug: Mobile menu is visible -->
+         <div x-show="open" class="p-4 bg-red-500 text-white text-center">
+             MOBILE MENU IS OPEN
+         </div>
         
         @auth
         <!-- Mobile Controls for Small Screens -->
