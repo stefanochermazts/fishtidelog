@@ -2,7 +2,8 @@
 <nav x-data="{ open: false, dropdownOpen: false }" 
      class="bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm border-b border-neutral-200 dark:border-neutral-700 shadow-soft dark:shadow-strong transition-colors duration-200 relative z-50"
      role="navigation" 
-     aria-label="{{ __('Main navigation') }}">
+     aria-label="{{ __('Main navigation') }}"
+     @keydown.escape="open = false">
     
     <!-- Primary Navigation Menu -->
     <div class="container-wide">
@@ -18,7 +19,7 @@
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <span class="text-xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+                        <span class="text-lg sm:text-xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
                             {{ config('app.name', 'FishTideLog') }}
                         </span>
                     </a>
@@ -195,32 +196,63 @@
             <!-- Mobile menu button -->
             <div class="flex items-center lg:hidden space-x-2">
                 <!-- Language Selector Mobile -->
-                <x-language-selector />
+                <div class="hidden sm:block">
+                    <x-language-selector />
+                </div>
                 
                 <!-- Theme Toggle Mobile -->
-                <x-theme-toggle />
+                <div class="hidden sm:block">
+                    <x-theme-toggle />
+                </div>
                 
                 <button @click="open = !open" 
                         @keydown.escape="open = false"
-                        class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-400 hover:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
-                        aria-expanded="false"
+                        class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
+                        :aria-expanded="open"
                         aria-label="{{ __('Toggle navigation menu') }}">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                        <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Mobile Menu Overlay -->
+    <div x-show="open" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+         @click="open = false">
+    </div>
+
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': !open}" 
-         class="hidden lg:hidden animate-slide-up"
+    <div x-show="open"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform -translate-y-2"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 transform translate-y-0"
+         x-transition:leave-end="opacity-0 transform -translate-y-2"
+         class="lg:hidden absolute top-full left-0 right-0 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 shadow-strong z-50"
          role="navigation"
-         aria-label="{{ __('Mobile navigation') }}">
+         aria-label="{{ __('Mobile navigation') }}"
+         @click.away="open = false">
         
         @auth
+        <!-- Mobile Controls for Small Screens -->
+        <div class="sm:hidden px-4 py-3 bg-neutral-50 dark:bg-neutral-700/50 border-b border-neutral-200 dark:border-neutral-600">
+            <div class="flex items-center justify-center space-x-4">
+                <x-language-selector />
+                <x-theme-toggle />
+            </div>
+        </div>
+        
         <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -313,6 +345,14 @@
             </div>
         </div>
         @else
+        <!-- Mobile Controls for Small Screens -->
+        <div class="sm:hidden px-4 py-3 bg-neutral-50 dark:bg-neutral-700/50 border-b border-neutral-200 dark:border-neutral-600">
+            <div class="flex items-center justify-center space-x-4">
+                <x-language-selector />
+                <x-theme-toggle />
+            </div>
+        </div>
+        
         <!-- Mobile Navigation for Guests -->
         <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
