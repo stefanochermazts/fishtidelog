@@ -15,10 +15,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Conferma Password') }}
+                {{ __('auth.confirm_password_title') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Questa è un\'area sicura dell\'applicazione. Conferma la tua password prima di continuare.') }}
+                {{ __('auth.confirm_password_message') }}
             </p>
         </div>
 
@@ -29,7 +29,7 @@
 
                 <!-- Password -->
                 <div>
-                    <x-input-label for="password" :value="__('Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password" :value="__('auth.password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -37,7 +37,7 @@
                                      name="password"
                                      required 
                                      autocomplete="current-password" 
-                                     placeholder="{{ __('Inserisci la tua password') }}" />
+                                     placeholder="{{ __('auth.enter_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
@@ -48,7 +48,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Conferma') }}
+                        {{ __('auth.confirm') }}
                     </x-primary-button>
                 </div>
             </form>

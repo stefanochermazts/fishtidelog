@@ -15,10 +15,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Password dimenticata?') }}
+                {{ __('auth.forgot_password_title') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Nessun problema. Inserisci la tua email e ti invieremo un link per reimpostare la password.') }}
+                {{ __('auth.forgot_password_message') }}
             </p>
         </div>
 
@@ -41,7 +41,7 @@
 
                 <!-- Email Address -->
                 <div>
-                    <x-input-label for="email" :value="__('Email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="email" :value="__('auth.email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="email" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
@@ -50,7 +50,7 @@
                                      :value="old('email')" 
                                      required 
                                      autofocus 
-                                     placeholder="{{ __('Inserisci la tua email') }}" />
+                                     placeholder="{{ __('auth.enter_email') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
@@ -62,7 +62,7 @@
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                         </svg>
-                        {{ __('Invia Link Reset Password') }}
+                        {{ __('auth.send_reset_link') }}
                     </x-primary-button>
                 </div>
             </form>
@@ -74,7 +74,7 @@
                         <div class="w-full border-t border-neutral-300 dark:border-neutral-600"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('Torna al login') }}</span>
+                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('auth.back_to_login') }}</span>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
             <div class="mt-6">
                 <a href="{{ route('login') }}" 
                    class="w-full flex justify-center py-3 px-6 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 font-semibold rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all duration-200">
-                    {{ __('Accedi al tuo account') }}
+                    {{ __('auth.login_to_account') }}
                 </a>
             </div>
         </div>

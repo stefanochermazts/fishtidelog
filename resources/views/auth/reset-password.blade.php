@@ -15,10 +15,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Reimposta Password') }}
+                {{ __('auth.reset_password') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Inserisci la tua nuova password') }}
+                {{ __('auth.enter_new_password') }}
             </p>
         </div>
 
@@ -32,7 +32,7 @@
 
                 <!-- Email Address -->
                 <div>
-                    <x-input-label for="email" :value="__('Email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="email" :value="__('auth.email')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="email" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
@@ -42,14 +42,14 @@
                                      required 
                                      autofocus 
                                      autocomplete="username" 
-                                     placeholder="{{ __('Inserisci la tua email') }}" />
+                                     placeholder="{{ __('auth.enter_email') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <x-input-label for="password" :value="__('Nuova Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password" :value="__('auth.new_password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -57,14 +57,14 @@
                                      name="password"
                                      required 
                                      autocomplete="new-password" 
-                                     placeholder="{{ __('Inserisci la nuova password') }}" />
+                                     placeholder="{{ __('auth.enter_new_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
                 <!-- Confirm Password -->
                 <div>
-                    <x-input-label for="password_confirmation" :value="__('Conferma Password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
+                    <x-input-label for="password_confirmation" :value="__('auth.confirm_password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password_confirmation" 
                                      class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
@@ -72,7 +72,7 @@
                                      name="password_confirmation"
                                      required 
                                      autocomplete="new-password" 
-                                     placeholder="{{ __('Conferma la nuova password') }}" />
+                                     placeholder="{{ __('auth.confirm_new_password') }}" />
                     </div>
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
@@ -83,7 +83,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Reimposta Password') }}
+                        {{ __('auth.reset_password') }}
                     </x-primary-button>
                 </div>
             </form>

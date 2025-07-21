@@ -16,10 +16,10 @@
                 </div>
             </div>
             <h2 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {{ __('Verifica la tua email') }}
+                {{ __('auth.verify_email_title') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('Grazie per esserti registrato! Prima di iniziare, potresti verificare il tuo indirizzo email cliccando sul link che ti abbiamo appena inviato?') }}
+                {{ __('auth.verify_email_message') }}
             </p>
         </div>
 
@@ -31,7 +31,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Un nuovo link di verifica è stato inviato all\'indirizzo email fornito durante la registrazione.') }}
+                        {{ __('auth.verification_sent') }}
                     </div>
                 </div>
             @endif
@@ -45,7 +45,7 @@
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                         </svg>
-                        {{ __('Invia di nuovo email di verifica') }}
+                        {{ __('auth.resend_verification') }}
                     </x-primary-button>
                 </form>
 
@@ -67,7 +67,7 @@
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Logout') }}
+                        {{ __('auth.logout') }}
                     </button>
                 </form>
             </div>
