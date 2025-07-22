@@ -31,7 +31,7 @@
            class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 {{ app()->getLocale() === 'it' ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : '' }}"
            role="menuitem">
             <div class="flex items-center">
-                <span class="w-6 h-4 bg-gradient-to-r from-green-500 to-red-500 rounded mr-3 flex-shrink-0"></span>
+                <span class="mr-3 text-lg">🇮🇹</span>
                 {{ __('Italiano') }}
                 @if(app()->getLocale() === 'it')
                     <svg class="w-4 h-4 ml-auto text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -45,7 +45,7 @@
            class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 {{ app()->getLocale() === 'en' ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : '' }}"
            role="menuitem">
             <div class="flex items-center">
-                <span class="w-6 h-4 bg-gradient-to-r from-blue-500 to-red-500 rounded mr-3 flex-shrink-0"></span>
+                <span class="mr-3 text-lg">🇬🇧</span>
                 {{ __('Inglese') }}
                 @if(app()->getLocale() === 'en')
                     <svg class="w-4 h-4 ml-auto text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -59,7 +59,7 @@
            class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 {{ app()->getLocale() === 'fr' ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : '' }}"
            role="menuitem">
             <div class="flex items-center">
-                <span class="w-6 h-4 bg-gradient-to-r from-blue-500 to-white to-red-500 rounded mr-3 flex-shrink-0"></span>
+                <span class="mr-3 text-lg">🇫🇷</span>
                 {{ __('Francese') }}
                 @if(app()->getLocale() === 'fr')
                     <svg class="w-4 h-4 ml-auto text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -73,7 +73,7 @@
            class="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 {{ app()->getLocale() === 'de' ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : '' }}"
            role="menuitem">
             <div class="flex items-center">
-                <span class="w-6 h-4 bg-gradient-to-r from-yellow-500 to-red-500 to-black rounded mr-3 flex-shrink-0"></span>
+                <span class="mr-3 text-lg">🇩🇪</span>
                 {{ __('Tedesco') }}
                 @if(app()->getLocale() === 'de')
                     <svg class="w-4 h-4 ml-auto text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
