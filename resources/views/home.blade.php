@@ -259,21 +259,27 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">1,247</div>
+                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">{{ number_format($stats['total_users']) }}</div>
                     <div class="text-gray-600 dark:text-gray-300">{{ __('registered_fishers') }}</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">5,892</div>
+                    <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">{{ number_format($stats['total_trips']) }}</div>
                     <div class="text-gray-600 dark:text-gray-300">{{ __('recorded_trips') }}</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">12,456</div>
+                    <div class="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">{{ number_format($stats['total_catches']) }}</div>
                     <div class="text-gray-600 dark:text-gray-300">{{ __('documented_catches') }}</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">8.2t</div>
+                    <div class="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">
+                        @if($stats['total_weight'] >= 1000)
+                            {{ number_format($stats['total_weight'] / 1000, 1) }}t
+                        @else
+                            {{ number_format($stats['total_weight']) }}kg
+                        @endif
+                    </div>
                     <div class="text-gray-600 dark:text-gray-300">{{ __('total_weight') }}</div>
                 </div>
             </div>

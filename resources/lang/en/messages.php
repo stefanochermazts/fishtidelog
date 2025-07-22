@@ -335,5 +335,15 @@ return [
     'trip_end' => 'Trip End',
     'unknown' => 'Unknown',
     'from_cache' => 'From Cache',
-    'from_api' => 'From API'
+    'from_api' => 'From API',
+    
+    // Homepage Statistics
+    'platform_numbers' => 'Platform in Numbers',
+    'platform_numbers_subtitle' => 'Discover the activity of our fishing community',
+    'registered_fishers' => 'Registered Fishers',
+    'recorded_trips' => 'Recorded Trips',
+    'documented_catches' => 'Documented Catches',
+    'total_weight' => 'Total Weight Caught',
+    'start_recording' => 'Start Recording Your Adventures',
+    'join_thousands' => 'Join thousands of fishers who already use FishTideLog to track their catches and improve their techniques.',
 ]; 

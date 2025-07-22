@@ -332,4 +332,14 @@ return [
     'cannot_delete_last_admin' => 'Der letzte Administrator kann nicht gelöscht werden.',
     'confirm_delete' => 'Löschen Bestätigen',
     'cancel' => 'Abbrechen',
+    
+    // Homepage Statistics
+    'platform_numbers' => 'Die Plattform in Zahlen',
+    'platform_numbers_subtitle' => 'Entdecken Sie die Aktivität unserer Angler-Community',
+    'registered_fishers' => 'Registrierte Angler',
+    'recorded_trips' => 'Aufgezeichnete Ausflüge',
+    'documented_catches' => 'Dokumentierte Fänge',
+    'total_weight' => 'Gesamtgewicht Gefangen',
+    'start_recording' => 'Beginnen Sie Ihre Abenteuer zu Dokumentieren',
+    'join_thousands' => 'Schließen Sie sich Tausenden von Anglern an, die bereits FishTideLog verwenden, um ihre Fänge zu verfolgen und ihre Techniken zu verbessern.',
 ]; 

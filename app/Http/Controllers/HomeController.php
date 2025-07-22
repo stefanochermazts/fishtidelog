@@ -7,6 +7,7 @@ use App\Models\FishingTrip;
 use App\Models\FishingSpot;
 use App\Models\FishCatch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -15,14 +16,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Statistiche pubbliche per mostrare l'attività della piattaforma
-        $stats = [
-            'total_users' => User::count(),
-            'total_trips' => FishingTrip::count(),
-            'total_spots' => FishingSpot::count(),
-            'total_catches' => FishCatch::count(),
-            'total_weight' => FishCatch::sum('weight') ?? 0,
-        ];
+        // Statistiche pubbliche con cache di 10 minuti per migliorare le performance
+        $stats = Cache::remember('home_stats', 600, function () {
+            return [
+                'total_users' => User::count(),
+                'total_trips' => FishingTrip::count(),
+                'total_spots' => FishingSpot::count(),
+                'total_catches' => FishCatch::count(),
+                'total_weight' => FishCatch::sum('weight') ?? 0,
+            ];
+        });
 
         return view('home', compact('stats'));
     }

@@ -332,4 +332,14 @@ return [
     'cannot_delete_last_admin' => 'Impossible de supprimer le dernier administrateur.',
     'confirm_delete' => 'Confirmer la Suppression',
     'cancel' => 'Annuler',
+    
+    // Homepage Statistics
+    'platform_numbers' => 'La Plateforme en Chiffres',
+    'platform_numbers_subtitle' => 'Découvrez l\'activité de notre communauté de pêcheurs',
+    'registered_fishers' => 'Pêcheurs Inscrits',
+    'recorded_trips' => 'Sorties Enregistrées',
+    'documented_catches' => 'Prises Documentées',
+    'total_weight' => 'Poids Total Pêché',
+    'start_recording' => 'Commencez à Enregistrer Vos Aventures',
+    'join_thousands' => 'Rejoignez des milliers de pêcheurs qui utilisent déjà FishTideLog pour suivre leurs prises et améliorer leurs techniques.',
 ]; 

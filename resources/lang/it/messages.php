@@ -342,5 +342,15 @@ return [
     'unknown' => 'Sconosciuto',
     'fishing_trip_times' => 'Orari Uscita di Pesca',
     'from_cache' => 'Dal Cache',
-    'from_api' => 'Dall\'API'
+    'from_api' => 'Dall\'API',
+    
+    // Homepage Statistics
+    'platform_numbers' => 'La Piattaforma in Numeri',
+    'platform_numbers_subtitle' => 'Scopri l\'attività della nostra community di pescatori',
+    'registered_fishers' => 'Pescatori Registrati',
+    'recorded_trips' => 'Uscite Registrate',
+    'documented_catches' => 'Catture Documentate',
+    'total_weight' => 'Peso Totale Pescato',
+    'start_recording' => 'Inizia a Registrare le Tue Avventure',
+    'join_thousands' => 'Unisciti a migliaia di pescatori che già usano FishTideLog per tenere traccia delle loro catture e migliorare le loro tecniche.',
 ]; 
