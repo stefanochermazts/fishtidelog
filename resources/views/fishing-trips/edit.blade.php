@@ -408,6 +408,12 @@
                 return;
             }
             
+            // Verifica se la mappa è già inizializzata
+            if (map !== null) {
+                console.log('Mappa già inizializzata, evito duplicazione');
+                return;
+            }
+            
             // Nascondi loading e mostra mappa
             const mapLoading = document.getElementById('map-loading');
             const mapError = document.getElementById('map-error');

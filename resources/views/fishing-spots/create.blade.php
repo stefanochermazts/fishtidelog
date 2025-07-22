@@ -263,6 +263,9 @@
     
     <script>
         // Funzione per inizializzare la mappa
+        let map = null;
+        let marker = null;
+        
         function initializeMap() {
             console.log('Inizializzazione mappa...');
             
@@ -280,13 +283,19 @@
                 return;
             }
             
+            // Verifica se la mappa è già inizializzata
+            if (map !== null) {
+                console.log('Mappa già inizializzata, evito duplicazione');
+                return;
+            }
+            
             // Nascondi loading e mostra mappa
             const mapLoading = document.getElementById('map-loading');
             const mapError = document.getElementById('map-error');
             
             try {
                 // Inizializza la mappa
-                const map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+                map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
                 
                 // Nascondi loading
                 if (mapLoading) mapLoading.style.display = 'none';
@@ -299,8 +308,6 @@
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
                 }).addTo(map);
-                
-                let marker = null;
                 const latInput = document.getElementById('latitude');
                 const lngInput = document.getElementById('longitude');
                 

@@ -66,7 +66,12 @@
             
             /* Assicura che il mobile navigation sia sempre sopra */
             [x-show="open"].lg\\:hidden {
-                z-index: 99999 !important;
+                z-index: 999999 !important;
+            }
+            
+            /* Force all Leaflet containers to be below navigation */
+            .leaflet-container {
+                z-index: 1 !important;
             }
         </style>
         

@@ -240,7 +240,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 transform translate-x-0"
          x-transition:leave-end="opacity-0 transform translate-x-full"
-         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[99999] overflow-y-auto"
+         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[999999] overflow-y-auto"
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}"
          @click.away="open = false"
