@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Password Dimenticata'))
+@section('title', __('auth.forgot_password_title'))
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -92,13 +92,13 @@
         <div class="text-center space-y-4">
             <div class="flex justify-center space-x-6 text-sm">
                 <a href="{{ route('home') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Home') }}
+                    {{ __('auth.home') }}
                 </a>
                 <a href="{{ route('features') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Funzionalità') }}
+                    {{ __('auth.features') }}
                 </a>
                 <a href="{{ route('contact') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Contatti') }}
+                    {{ __('auth.contact') }}
                 </a>
             </div>
         </div>

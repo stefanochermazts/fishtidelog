@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Verifica Email'))
+@section('title', __('auth.verify_email'))
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -55,7 +55,7 @@
                         <div class="w-full border-t border-neutral-300 dark:border-neutral-600"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('oppure') }}</span>
+                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('auth.or') }}</span>
                     </div>
                 </div>
 
@@ -77,13 +77,13 @@
         <div class="text-center space-y-4">
             <div class="flex justify-center space-x-6 text-sm">
                 <a href="{{ route('home') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Home') }}
+                    {{ __('auth.home') }}
                 </a>
                 <a href="{{ route('features') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Funzionalità') }}
+                    {{ __('auth.features') }}
                 </a>
                 <a href="{{ route('contact') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Contatti') }}
+                    {{ __('auth.contact') }}
                 </a>
             </div>
         </div>

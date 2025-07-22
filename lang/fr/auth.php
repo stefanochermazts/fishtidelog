@@ -80,5 +80,6 @@ return [
     'pricing' => 'Tarifs',
     'contact' => 'Contact',
     'language' => 'Langue',
+    'or' => 'ou',
 
 ]; 

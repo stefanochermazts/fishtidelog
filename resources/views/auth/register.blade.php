@@ -154,13 +154,13 @@
         <div class="text-center space-y-4">
             <div class="flex justify-center space-x-6 text-sm">
                 <a href="{{ route('home') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Home') }}
+                    {{ __('auth.home') }}
                 </a>
                 <a href="{{ route('features') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Funzionalità') }}
+                    {{ __('auth.features') }}
                 </a>
                 <a href="{{ route('contact') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Contatti') }}
+                    {{ __('auth.contact') }}
                 </a>
             </div>
         </div>

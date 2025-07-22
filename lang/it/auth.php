@@ -80,5 +80,6 @@ return [
     'pricing' => 'Prezzi',
     'contact' => 'Contatti',
     'language' => 'Lingua',
+    'or' => 'oppure',
 
 ]; 

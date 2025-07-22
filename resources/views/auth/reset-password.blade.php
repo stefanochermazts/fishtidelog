@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Reset Password'))
+@section('title', __('auth.reset_password'))
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -95,7 +95,7 @@
                         <div class="w-full border-t border-neutral-300 dark:border-neutral-600"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('Torna al login') }}</span>
+                        <span class="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">{{ __('auth.back_to_login') }}</span>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
             <div class="mt-6">
                 <a href="{{ route('login') }}" 
                    class="w-full flex justify-center py-3 px-6 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 font-semibold rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all duration-200">
-                    {{ __('Accedi al tuo account') }}
+                    {{ __('auth.login_to_account') }}
                 </a>
             </div>
         </div>
@@ -113,13 +113,13 @@
         <div class="text-center space-y-4">
             <div class="flex justify-center space-x-6 text-sm">
                 <a href="{{ route('home') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Home') }}
+                    {{ __('auth.home') }}
                 </a>
                 <a href="{{ route('features') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Funzionalità') }}
+                    {{ __('auth.features') }}
                 </a>
                 <a href="{{ route('contact') }}" class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                    {{ __('Contatti') }}
+                    {{ __('auth.contact') }}
                 </a>
             </div>
         </div>
