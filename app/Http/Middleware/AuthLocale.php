@@ -18,29 +18,15 @@ class AuthLocale
      */
     public function handle(Request $request, Closure $next)
     {
-        // Lingue supportate
-        $supportedLocales = ['it', 'en', 'de', 'fr'];
-        
-        // Controlla se c'è un parametro locale nella URL
-        if ($request->has('locale') && in_array($request->get('locale'), $supportedLocales)) {
-            $locale = $request->get('locale');
-            Session::put('locale', $locale);
-        }
-        // Altrimenti controlla se c'è una lingua salvata in sessione
-        elseif (Session::has('locale') && in_array(Session::get('locale'), $supportedLocales)) {
-            $locale = Session::get('locale');
-        }
-        // Altrimenti usa la lingua di default (italiano)
-        else {
-            $locale = 'it';
-            Session::put('locale', $locale);
-        }
+        // Forza sempre il locale italiano per le route di autenticazione
+        $locale = 'it';
         
         // Imposta la lingua per l'applicazione
         App::setLocale($locale);
+        Session::put('locale', $locale);
         
         // Debug: log del locale per verificare che funzioni
-        \Log::info('AuthLocale middleware: Setting locale to ' . $locale . ' for URL: ' . $request->url());
+        \Log::info('AuthLocale middleware: Forcing locale to ' . $locale . ' for URL: ' . $request->url());
         
         return $next($request);
     }
