@@ -39,6 +39,9 @@ class SetLocale
         // Imposta la lingua per l'applicazione
         App::setLocale($locale);
         
+        // Debug: log del locale per verificare che funzioni
+        \Log::info('SetLocale middleware: Setting locale to ' . $locale);
+        
         return $next($request);
     }
 } 

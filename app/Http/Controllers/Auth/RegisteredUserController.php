@@ -19,6 +19,12 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // Forza il locale italiano se non è impostato
+        if (!session('locale')) {
+            session(['locale' => 'it']);
+            app()->setLocale('it');
+        }
+        
         return view('auth.register');
     }
 
