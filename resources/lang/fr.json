@@ -181,7 +181,7 @@
     "auth.accept_terms": "J'accepte les",
     "auth.terms_conditions": "Conditions Générales",
     "auth.and": "et la",
-    "auth.privacy_policy": "Politique de Confidentialité",
+    "auth.privacy_policy": "Politique de confidentialité",
     "auth.already_registered": "Vous avez déjà un compte ?",
     "auth.reset_password": "Réinitialiser le mot de passe",
     "auth.forgot_password_title": "Mot de passe oublié ?",
@@ -209,5 +209,14 @@
     "auth.pricing": "Tarifs",
     "auth.contact": "Contact",
     "auth.language": "Langue",
-    "auth.or": "ou"
+    "auth.or": "ou",
+    "auth.privacy_policy": "Politique de confidentialité",
+    "geolocate_me": "Me géolocaliser",
+    "geolocating": "Géolocalisation en cours...",
+    "geolocation_success": "Position détectée avec succès!",
+    "geolocation_error": "Erreur de géolocalisation",
+    "geolocation_denied": "Géolocalisation refusée par l'utilisateur",
+    "geolocation_unavailable": "Géolocalisation non disponible",
+    "geolocation_timeout": "Délai de géolocalisation dépassé",
+    "geolocation_not_supported": "Géolocalisation non supportée par le navigateur"
 } 

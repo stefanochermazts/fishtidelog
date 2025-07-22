@@ -215,5 +215,14 @@
     "auth.pricing": "Pricing",
     "auth.contact": "Contact",
     "auth.language": "Language",
-    "auth.or": "or"
+    "auth.or": "or",
+    "auth.privacy_policy": "Privacy Policy",
+    "geolocate_me": "Geolocate Me",
+    "geolocating": "Geolocating...",
+    "geolocation_success": "Position detected successfully!",
+    "geolocation_error": "Geolocation error",
+    "geolocation_denied": "Geolocation denied by user",
+    "geolocation_unavailable": "Geolocation unavailable",
+    "geolocation_timeout": "Geolocation timeout",
+    "geolocation_not_supported": "Geolocation not supported by browser"
 } 

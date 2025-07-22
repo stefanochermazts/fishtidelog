@@ -85,11 +85,43 @@
 
                         <div>
                             <label for="location_name" class="form-label">{{ __('messages.location_name') }}</label>
-                            <input type="text" name="location_name" id="location_name" value="{{ old('location_name', $fishingTrip->location_name) }}"
-                                class="form-input">
+                            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                                <input type="text" name="location_name" id="location_name" value="{{ old('location_name', $fishingTrip->location_name) }}"
+                                    class="form-input flex-1"
+                                    placeholder="{{ __('messages.enter_location') }}">
+                                <div class="flex space-x-2">
+                                    <button type="button" id="geocode-btn" 
+                                        class="btn-primary px-3 py-2 text-sm flex-1 sm:flex-none">
+                                        {{ __('messages.find_coordinates') }}
+                                    </button>
+                                    <button type="button" id="geolocate-btn" 
+                                        class="btn-secondary px-3 py-2 text-sm flex-1 sm:flex-none">
+                                        <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        {{ __('geolocate_me') }}
+                                    </button>
+                                </div>
+                            </div>
                             @error('location_name')
                                 <p class="form-error">{{ $message }}</p>
                             @enderror
+                        </div>
+
+                        <!-- Mappa per selezione coordinate -->
+                        <div>
+                            <label class="form-label mb-2">{{ __('messages.select_location') }}</label>
+                            <div id="map" class="w-full h-64 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
+                                <div id="map-loading" class="text-neutral-500 dark:text-neutral-400">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-2"></div>
+                                    {{ __('messages.loading_map') }}
+                                </div>
+                                <div id="map-error" class="text-red-500 dark:text-red-400 hidden">
+                                    {{ __('messages.map_error') }}
+                                </div>
+                            </div>
+                            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">{{ __('messages.click_map_to_select') }}</p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -352,5 +384,351 @@
                 tideResults.classList.remove('hidden');
             }
         });
+
+        // Inizializzazione mappa
+        // Variabili globali per la mappa
+        let map = null;
+        let marker = null;
+        
+        // Funzione per inizializzare la mappa
+        function initializeMap() {
+            console.log('Inizializzazione mappa...');
+            
+            // Verifica che Leaflet sia caricato
+            if (typeof L === 'undefined') {
+                console.error('Leaflet non è caricato!');
+                showMapError('Leaflet non è disponibile');
+                return;
+            }
+            
+            // Verifica che l'elemento mappa esista
+            const mapElement = document.getElementById('map');
+            if (!mapElement) {
+                console.error('Elemento mappa non trovato!');
+                return;
+            }
+            
+            // Nascondi loading e mostra mappa
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            try {
+                // Inizializza la mappa
+                map = L.map('map').setView([41.9028, 12.4964], 8); // Centro Italia
+                
+                // Nascondi loading
+                if (mapLoading) mapLoading.style.display = 'none';
+                
+                // Rimuovi background grigio
+                const mapElement = document.getElementById('map');
+                mapElement.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'flex', 'items-center', 'justify-center');
+            
+                // Aggiungi layer OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                
+                const latInput = document.getElementById('latitude');
+                const lngInput = document.getElementById('longitude');
+                
+                // Se ci sono valori esistenti, posiziona il marker
+                if (latInput.value && lngInput.value) {
+                    const lat = parseFloat(latInput.value);
+                    const lng = parseFloat(lngInput.value);
+                    marker = L.marker([lat, lng], {
+                        icon: L.divIcon({
+                            className: 'custom-marker',
+                            html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                            iconSize: [48, 48],
+                            iconAnchor: [24, 24]
+                        })
+                    }).addTo(map);
+                    map.setView([lat, lng], 13);
+                }
+                
+                // Gestione click sulla mappa
+                map.on('click', function(e) {
+                    const lat = e.latlng.lat;
+                    const lng = e.latlng.lng;
+                    
+                    // Aggiorna i campi input
+                    latInput.value = lat.toFixed(6);
+                    lngInput.value = lng.toFixed(6);
+                    
+                    // Aggiorna o crea il marker
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                iconSize: [48, 48],
+                                iconAnchor: [24, 24]
+                            })
+                        }).addTo(map);
+                    }
+                });
+                
+                // Gestione selezione punto di pesca esistente
+                const spotSelect = document.getElementById('fishing_spot_id');
+                if (spotSelect) {
+                    spotSelect.addEventListener('change', function() {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const lat = selectedOption.dataset.lat;
+                        const lng = selectedOption.dataset.lng;
+                        
+                        if (lat && lng) {
+                            const latFloat = parseFloat(lat);
+                            const lngFloat = parseFloat(lng);
+                            
+                            // Aggiorna i campi input
+                            latInput.value = latFloat.toFixed(6);
+                            lngInput.value = lngFloat.toFixed(6);
+                            
+                            // Aggiorna la mappa
+                            if (marker) {
+                                marker.setLatLng([latFloat, lngFloat]);
+                            } else {
+                                marker = L.marker([latFloat, lngFloat], {
+                                    icon: L.divIcon({
+                                        className: 'custom-marker',
+                                        html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                        iconSize: [48, 48],
+                                        iconAnchor: [24, 24]
+                                    })
+                                }).addTo(map);
+                            }
+                            
+                            map.setView([latFloat, lngFloat], 15);
+                        }
+                    });
+                }
+                
+                // Gestione geolocalizzazione
+                const geolocateBtn = document.getElementById('geolocate-btn');
+                
+                if (geolocateBtn) {
+                    geolocateBtn.addEventListener('click', function() {
+                        if (!navigator.geolocation) {
+                            alert('{{ __("geolocation_not_supported") }}');
+                            return;
+                        }
+                        
+                        geolocateBtn.disabled = true;
+                        geolocateBtn.innerHTML = `
+                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-1 inline-block"></div>
+                            {{ __('geolocating') }}
+                        `;
+                        
+                        const options = {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 60000
+                        };
+                        
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+                                
+                                // Aggiorna i campi input
+                                latInput.value = lat.toFixed(6);
+                                lngInput.value = lng.toFixed(6);
+                                
+                                // Aggiorna o crea il marker
+                                if (marker) {
+                                    marker.setLatLng([lat, lng]);
+                                } else {
+                                    marker = L.marker([lat, lng], {
+                                        icon: L.divIcon({
+                                            className: 'custom-marker',
+                                            html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                            iconSize: [48, 48],
+                                            iconAnchor: [24, 24]
+                                        })
+                                    }).addTo(map);
+                                }
+                                
+                                // Centra la mappa sulla posizione
+                                map.setView([lat, lng], 15);
+                                
+                                // Mostra messaggio di successo
+                                const successMsg = document.createElement('div');
+                                successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                                successMsg.textContent = '{{ __("geolocation_success") }}';
+                                document.body.appendChild(successMsg);
+                                setTimeout(() => successMsg.remove(), 3000);
+                            },
+                            function(error) {
+                                let errorMessage = '{{ __("geolocation_error") }}';
+                                switch(error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        errorMessage = '{{ __("geolocation_denied") }}';
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        errorMessage = '{{ __("geolocation_unavailable") }}';
+                                        break;
+                                    case error.TIMEOUT:
+                                        errorMessage = '{{ __("geolocation_timeout") }}';
+                                        break;
+                                }
+                                alert(errorMessage);
+                            },
+                            options
+                        );
+                        
+                        // Ripristina il pulsante dopo un timeout
+                        setTimeout(() => {
+                            geolocateBtn.disabled = false;
+                            geolocateBtn.innerHTML = `
+                                <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {{ __('geolocate_me') }}
+                            `;
+                        }, 12000);
+                    });
+                }
+                
+                // Gestione geocoding
+                const geocodeBtn = document.getElementById('geocode-btn');
+                const locationInput = document.getElementById('location_name');
+                
+                if (geocodeBtn && locationInput) {
+                    geocodeBtn.addEventListener('click', function() {
+                        const location = locationInput.value.trim();
+                        if (!location) {
+                            alert('{{ __("messages.enter_location_first") }}');
+                            return;
+                        }
+                        
+                        geocodeBtn.disabled = true;
+                        geocodeBtn.textContent = '{{ __("messages.searching") }}...';
+                        
+                        // Usa il servizio di geocoding reale
+                        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data && data.length > 0) {
+                                    const lat = parseFloat(data[0].lat);
+                                    const lng = parseFloat(data[0].lon);
+                                    
+                                    latInput.value = lat.toFixed(6);
+                                    lngInput.value = lng.toFixed(6);
+                                    
+                                    if (marker) {
+                                        marker.setLatLng([lat, lng]);
+                                    } else {
+                                        marker = L.marker([lat, lng], {
+                                            icon: L.divIcon({
+                                                className: 'custom-marker',
+                                                html: '<div style="background-color: #10b981; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                                iconSize: [48, 48],
+                                                iconAnchor: [24, 24]
+                                            })
+                                        }).addTo(map);
+                                    }
+                                    
+                                    map.setView([lat, lng], 15);
+                                } else {
+                                    alert('{{ __("messages.address_not_found") }}');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Errore geocoding:', error);
+                                alert('{{ __("messages.geocoding_error") }}');
+                            })
+                            .finally(() => {
+                                geocodeBtn.disabled = false;
+                                geocodeBtn.textContent = '{{ __("messages.find_coordinates") }}';
+                            });
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Errore nell\'inizializzazione della mappa:', error);
+                showMapError('Errore nell\'inizializzazione della mappa: ' + error.message);
+            }
+        }
+        
+        // Funzione per mostrare errore mappa
+        function showMapError(message) {
+            const mapLoading = document.getElementById('map-loading');
+            const mapError = document.getElementById('map-error');
+            
+            if (mapLoading) mapLoading.style.display = 'none';
+            if (mapError) {
+                mapError.textContent = message;
+                mapError.classList.remove('hidden');
+            }
+        }
+        
+        // Prova prima con Alpine.js
+        document.addEventListener('alpine:init', function() {
+            console.log('Alpine.js inizializzato, inizializzo mappa...');
+            setTimeout(initializeMap, 100);
+        });
+        
+        // Fallback se Alpine.js non è disponibile o non emette l'evento
+        setTimeout(function() {
+            if (document.getElementById('map-loading') && document.getElementById('map-loading').style.display !== 'none') {
+                console.log('Fallback: Alpine.js non ha emesso alpine:init, inizializzo comunque...');
+                initializeMap();
+            }
+        }, 2000);
     </script>
+
+    <style>
+        /* Assicura che la mappa sia visibile */
+        #map {
+            width: 100%;
+            height: 256px;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            z-index: 1;
+        }
+        
+        /* Stili per i pulsanti */
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        
+        /* Stili specifici per i pulsanti */
+        #geocode-btn, #geolocate-btn {
+            border: none !important;
+            cursor: pointer !important;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        #geocode-btn:disabled, #geolocate-btn:disabled {
+            background-color: #9ca3af !important;
+            cursor: not-allowed !important;
+        }
+    </style>
 </x-app-layout> 

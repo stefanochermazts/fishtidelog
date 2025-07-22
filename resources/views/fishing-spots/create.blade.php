@@ -33,14 +33,24 @@
                         <!-- Indirizzo per geocoding -->
                         <div>
                             <label for="address" class="form-label">{{ __('messages.address') }}</label>
-                            <div class="flex space-x-2">
+                            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                                 <input type="text" name="address" id="address" value="{{ old('address') }}"
                                     class="form-input flex-1"
                                     placeholder="{{ __('messages.enter_address') }}">
-                                <button type="button" id="geocode-btn" 
-                                    class="btn-primary px-3 py-2 text-sm">
-                                    {{ __('messages.find_coordinates') }}
-                                </button>
+                                <div class="flex space-x-2">
+                                    <button type="button" id="geocode-btn" 
+                                        class="btn-primary px-3 py-2 text-sm flex-1 sm:flex-none">
+                                        {{ __('messages.find_coordinates') }}
+                                    </button>
+                                    <button type="button" id="geolocate-btn" 
+                                        class="btn-secondary px-3 py-2 text-sm flex-1 sm:flex-none">
+                                        <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        {{ __('geolocate_me') }}
+                                    </button>
+                                </div>
                             </div>
                             <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">{{ __('messages.enter_address_first') }}</p>
                             @error('address')
@@ -333,6 +343,93 @@
                         }).addTo(map);
                     }
                 });
+                
+                // Gestione geolocalizzazione
+                const geolocateBtn = document.getElementById('geolocate-btn');
+                
+                if (geolocateBtn) {
+                    geolocateBtn.addEventListener('click', function() {
+                        if (!navigator.geolocation) {
+                            alert('{{ __("geolocation_not_supported") }}');
+                            return;
+                        }
+                        
+                        geolocateBtn.disabled = true;
+                        geolocateBtn.innerHTML = `
+                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-1 inline-block"></div>
+                            {{ __('geolocating') }}
+                        `;
+                        
+                        const options = {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 60000
+                        };
+                        
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+                                
+                                // Aggiorna i campi input
+                                latInput.value = lat.toFixed(6);
+                                lngInput.value = lng.toFixed(6);
+                                
+                                // Aggiorna o crea il marker
+                                if (marker) {
+                                    marker.setLatLng([lat, lng]);
+                                } else {
+                                    marker = L.marker([lat, lng], {
+                                        icon: L.divIcon({
+                                            className: 'custom-marker',
+                                            html: '<div style="background-color: #3b82f6; width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>',
+                                            iconSize: [48, 48],
+                                            iconAnchor: [24, 24]
+                                        })
+                                    }).addTo(map);
+                                }
+                                
+                                // Centra la mappa sulla posizione
+                                map.setView([lat, lng], 15);
+                                
+                                // Mostra messaggio di successo
+                                const successMsg = document.createElement('div');
+                                successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                                successMsg.textContent = '{{ __("geolocation_success") }}';
+                                document.body.appendChild(successMsg);
+                                setTimeout(() => successMsg.remove(), 3000);
+                            },
+                            function(error) {
+                                let errorMessage = '{{ __("geolocation_error") }}';
+                                switch(error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        errorMessage = '{{ __("geolocation_denied") }}';
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        errorMessage = '{{ __("geolocation_unavailable") }}';
+                                        break;
+                                    case error.TIMEOUT:
+                                        errorMessage = '{{ __("geolocation_timeout") }}';
+                                        break;
+                                }
+                                alert(errorMessage);
+                            },
+                            options
+                        );
+                        
+                        // Ripristina il pulsante dopo un timeout
+                        setTimeout(() => {
+                            geolocateBtn.disabled = false;
+                            geolocateBtn.innerHTML = `
+                                <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {{ __('geolocate_me') }}
+                            `;
+                        }, 12000);
+                    });
+                }
                 
                 // Gestione geocoding
                 const geocodeBtn = document.getElementById('geocode-btn');

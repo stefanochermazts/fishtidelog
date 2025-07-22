@@ -209,5 +209,14 @@
     "auth.pricing": "Preise",
     "auth.contact": "Kontakt",
     "auth.language": "Sprache",
-    "auth.or": "oder"
+    "auth.or": "oder",
+    "auth.privacy_policy": "Datenschutzrichtlinie",
+    "geolocate_me": "Lokalisiere mich",
+    "geolocating": "Ortung läuft...",
+    "geolocation_success": "Position erfolgreich erkannt!",
+    "geolocation_error": "Ortungsfehler",
+    "geolocation_denied": "Ortung vom Benutzer verweigert",
+    "geolocation_unavailable": "Ortung nicht verfügbar",
+    "geolocation_timeout": "Ortung Zeitüberschreitung",
+    "geolocation_not_supported": "Ortung wird vom Browser nicht unterstützt"
 } 
