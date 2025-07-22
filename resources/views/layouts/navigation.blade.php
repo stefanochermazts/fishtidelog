@@ -235,27 +235,43 @@
     <!-- Responsive Navigation Menu -->
     <div x-show="open"
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 transform -translate-y-2"
-         x-transition:enter-end="opacity-100 transform translate-y-0"
+         x-transition:enter-start="opacity-0 transform translate-x-full"
+         x-transition:enter-end="opacity-100 transform translate-x-0"
          x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100 transform translate-y-0"
-         x-transition:leave-end="opacity-0 transform -translate-y-2"
-         class="lg:hidden fixed top-16 left-0 right-0 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 shadow-strong z-50 max-h-[calc(100vh-4rem)] overflow-y-auto"
+         x-transition:leave-start="opacity-100 transform translate-x-0"
+         x-transition:leave-end="opacity-0 transform translate-x-full"
+         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-50 overflow-y-auto"
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}"
          @click.away="open = false">
 
-        
-        @auth
-        <!-- Mobile Controls for Small Screens -->
-        <div class="sm:hidden px-4 py-3 bg-neutral-50 dark:bg-neutral-700/50 border-b border-neutral-200 dark:border-neutral-600">
-            <div class="flex items-center justify-center space-x-4">
-                <x-language-selector />
-                <x-theme-toggle />
+        <!-- Mobile Menu Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-700">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center shadow-soft">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+                    {{ config('app.name', 'FishTideLog') }}
+                </span>
             </div>
+            
+            <!-- Close Button -->
+            <button @click="open = false" 
+                    class="p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-all duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
-        
-        <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
+
+        @auth
+        <!-- Mobile Navigation Links -->
+        <div class="flex-1 px-6 py-6">
+            <nav class="space-y-2">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
@@ -298,103 +314,124 @@
                 {{ __('Statistiche') }}
             </x-responsive-nav-link>
             
-            @if(Auth::user()->isAdmin())
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="nav-link">
-                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
-                    </svg>
-                    {{ __('Amministrazione') }}
-                </x-responsive-nav-link>
-            @endif
+                @if(Auth::user()->isAdmin())
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="nav-link">
+                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ __('Amministrazione') }}
+                    </x-responsive-nav-link>
+                @endif
+            </nav>
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
-            <div class="px-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
-                        <span class="text-sm font-medium text-white">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </span>
-                    </div>
-                    <div>
-                        <div class="font-medium text-base text-neutral-900 dark:text-neutral-100">{{ Auth::user()->name }}</div>
-                        <div class="font-medium text-sm text-neutral-500 dark:text-neutral-400">{{ Auth::user()->email }}</div>
-                    </div>
+        <!-- User Info Section -->
+        <div class="mt-auto px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
+            <div class="flex items-center space-x-4 mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                    <span class="text-lg font-medium text-white">
+                        {{ substr(Auth::user()->name, 0, 1) }}
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <div class="font-semibold text-lg text-neutral-900 dark:text-neutral-100">{{ Auth::user()->name }}</div>
+                    <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ Auth::user()->email }}</div>
                 </div>
             </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')" class="nav-link">
-                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    {{ __('Profilo') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();"
-                            class="nav-link">
+            <!-- Settings and Controls -->
+            <div class="space-y-4">
+                <!-- Language and Theme Controls -->
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ __('Lingua') }}</span>
+                    <x-language-selector />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ __('Tema') }}</span>
+                    <x-theme-toggle />
+                </div>
+                
+                <!-- Profile and Logout -->
+                <div class="pt-4 border-t border-neutral-200 dark:border-neutral-700 space-y-2">
+                    <a href="{{ route('profile.edit') }}" 
+                       class="flex items-center w-full px-4 py-3 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-xl transition-colors duration-200">
                         <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                         </svg>
-                        {{ __('Logout') }}
-                    </x-responsive-nav-link>
-                </form>
+                        {{ __('Profilo') }}
+                    </a>
+
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <button type="submit"
+                                class="flex items-center w-full px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                            </svg>
+                            {{ __('Logout') }}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         @else
-        <!-- Mobile Controls for Small Screens -->
-        <div class="sm:hidden px-4 py-3 bg-neutral-50 dark:bg-neutral-700/50 border-b border-neutral-200 dark:border-neutral-600">
-            <div class="flex items-center justify-center space-x-4">
-                <x-language-selector />
-                <x-theme-toggle />
-            </div>
-        </div>
-        
         <!-- Mobile Navigation for Guests -->
-        <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                </svg>
-                {{ __('Home') }}
-            </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" class="nav-link">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                </svg>
-                {{ __('Funzionalità') }}
-            </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')" class="nav-link">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
-                </svg>
-                {{ __('Prezzi') }}
-            </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="nav-link">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
-                </svg>
-                {{ __('Contatti') }}
-            </x-responsive-nav-link>
+        <div class="flex-1 px-6 py-6">
+            <nav class="space-y-2">
+                <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                    </svg>
+                    {{ __('Home') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" class="nav-link">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ __('Funzionalità') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')" class="nav-link">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+                    </svg>
+                    {{ __('Prezzi') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="nav-link">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ __('Contatti') }}
+                </x-responsive-nav-link>
+            </nav>
         </div>
 
-        <!-- Mobile Auth Links for Guests -->
-        <div class="pt-4 pb-1 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
-            <div class="px-4 space-y-2">
+        <!-- Settings and Auth for Guests -->
+        <div class="mt-auto px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
+            <!-- Language and Theme Controls -->
+            <div class="space-y-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ __('Lingua') }}</span>
+                    <x-language-selector />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ __('Tema') }}</span>
+                    <x-theme-toggle />
+                </div>
+            </div>
+
+            <!-- Auth Links -->
+            <div class="space-y-3">
                 <a href="{{ route('login') }}" 
-                   class="block w-full text-left px-4 py-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                   class="flex items-center justify-center w-full px-4 py-3 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-xl transition-colors duration-200 border border-neutral-300 dark:border-neutral-600">
                     {{ __('Accedi') }}
                 </a>
                 <a href="{{ route('register') }}" 
-                   class="block w-full text-left px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-medium transition-all duration-200">
+                   class="flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-xl shadow-soft hover:shadow-medium transition-all duration-200">
                     {{ __('Registrati') }}
                 </a>
             </div>
