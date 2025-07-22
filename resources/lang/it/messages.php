@@ -353,4 +353,36 @@ return [
     'total_weight' => 'Peso Totale Pescato',
     'start_recording' => 'Inizia a Registrare le Tue Avventure',
     'join_thousands' => 'Unisciti a migliaia di pescatori che già usano FishTideLog per tenere traccia delle loro catture e migliorare le loro tecniche.',
+
+    // Instructions
+    'instructions' => 'Istruzioni',
+    'how_to_use_platform' => 'Come Usare la Piattaforma',
+    'instruction_updated' => 'Istruzione aggiornata con successo',
+    'manage_instructions' => 'Gestisci Istruzioni',
+    'edit_instruction' => 'Modifica Istruzione',
+    'instruction_order' => 'Ordine',
+    'instruction_active' => 'Attiva',
+    'section_key' => 'Sezione',
+    'content_editor' => 'Editor Contenuto',
+    'save_instruction' => 'Salva Istruzione',
+    'back_to_instructions' => 'Torna alle Istruzioni',
+    'view_public_page' => 'Visualizza Pagina Pubblica',
+    'preview' => 'Anteprima',
+
+    // Missing translations
+    'features' => 'Funzionalità',
+    'pricing' => 'Prezzi',
+    'contact' => 'Contatti',
+    'home' => 'Home',
+    'login' => 'Accedi',
+    'register' => 'Registrati',
+    'language' => 'Lingua',
+    'learn_platform_usage' => 'Scopri come utilizzare al meglio :platform per documentare le tue avventure di pesca',
+    'no_instructions_available' => 'Nessuna istruzione disponibile al momento.',
+    'ready_to_start' => 'Pronto per Iniziare?',
+    'start_tracking_journey' => 'Inizia subito a tracciare il tuo viaggio nella pesca con FishTideLog',
+    'register_now' => 'Registrati Ora',
+    'explore_features' => 'Esplora le Funzionalità',
+    'all_rights_reserved' => 'Tutti i diritti riservati.',
+
 ]; 

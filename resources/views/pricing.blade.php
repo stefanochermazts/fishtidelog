@@ -28,6 +28,7 @@
                 <div class="hidden lg:flex items-center space-x-4">
                     <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('home') }}</a>
                     <a href="{{ route('features') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('features') }}</a>
+                    <a href="{{ route('instructions.index') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.instructions') }}</a>
                     <a href="{{ route('pricing') }}" class="text-blue-600 dark:text-blue-400 font-semibold">{{ __('pricing') }}</a>
                     <a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('contact') }}</a>
                     
@@ -346,7 +347,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-blue-600 to-green-600">
+    <section class="py-20 bg-blue-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
                 {{ __('start_free_now') }}
@@ -355,10 +356,10 @@
                 {{ __('join_thousands_fishers') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('register') }}" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                <a href="{{ route('register') }}" class="bg-white text-blue-900 hover:bg-blue-50 px-8 py-3 rounded-lg text-lg font-semibold transition-colors shadow-lg">
                     {{ __('register_now') }}
                 </a>
-                <a href="{{ route('login') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                <a href="{{ route('login') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
                     {{ __('login') }}
                 </a>
             </div>

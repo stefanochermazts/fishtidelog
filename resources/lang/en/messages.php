@@ -346,4 +346,17 @@ return [
     'total_weight' => 'Total Weight Caught',
     'start_recording' => 'Start Recording Your Adventures',
     'join_thousands' => 'Join thousands of fishers who already use FishTideLog to track their catches and improve their techniques.',
+
+    // Instructions
+    'instructions' => 'Instructions',
+    'how_to_use_platform' => 'How to Use the Platform',
+    'instruction_updated' => 'Instruction updated successfully',
+    'manage_instructions' => 'Manage Instructions',
+    'edit_instruction' => 'Edit Instruction',
+    'instruction_order' => 'Order',
+    'instruction_active' => 'Active',
+    'section_key' => 'Section',
+    'content_editor' => 'Content Editor',
+    'save_instruction' => 'Save Instruction',
+    'back_to_instructions' => 'Back to Instructions',
 ]; 

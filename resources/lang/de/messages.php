@@ -342,4 +342,17 @@ return [
     'total_weight' => 'Gesamtgewicht Gefangen',
     'start_recording' => 'Beginnen Sie Ihre Abenteuer zu Dokumentieren',
     'join_thousands' => 'Schließen Sie sich Tausenden von Anglern an, die bereits FishTideLog verwenden, um ihre Fänge zu verfolgen und ihre Techniken zu verbessern.',
+
+    // Instructions
+    'instructions' => 'Anleitungen',
+    'how_to_use_platform' => 'Wie man die Plattform benutzt',
+    'instruction_updated' => 'Anleitung erfolgreich aktualisiert',
+    'manage_instructions' => 'Anleitungen verwalten',
+    'edit_instruction' => 'Anleitung bearbeiten',
+    'instruction_order' => 'Reihenfolge',
+    'instruction_active' => 'Aktiv',
+    'section_key' => 'Sektion',
+    'content_editor' => 'Inhalts-Editor',
+    'save_instruction' => 'Anleitung speichern',
+    'back_to_instructions' => 'Zurück zu Anleitungen',
 ]; 

@@ -12,6 +12,7 @@ use App\Http\Controllers\EnvironmentalDataController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InstructionController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -21,6 +22,9 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 // Locale routes
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
+
+// Public instructions
+Route::get('/instructions', [InstructionController::class, 'index'])->name('instructions.index');
 
 Route::middleware(['auth'])->group(function () {
     // Dashboard
@@ -75,6 +79,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');
     Route::patch('/users/{user}/premium', [AdminController::class, 'updateUserPremium'])->name('users.update-premium');
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+
+    // Admin instructions management
+    Route::prefix('instructions')->name('instructions.')->group(function () {
+        Route::get('/', [InstructionController::class, 'admin'])->name('index');
+        Route::get('/{instruction}/edit', [InstructionController::class, 'edit'])->name('edit');
+        Route::put('/{instruction}', [InstructionController::class, 'update'])->name('update');
+        Route::post('/upload-image', [InstructionController::class, 'uploadImage'])->name('upload-image');
+    });
 });
 
 require __DIR__.'/auth.php';

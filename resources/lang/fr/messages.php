@@ -342,4 +342,17 @@ return [
     'total_weight' => 'Poids Total Pêché',
     'start_recording' => 'Commencez à Enregistrer Vos Aventures',
     'join_thousands' => 'Rejoignez des milliers de pêcheurs qui utilisent déjà FishTideLog pour suivre leurs prises et améliorer leurs techniques.',
+
+    // Instructions
+    'instructions' => 'Instructions',
+    'how_to_use_platform' => 'Comment Utiliser la Plateforme',
+    'instruction_updated' => 'Instruction mise à jour avec succès',
+    'manage_instructions' => 'Gérer les Instructions',
+    'edit_instruction' => 'Modifier l\'Instruction',
+    'instruction_order' => 'Ordre',
+    'instruction_active' => 'Actif',
+    'section_key' => 'Section',
+    'content_editor' => 'Éditeur de Contenu',
+    'save_instruction' => 'Sauvegarder l\'Instruction',
+    'back_to_instructions' => 'Retour aux Instructions',
 ]; 
