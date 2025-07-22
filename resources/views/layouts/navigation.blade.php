@@ -205,7 +205,7 @@
                     <x-theme-toggle />
                 </div>
                 
-                <button @click="open = !open; console.log('Menu toggled, open:', open)" 
+                <button @click="open = !open" 
                         @keydown.escape="open = false"
                         class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
                         :aria-expanded="open"
@@ -240,10 +240,11 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 transform translate-x-0"
          x-transition:leave-end="opacity-0 transform translate-x-full"
-         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[9999] overflow-y-auto flex flex-col"
+         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[9999] overflow-y-auto"
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}"
-         @click.away="open = false">
+         @click.away="open = false"
+         style="display: flex; flex-direction: column; height: 100vh;">
 
         <!-- Mobile Menu Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-700">
@@ -270,7 +271,7 @@
 
         @auth
         <!-- Mobile Navigation Links -->
-        <div class="flex-1 px-6 py-6">
+        <div class="flex-1 px-6 py-6" style="min-height: 0; overflow-y: auto;">
             <nav class="space-y-2">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav-link">
                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -326,7 +327,7 @@
         </div>
 
         <!-- User Info Section -->
-        <div class="mt-auto px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
+        <div class="flex-shrink-0 px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
             <div class="flex items-center space-x-4 mb-6">
                 <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
                     <span class="text-lg font-medium text-white">
@@ -377,7 +378,7 @@
         </div>
         @else
         <!-- Mobile Navigation for Guests -->
-        <div class="flex-1 px-6 py-6">
+        <div class="flex-1 px-6 py-6" style="min-height: 0; overflow-y: auto;">
             <nav class="space-y-2">
                 <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav-link">
                     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -410,7 +411,7 @@
         </div>
 
         <!-- Settings and Auth for Guests -->
-        <div class="mt-auto px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
+        <div class="flex-shrink-0 px-6 py-6 border-t border-neutral-200 dark:border-neutral-700">
             <!-- Language and Theme Controls -->
             <div class="space-y-4 mb-6">
                 <div class="flex items-center justify-between">
