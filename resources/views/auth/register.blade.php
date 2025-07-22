@@ -24,7 +24,7 @@
 
         <!-- Register Form -->
         <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-soft dark:shadow-strong border border-neutral-200 dark:border-neutral-700 p-8">
-            <form method="POST" action="{{ route('register') }}" class="space-y-6" @submit="return validateForm()">
+            <form method="POST" action="{{ route('register') }}" class="space-y-6" x-data="passwordFormData()">
                 @csrf
 
                 <!-- Name -->
@@ -61,7 +61,7 @@
                 </div>
 
                 <!-- Password with Validator -->
-                <div x-data="passwordFormData()">
+                <div>
                     <x-input-label for="password" :value="__('auth.password')" class="text-neutral-700 dark:text-neutral-300 font-medium" />
                     <div class="mt-2">
                         <x-text-input id="password" 
@@ -204,8 +204,7 @@
                 <!-- Submit Button -->
                 <div>
                     <button type="submit" 
-                            class="w-full justify-center py-3 px-6 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 disabled:from-neutral-400 disabled:to-neutral-500 disabled:cursor-not-allowed text-white font-semibold rounded-2xl shadow-soft hover:shadow-medium transition-all duration-200 flex items-center"
-                            x-bind:disabled="!password || !passwordConfirmation || password !== passwordConfirmation || !requirements.minLength || !requirements.uppercase || !requirements.lowercase || !requirements.number || !requirements.special">
+                            class="w-full justify-center py-3 px-6 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white font-semibold rounded-2xl shadow-soft hover:shadow-medium transition-all duration-200 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
@@ -297,34 +296,7 @@ function passwordFormData() {
             }
         },
 
-        validateForm() {
-            // Validazione password non vuota
-            if (!this.password || this.password.length === 0) {
-                alert('La password è obbligatoria.');
-                return false;
-            }
 
-            // Validazione conferma password
-            if (!this.passwordConfirmation || this.passwordConfirmation.length === 0) {
-                alert('La conferma password è obbligatoria.');
-                return false;
-            }
-
-            // Validazione password match
-            if (this.password !== this.passwordConfirmation) {
-                alert('Le password non coincidono. Per favore controlla che entrambe le password siano identiche.');
-                return false;
-            }
-
-            // Validazione requisiti password
-            if (!this.requirements.minLength || !this.requirements.uppercase || 
-                !this.requirements.lowercase || !this.requirements.number || !this.requirements.special) {
-                alert('La password non soddisfa tutti i requisiti richiesti.');
-                return false;
-            }
-
-            return true;
-        }
     }
 }
 </script>
