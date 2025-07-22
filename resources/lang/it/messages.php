@@ -261,6 +261,14 @@ return [
     'no_type' => 'Nessun tipo',
     'total_fishing_spots' => 'Punti di pesca totali',
     'total_weight_caught' => 'Peso totale pescato',
+    'delete_user' => 'Elimina Utente',
+    'delete_user_confirm' => 'Sei sicuro di voler eliminare l\'utente ":name"?',
+    'delete_user_warning' => 'Questa azione non può essere annullata. Tutti i dati dell\'utente verranno eliminati permanentemente.',
+    'user_deleted_successfully' => 'Utente ":name" eliminato con successo.',
+    'cannot_delete_yourself' => 'Non puoi eliminare il tuo stesso account.',
+    'cannot_delete_last_admin' => 'Non è possibile eliminare l\'ultimo amministratore.',
+    'confirm_delete' => 'Conferma Eliminazione',
+    'cancel' => 'Annulla',
     'cm' => 'cm',
     
     // Validation

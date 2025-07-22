@@ -323,5 +323,13 @@ return [
     'no_spots_found' => 'Aucun spot trouvé',
     'no_type' => 'Aucun type',
     'total_fishing_spots' => 'Spots de pêche totaux',
-    'total_weight_caught' => 'Poids total pêché'
+    'total_weight_caught' => 'Poids total pêché',
+    'delete_user' => 'Supprimer Utilisateur',
+    'delete_user_confirm' => 'Êtes-vous sûr de vouloir supprimer l\'utilisateur ":name"?',
+    'delete_user_warning' => 'Cette action ne peut pas être annulée. Toutes les données de l\'utilisateur seront supprimées définitivement.',
+    'user_deleted_successfully' => 'Utilisateur ":name" supprimé avec succès.',
+    'cannot_delete_yourself' => 'Vous ne pouvez pas supprimer votre propre compte.',
+    'cannot_delete_last_admin' => 'Impossible de supprimer le dernier administrateur.',
+    'confirm_delete' => 'Confirmer la Suppression',
+    'cancel' => 'Annuler',
 ]; 

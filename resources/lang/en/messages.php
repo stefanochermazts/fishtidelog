@@ -256,6 +256,14 @@ return [
     'no_type' => 'No type',
     'total_fishing_spots' => 'Total fishing spots',
     'total_weight_caught' => 'Total weight caught',
+    'delete_user' => 'Delete User',
+    'delete_user_confirm' => 'Are you sure you want to delete user ":name"?',
+    'delete_user_warning' => 'This action cannot be undone. All user data will be permanently deleted.',
+    'user_deleted_successfully' => 'User ":name" deleted successfully.',
+    'cannot_delete_yourself' => 'You cannot delete your own account.',
+    'cannot_delete_last_admin' => 'Cannot delete the last administrator.',
+    'confirm_delete' => 'Confirm Delete',
+    'cancel' => 'Cancel',
     
     // Validation
     'required' => 'Required field',

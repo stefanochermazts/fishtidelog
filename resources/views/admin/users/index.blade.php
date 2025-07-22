@@ -142,9 +142,18 @@
                                             {{ $user->created_at->format('d/m/Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="{{ route('admin.users.show', $user) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                {{ __('messages.view') }}
-                                            </a>
+                                            <div class="flex space-x-3">
+                                                <a href="{{ route('admin.users.show', $user) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
+                                                    {{ __('messages.view') }}
+                                                </a>
+                                                @if(Auth::user()->id !== $user->id)
+                                                    <button type="button" 
+                                                            onclick="openDeleteModal('{{ $user->id }}', '{{ $user->name }}')" 
+                                                            class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        {{ __('messages.delete_user') }}
+                                                    </button>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -160,4 +169,92 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                {{ __('messages.confirm_delete') }}
+                            </h3>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-600 dark:text-gray-300" id="deleteMessage">
+                            <!-- Il messaggio verrà inserito via JavaScript -->
+                        </p>
+                        <p class="text-sm text-red-600 dark:text-red-400 mt-2">
+                            {{ __('messages.delete_user_warning') }}
+                        </p>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" 
+                                onclick="closeDeleteModal()" 
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-200">
+                            {{ __('messages.cancel') }}
+                        </button>
+                        <form id="deleteForm" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" 
+                                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 transition-colors duration-200">
+                                {{ __('messages.delete_user') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDeleteModal(userId, userName) {
+            const modal = document.getElementById('deleteModal');
+            const message = document.getElementById('deleteMessage');
+            const form = document.getElementById('deleteForm');
+            
+            // Aggiorna il messaggio con il nome utente
+            message.textContent = @json(__('messages.delete_user_confirm')).replace(':name', userName);
+            
+            // Aggiorna l'action del form
+            form.action = `/admin/users/${userId}`;
+            
+            // Mostra il modal
+            modal.classList.remove('hidden');
+            
+            // Aggiunge listener per chiudere con ESC
+            document.addEventListener('keydown', handleEscapeKey);
+        }
+        
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            
+            // Rimuove listener ESC
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+        
+        function handleEscapeKey(event) {
+            if (event.key === 'Escape') {
+                closeDeleteModal();
+            }
+        }
+        
+        // Chiudi modal cliccando fuori
+        document.getElementById('deleteModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeDeleteModal();
+            }
+        });
+    </script>
 </x-app-layout> 

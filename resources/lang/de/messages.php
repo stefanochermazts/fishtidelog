@@ -323,5 +323,13 @@ return [
     'no_spots_found' => 'Keine Plätze gefunden',
     'no_type' => 'Kein Typ',
     'total_fishing_spots' => 'Gesamte Angelplätze',
-    'total_weight_caught' => 'Gesamtes gefangenes Gewicht'
+    'total_weight_caught' => 'Gesamtes gefangenes Gewicht',
+    'delete_user' => 'Benutzer Löschen',
+    'delete_user_confirm' => 'Sind Sie sicher, dass Sie Benutzer ":name" löschen möchten?',
+    'delete_user_warning' => 'Diese Aktion kann nicht rückgängig gemacht werden. Alle Benutzerdaten werden permanent gelöscht.',
+    'user_deleted_successfully' => 'Benutzer ":name" erfolgreich gelöscht.',
+    'cannot_delete_yourself' => 'Sie können Ihr eigenes Konto nicht löschen.',
+    'cannot_delete_last_admin' => 'Der letzte Administrator kann nicht gelöscht werden.',
+    'confirm_delete' => 'Löschen Bestätigen',
+    'cancel' => 'Abbrechen',
 ]; 

@@ -74,6 +74,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/{user}', [AdminController::class, 'userDetails'])->name('users.show');
     Route::patch('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');
     Route::patch('/users/{user}/premium', [AdminController::class, 'updateUserPremium'])->name('users.update-premium');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 });
 
 require __DIR__.'/auth.php';

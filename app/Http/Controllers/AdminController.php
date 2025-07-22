@@ -110,4 +110,27 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', __('messages.user_premium_updated'));
     }
+
+    /**
+     * Elimina un utente
+     */
+    public function destroyUser(User $user)
+    {
+        // Impedisci l'eliminazione del proprio account
+        if ($user->id === Auth::id()) {
+            return redirect()->back()->with('error', __('messages.cannot_delete_yourself'));
+        }
+
+        // Impedisci l'eliminazione dell'ultimo admin
+        if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
+            return redirect()->back()->with('error', __('messages.cannot_delete_last_admin'));
+        }
+
+        $userName = $user->name;
+        
+        // Laravel si occuperà automaticamente delle relazioni cascade/soft delete
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', __('messages.user_deleted_successfully', ['name' => $userName]));
+    }
 }
