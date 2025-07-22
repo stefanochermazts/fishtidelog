@@ -205,7 +205,7 @@
                     <x-theme-toggle />
                 </div>
                 
-                <button @click="open = !open" 
+                <button @click="open = !open; console.log('Menu toggled, open:', open)" 
                         @keydown.escape="open = false"
                         class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
                         :aria-expanded="open"
@@ -240,7 +240,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 transform translate-x-0"
          x-transition:leave-end="opacity-0 transform translate-x-full"
-         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[9999] overflow-y-auto"
+         class="lg:hidden fixed inset-0 bg-white dark:bg-neutral-800 z-[9999] overflow-y-auto flex flex-col"
          role="navigation"
          aria-label="{{ __('Mobile navigation') }}"
          @click.away="open = false">
