@@ -149,7 +149,7 @@
                         <div class="mt-2">
                             <x-text-input id="password_confirmation" 
                                          class="block w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-2xl bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                                         :class="{ 'border-red-500 dark:border-red-400': passwordConfirmation.length > 0 && password !== passwordConfirmation, 'border-green-500 dark:border-green-400': passwordConfirmation.length > 0 && password === passwordConfirmation && password.length > 0 }"
+                                         x-bind:class="{ 'border-red-500 dark:border-red-400': passwordConfirmation.length > 0 && password !== passwordConfirmation, 'border-green-500 dark:border-green-400': passwordConfirmation.length > 0 && password === passwordConfirmation && password.length > 0 }"
                                          type="password"
                                          name="password_confirmation"
                                          x-model="passwordConfirmation"
