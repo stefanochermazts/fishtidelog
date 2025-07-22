@@ -218,5 +218,7 @@
     "geolocation_denied": "Ortung vom Benutzer verweigert",
     "geolocation_unavailable": "Ortung nicht verfügbar",
     "geolocation_timeout": "Ortung Zeitüberschreitung",
-    "geolocation_not_supported": "Ortung wird vom Browser nicht unterstützt"
+    "geolocation_not_supported": "Ortung wird vom Browser nicht unterstützt",
+    "auth.passwords_match": "Passwörter stimmen überein",
+    "auth.passwords_not_match": "Passwörter stimmen nicht überein"
 } 

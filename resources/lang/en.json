@@ -224,5 +224,7 @@
     "geolocation_denied": "Geolocation denied by user",
     "geolocation_unavailable": "Geolocation unavailable",
     "geolocation_timeout": "Geolocation timeout",
-    "geolocation_not_supported": "Geolocation not supported by browser"
+    "geolocation_not_supported": "Geolocation not supported by browser",
+    "auth.passwords_match": "Passwords match",
+    "auth.passwords_not_match": "Passwords do not match"
 } 

@@ -1,21 +1,6 @@
 @props(['id' => 'password'])
 
 <div x-data="passwordValidator()" class="space-y-4">
-    <!-- Password Input -->
-    <div>
-        <x-input-label for="{{ $id }}" :value="__('Password')" />
-        <x-text-input 
-            id="{{ $id }}" 
-            class="block mt-1 w-full"
-            type="password"
-            name="password"
-            required 
-            autocomplete="new-password"
-            x-model="password"
-            @input="validatePassword()"
-        />
-        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-    </div>
 
     <!-- Password Strength Indicator -->
     <div class="space-y-2">
@@ -97,15 +82,15 @@ function passwordValidator() {
         strengthColor: 'text-gray-500',
         strengthPercentage: 0,
 
-        validatePassword() {
-            const password = this.password;
+        validatePassword(password = null) {
+            const pwd = password || this.password;
             
             // Check requirements
-            this.requirements.minLength = password.length >= 10;
-            this.requirements.uppercase = /[A-Z]/.test(password);
-            this.requirements.lowercase = /[a-z]/.test(password);
-            this.requirements.number = /[0-9]/.test(password);
-            this.requirements.special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+            this.requirements.minLength = pwd.length >= 10;
+            this.requirements.uppercase = /[A-Z]/.test(pwd);
+            this.requirements.lowercase = /[a-z]/.test(pwd);
+            this.requirements.number = /[0-9]/.test(pwd);
+            this.requirements.special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd);
             
             // Calculate strength
             let score = 0;
