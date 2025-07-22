@@ -255,7 +255,6 @@
             height: 384px !important;
             border-radius: 0.5rem;
             border: 1px solid #d1d5db;
-            z-index: 1;
         }
         
         /* Stili per le icone personalizzate */
@@ -272,11 +271,6 @@
             justify-content: center !important;
             width: 100% !important;
             height: 100% !important;
-        }
-        
-        /* Assicura che le icone siano sopra la mappa */
-        .leaflet-marker-icon {
-            z-index: 1000 !important;
         }
     </style>
     @endpush

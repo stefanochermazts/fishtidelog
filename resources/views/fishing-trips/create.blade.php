@@ -333,7 +333,6 @@
             height: 256px;
             border-radius: 0.5rem;
             border: 1px solid #d1d5db;
-            z-index: 1;
         }
         
         /* Stili per i pulsanti */

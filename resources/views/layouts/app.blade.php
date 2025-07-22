@@ -38,6 +38,38 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
+        <!-- Custom CSS for map z-index fix -->
+        <style>
+            /* Fix z-index conflict between Leaflet maps and mobile navigation */
+            .leaflet-pane,
+            .leaflet-map-pane,
+            .leaflet-control-container,
+            .leaflet-zoom-box {
+                z-index: 1000 !important;
+            }
+            
+            .leaflet-control-zoom {
+                z-index: 1001 !important;
+            }
+            
+            .leaflet-popup-pane {
+                z-index: 1002 !important;
+            }
+            
+            .leaflet-marker-pane {
+                z-index: 600 !important;
+            }
+            
+            .leaflet-tile-pane {
+                z-index: 200 !important;
+            }
+            
+            /* Assicura che il mobile navigation sia sempre sopra */
+            [x-show="open"].lg\\:hidden {
+                z-index: 99999 !important;
+            }
+        </style>
+        
         <!-- Leaflet JS -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
                 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 

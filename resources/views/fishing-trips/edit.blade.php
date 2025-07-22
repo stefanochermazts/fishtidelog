@@ -682,13 +682,12 @@
 
     <style>
         /* Assicura che la mappa sia visibile */
-        #map {
-            width: 100%;
-            height: 256px;
-            border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
-            z-index: 1;
-        }
+                 #map {
+             width: 100%;
+             height: 256px;
+             border-radius: 0.5rem;
+             border: 1px solid #d1d5db;
+         }
         
         /* Stili per i pulsanti */
         .btn-primary {
