@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
-class SetLocale
+class AuthLocale
 {
     /**
      * Handle an incoming request.
@@ -40,7 +40,7 @@ class SetLocale
         App::setLocale($locale);
         
         // Debug: log del locale per verificare che funzioni
-        \Log::info('SetLocale middleware: Setting locale to ' . $locale . ' for URL: ' . $request->url());
+        \Log::info('AuthLocale middleware: Setting locale to ' . $locale . ' for URL: ' . $request->url());
         
         return $next($request);
     }
