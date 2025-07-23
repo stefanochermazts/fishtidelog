@@ -19,13 +19,20 @@ class AdminController extends Controller
     {
         $stats = [
             'total_users' => User::count(),
-            'premium_users' => User::where('is_premium', true)->where('premium_until', '>', now())->count(),
+            'trial_users' => User::where('subscription_status', 'trial')->count(),
+            'premium_users' => User::where('subscription_status', 'active')->count(),
+            'expired_users' => User::where('subscription_status', 'expired')->count(),
             'total_trips' => FishingTrip::count(),
             'total_spots' => FishingSpot::count(),
             'total_catches' => FishCatch::count(),
             'total_weight' => FishCatch::sum('weight') ?? 0,
             'recent_users' => User::latest()->take(5)->get(),
             'recent_trips' => FishingTrip::with('user')->latest()->take(5)->get(),
+            'expiring_trials' => User::where('subscription_status', 'trial')
+                ->where('trial_ends_at', '<=', now()->addDays(7))
+                ->where('trial_ends_at', '>', now())
+                ->count(),
+            'active_users' => User::whereIn('subscription_status', ['trial', 'active'])->count(),
         ];
 
         return view('admin.dashboard', compact('stats'));
@@ -50,16 +57,8 @@ class AdminController extends Controller
             $query->where('role', $request->role);
         }
 
-        if ($request->filled('premium')) {
-            if ($request->premium === 'true') {
-                $query->where('is_premium', true)->where('premium_until', '>', now());
-            } else {
-                $query->where(function($q) {
-                    $q->where('is_premium', false)
-                      ->orWhere('premium_until', '<=', now())
-                      ->orWhereNull('premium_until');
-                });
-            }
+        if ($request->filled('subscription_status')) {
+            $query->where('subscription_status', $request->subscription_status);
         }
 
         $users = $query->latest()->paginate(20);
@@ -90,25 +89,69 @@ class AdminController extends Controller
 
         $user->update(['role' => $request->role]);
 
-        return redirect()->back()->with('success', __('messages.user_role_updated'));
+        return redirect()->back()->with('success', 'Ruolo utente aggiornato con successo.');
     }
 
     /**
-     * Aggiorna lo stato premium di un utente
+     * Attiva manualmente l'abbonamento per un utente
      */
-    public function updateUserPremium(Request $request, User $user)
+    public function activateSubscription(Request $request, User $user)
     {
         $request->validate([
-            'is_premium' => 'required|boolean',
-            'premium_until' => 'nullable|date|after:today'
+            'months' => 'required|integer|min:1|max:24',
+            'price' => 'required|numeric|min:0|max:999.99'
         ]);
 
-        $user->update([
-            'is_premium' => $request->is_premium,
-            'premium_until' => $request->is_premium ? $request->premium_until : null
+        $user->activateSubscription($request->months, $request->price);
+
+        return redirect()->back()->with('success', 
+            "Abbonamento attivato per {$request->months} mesi a €{$request->price}/mese.");
+    }
+
+    /**
+     * Estende il trial di un utente
+     */
+    public function extendTrial(Request $request, User $user)
+    {
+        $request->validate([
+            'days' => 'required|integer|min:1|max:365'
         ]);
 
-        return redirect()->back()->with('success', __('messages.user_premium_updated'));
+        if ($user->subscription_status === 'trial') {
+            $newTrialEnd = $user->trial_ends_at ? 
+                $user->trial_ends_at->addDays($request->days) : 
+                now()->addDays($request->days);
+                
+            $user->update(['trial_ends_at' => $newTrialEnd]);
+            
+            return redirect()->back()->with('success', 
+                "Trial esteso di {$request->days} giorni.");
+        }
+
+        return redirect()->back()->with('error', 
+            'L\'utente non è in modalità trial.');
+    }
+
+    /**
+     * Cancella l'abbonamento di un utente
+     */
+    public function cancelSubscription(User $user)
+    {
+        $user->cancelSubscription();
+
+        return redirect()->back()->with('success', 
+            'Abbonamento cancellato. L\'utente manterrà l\'accesso fino alla scadenza.');
+    }
+
+    /**
+     * Marca un utente come scaduto
+     */
+    public function markAsExpired(User $user)
+    {
+        $user->markAsExpired();
+
+        return redirect()->back()->with('success', 
+            'Utente marcato come scaduto. L\'accesso è stato revocato.');
     }
 
     /**
@@ -118,12 +161,12 @@ class AdminController extends Controller
     {
         // Impedisci l'eliminazione del proprio account
         if ($user->id === Auth::id()) {
-            return redirect()->back()->with('error', __('messages.cannot_delete_yourself'));
+            return redirect()->back()->with('error', 'Non puoi eliminare il tuo stesso account.');
         }
 
         // Impedisci l'eliminazione dell'ultimo admin
         if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
-            return redirect()->back()->with('error', __('messages.cannot_delete_last_admin'));
+            return redirect()->back()->with('error', 'Non puoi eliminare l\'ultimo amministratore.');
         }
 
         $userName = $user->name;
@@ -131,6 +174,7 @@ class AdminController extends Controller
         // Laravel si occuperà automaticamente delle relazioni cascade/soft delete
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', __('messages.user_deleted_successfully', ['name' => $userName]));
+        return redirect()->route('admin.users.index')->with('success', 
+            "Utente {$userName} eliminato con successo.");
     }
 }

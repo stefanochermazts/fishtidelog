@@ -152,7 +152,7 @@
                 {{ __('pricing_title') }}
             </h1>
             <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-                {{ __('pricing_subtitle') }}
+                Scegli il piano che si adatta alle tue esigenze. Inizia gratuitamente per 6 mesi, poi continua con il nostro piano accessibile.
             </p>
         </div>
     </section>
@@ -161,19 +161,19 @@
     <section class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Free Plan -->
+                <!-- Trial Plan -->
                 <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border-2 border-green-500 relative shadow-lg">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
                         <span class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                            {{ __('free') }}
+                            TRIAL GRATUITO
                         </span>
                     </div>
                     <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ __('free_plan') }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Trial Gratuito</h3>
                         <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                            €0<span class="text-lg text-gray-500 dark:text-gray-400">/{{ __('month') }}</span>
+                            €0<span class="text-lg text-gray-500 dark:text-gray-400">/mese</span>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">{{ __('until_dec_2025') }}</p>
+                        <p class="text-green-600 dark:text-green-400 text-sm font-medium">Primi 6 mesi dalla registrazione</p>
                     </div>
                     
                     <ul class="space-y-4 mb-8">
@@ -226,19 +226,19 @@
                     </a>
                 </div>
 
-                <!-- Premium Plan -->
+                <!-- Standard Plan -->
                 <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border-2 border-blue-500 relative shadow-lg">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
                         <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                            {{ __('coming_soon') }}
+                            PIANO STANDARD
                         </span>
                     </div>
                     <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ __('premium_plan') }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Piano Standard</h3>
                         <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                            €9.99<span class="text-lg text-gray-500 dark:text-gray-400">/{{ __('month') }}</span>
+                            €4,99<span class="text-lg text-gray-500 dark:text-gray-400">/mese</span>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">{{ __('available_2026') }}</p>
+                        <p class="text-blue-600 dark:text-blue-400 text-sm font-medium">Dopo il periodo di trial</p>
                     </div>
                     
                     <ul class="space-y-4 mb-8">
@@ -246,49 +246,55 @@
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('everything_free_plan') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">{{ __('unlimited_trips') }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('advanced_statistics') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">{{ __('complete_catch_management') }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('data_export') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">{{ __('unlimited_spots') }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('automatic_backup') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">{{ __('tide_information') }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('priority_support') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">{{ __('basic_statistics') }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('exclusive_features') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">Mappa interattiva</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="text-gray-600 dark:text-gray-300">{{ __('no_ads') }}</span>
+                            <span class="text-gray-600 dark:text-gray-300">Esportazione dati</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-300">Supporto prioritario</span>
                         </li>
                     </ul>
 
-                    <button class="w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 py-3 rounded-lg font-semibold text-center cursor-not-allowed">
-                        {{ __('available_2026') }}
-                    </button>
+                    <a href="{{ route('register') }}" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold text-center block transition-colors">
+                        Inizia Trial Gratuito
+                    </a>
                 </div>
             </div>
         </div>
@@ -309,37 +315,37 @@
             <div class="space-y-8">
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('faq_1_question') }}
+                        Come funziona il trial gratuito?
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('faq_1_answer') }}
+                        Quando ti registri, hai accesso completo a tutte le funzionalità di FishTideLog per 6 mesi completamente gratuiti. Dopo questo periodo, puoi continuare con il Piano Standard a €4,99/mese.
                     </p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('faq_2_question') }}
+                        Posso cancellare in qualsiasi momento?
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('faq_2_answer') }}
+                        Sì, puoi cancellare il tuo abbonamento in qualsiasi momento. Non ci sono vincoli o penali. I tuoi dati verranno mantenuti per 30 giorni nel caso volessi riattivare l'account.
                     </p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('faq_3_question') }}
+                        Ci sono limitazioni durante il trial?
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('faq_3_answer') }}
+                        No, durante il trial di 6 mesi hai accesso a tutte le funzionalità complete di FishTideLog senza alcuna limitazione. È esattamente lo stesso servizio del Piano Standard.
                     </p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('faq_4_question') }}
+                        Cosa succede dopo i 6 mesi?
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('faq_4_answer') }}
+                        Dopo 6 mesi, riceverai una notifica per passare al Piano Standard (€4,99/mese). Se non effettui l'upgrade, l'account verrà sospeso ma i tuoi dati saranno conservati per 30 giorni.
                     </p>
                 </div>
             </div>
@@ -350,21 +356,21 @@
     <section class="py-20 bg-blue-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                {{ __('start_free_now') }}
+                Inizia il Tuo Trial Gratuito di 6 Mesi
             </h2>
             <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                {{ __('join_thousands_fishers') }}
+                Accesso completo a tutte le funzionalità per 6 mesi, poi solo €4,99/mese. Nessuna carta di credito richiesta per iniziare.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('register') }}" class="bg-white text-blue-900 hover:bg-blue-50 px-8 py-3 rounded-lg text-lg font-semibold transition-colors shadow-lg">
-                    {{ __('register_now') }}
+                    Inizia Trial Gratuito
                 </a>
                 <a href="{{ route('login') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    {{ __('login') }}
+                    Accedi
                 </a>
             </div>
             <p class="text-sm text-blue-200 mt-4">
-                {{ __('free_until_2025') }} • {{ __('registration_2_minutes') }}
+                6 mesi gratuiti • Poi €4,99/mese • Registrazione in 2 minuti
             </p>
         </div>
     </section>

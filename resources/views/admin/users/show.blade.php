@@ -54,11 +54,15 @@
                                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                                 {{ __('messages.premium') }}
                                             </span>
-                                            @if($user->premium_until)
-                                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                    {{ __('messages.until') }} {{ $user->premium_until->format('d/m/Y') }}
-                                                </div>
-                                            @endif
+                                                            @if($user->subscription_ends_at)
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {{ __('messages.until') }} {{ $user->subscription_ends_at->format('d/m/Y') }}
+                    </div>
+                @elseif($user->trial_ends_at && $user->subscription_status === 'trial')
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Trial fino al {{ $user->trial_ends_at->format('d/m/Y') }}
+                    </div>
+                @endif
                                         @else
                                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                                                 {{ __('messages.free') }}
@@ -123,28 +127,72 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.change_premium_status') }}</h3>
-                        <form method="POST" action="{{ route('admin.users.update-premium', $user) }}">
-                            @csrf
-                            @method('PATCH')
-                            <div class="mb-4">
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="is_premium" value="1" {{ $user->is_premium ? 'checked' : '' }} 
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ __('messages.make_premium') }}</span>
-                                </label>
+                        <div class="space-y-4">
+                            <!-- Stato attuale -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-medium text-gray-900 dark:text-white mb-2">Stato Abbonamento Attuale</h4>
+                                <div class="flex items-center space-x-2">
+                                    @if($user->subscription_status === 'trial')
+                                        <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded text-sm">
+                                            Trial (fino al {{ $user->trial_ends_at ? $user->trial_ends_at->format('d/m/Y') : 'N/A' }})
+                                        </span>
+                                    @elseif($user->subscription_status === 'active')
+                                        <span class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded text-sm">
+                                            Abbonamento Attivo (fino al {{ $user->subscription_ends_at ? $user->subscription_ends_at->format('d/m/Y') : 'N/A' }})
+                                        </span>
+                                    @elseif($user->subscription_status === 'expired')
+                                        <span class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-2 py-1 rounded text-sm">
+                                            Scaduto
+                                        </span>
+                                    @else
+                                        <span class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 px-2 py-1 rounded text-sm">
+                                            {{ ucfirst($user->subscription_status) }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <label for="premium_until" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    {{ __('messages.premium_until') }}
-                                </label>
-                                <input type="date" name="premium_until" id="premium_until" 
-                                    value="{{ $user->premium_until ? $user->premium_until->format('Y-m-d') : '' }}"
-                                    class="form-input w-full">
+
+                            <!-- Azioni rapide -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                @if($user->subscription_status !== 'active')
+                                    <form method="POST" action="{{ route('admin.users.activate-subscription', $user) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            Attiva Abbonamento
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($user->subscription_status === 'trial')
+                                    <form method="POST" action="{{ route('admin.users.extend-trial', $user) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            Estendi Trial (+30 giorni)
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($user->subscription_status === 'active')
+                                    <form method="POST" action="{{ route('admin.users.cancel-subscription', $user) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            Cancella Abbonamento
+                                        </button>
+                                    </form>
+                                @endif
+
+                                <form method="POST" action="{{ route('admin.users.mark-expired', $user) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
+                                        Marca come Scaduto
+                                    </button>
+                                </form>
                             </div>
-                            <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg">
-                                {{ __('messages.update_premium') }}
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

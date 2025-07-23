@@ -120,11 +120,15 @@
                                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                                     {{ __('messages.premium') }}
                                                 </span>
-                                                @if($user->premium_until)
-                                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                        {{ __('messages.until') }} {{ $user->premium_until->format('d/m/Y') }}
-                                                    </div>
-                                                @endif
+                                                                                @if($user->subscription_ends_at)
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        {{ __('messages.until') }} {{ $user->subscription_ends_at->format('d/m/Y') }}
+                                    </div>
+                                @elseif($user->trial_ends_at && $user->subscription_status === 'trial')
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        Trial fino al {{ $user->trial_ends_at->format('d/m/Y') }}
+                                    </div>
+                                @endif
                                             @else
                                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                                                     {{ __('messages.free') }}

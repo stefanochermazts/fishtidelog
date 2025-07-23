@@ -41,6 +41,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Inizializza automaticamente il trial di 6 mesi per i nuovi utenti
+        $user->initializeTrial();
+
         event(new Registered($user));
 
         Auth::login($user);

@@ -11,6 +11,7 @@ use App\Http\Controllers\TideController;
 use App\Http\Controllers\EnvironmentalDataController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstructionController;
 
@@ -26,7 +27,7 @@ Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name(
 // Public instructions
 Route::get('/instructions', [InstructionController::class, 'index'])->name('instructions.index');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'subscription.access'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
@@ -64,11 +65,22 @@ Route::post('/environmental-data', [EnvironmentalDataController::class, 'getEnvi
 Route::post('/moon-phase', [EnvironmentalDataController::class, 'getMoonPhase'])->name('moon-phase.get');
 Route::post('/sunrise-sunset', [EnvironmentalDataController::class, 'getSunriseSunset'])->name('sunrise-sunset.get');
 Route::post('/weather', [EnvironmentalDataController::class, 'getWeather'])->name('weather.get');
-    
-    // Profile routes (from Breeze)
+});
+
+Route::middleware(['auth'])->group(function () {
+    // Profile routes (from Breeze) - sempre accessibili
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Subscription routes - sempre accessibili per permettere upgrade
+    Route::prefix('subscription')->name('subscription.')->group(function () {
+        Route::get('/expired', [SubscriptionController::class, 'expired'])->name('expired');
+        Route::get('/manage', [SubscriptionController::class, 'manage'])->name('manage');
+        Route::post('/upgrade', [SubscriptionController::class, 'upgrade'])->name('upgrade');
+        Route::get('/success', [SubscriptionController::class, 'success'])->name('success');
+        Route::get('/cancelled', [SubscriptionController::class, 'cancelled'])->name('cancelled');
+    });
 });
 
 // Admin routes
@@ -77,7 +89,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users', [AdminController::class, 'users'])->name('users.index');
     Route::get('/users/{user}', [AdminController::class, 'userDetails'])->name('users.show');
     Route::patch('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');
-    Route::patch('/users/{user}/premium', [AdminController::class, 'updateUserPremium'])->name('users.update-premium');
+    Route::patch('/users/{user}/activate-subscription', [AdminController::class, 'activateSubscription'])->name('users.activate-subscription');
+    Route::patch('/users/{user}/extend-trial', [AdminController::class, 'extendTrial'])->name('users.extend-trial');
+    Route::patch('/users/{user}/cancel-subscription', [AdminController::class, 'cancelSubscription'])->name('users.cancel-subscription');
+    Route::patch('/users/{user}/mark-expired', [AdminController::class, 'markAsExpired'])->name('users.mark-expired');
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 
     // Admin instructions management

@@ -14,33 +14,31 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crea un utente amministratore
-        User::create([
+        // Crea un utente amministratore con abbonamento attivo
+        $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@fishtidelog.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'is_premium' => true,
-            'premium_until' => now()->addYear(),
         ]);
+        $admin->activateSubscription(); // Attiva abbonamento per l'admin
 
         // Crea alcuni utenti di test
-        User::create([
+        $user1 = User::create([
             'name' => 'Mario Rossi',
             'email' => 'mario@example.com',
             'password' => Hash::make('password'),
             'role' => 'user',
-            'is_premium' => true,
-            'premium_until' => now()->addMonths(6),
         ]);
+        $user1->activateSubscription(); // Utente con abbonamento attivo
 
-        User::create([
+        $user2 = User::create([
             'name' => 'Giulia Bianchi',
             'email' => 'giulia@example.com',
             'password' => Hash::make('password'),
             'role' => 'user',
-            'is_premium' => false,
         ]);
+        $user2->initializeTrial(); // Utente con trial attivo
 
         $this->command->info('Utenti di test creati con successo!');
         $this->command->info('Admin: admin@fishtidelog.com / password');
