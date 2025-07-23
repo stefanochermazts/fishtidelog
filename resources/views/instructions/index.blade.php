@@ -7,6 +7,53 @@
     <title>{{ __('messages.instructions') }} - {{ config('app.name', 'FishTideLog') }}</title>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @vite(['resources/css/app.css'])
+    
+    <!-- CSS personalizzato per contrasti accessibili in tema scuro -->
+    <style>
+        .dark .prose h1,
+        .dark .prose h2,
+        .dark .prose h3,
+        .dark .prose h4,
+        .dark .prose h5,
+        .dark .prose h6 {
+            color: #f3f4f6 !important; /* text-gray-100 */
+        }
+        
+        .dark .prose p,
+        .dark .prose li,
+        .dark .prose span {
+            color: #e5e7eb !important; /* text-gray-200 */
+        }
+        
+        .dark .prose strong,
+        .dark .prose b {
+            color: #ffffff !important; /* text-white */
+        }
+        
+        /* Forza colori specifici per emoji e simboli colorati */
+        .dark .prose [style*="color"] {
+            color: #f3f4f6 !important; /* Sovrascrive qualsiasi colore inline */
+        }
+        
+        /* Stili specifici per testi con colori inline nel tema scuro */
+        .dark .prose * {
+            color: #e5e7eb !important;
+        }
+        
+        /* Eccezioni per elementi che devono mantenere colori specifici */
+        .dark .prose code {
+            color: #fbbf24 !important; /* text-amber-400 per codice */
+            background-color: #374151 !important; /* bg-gray-700 */
+        }
+        
+        .dark .prose a {
+            color: #60a5fa !important; /* text-blue-400 per link */
+        }
+        
+        .dark .prose a:hover {
+            color: #93c5fd !important; /* text-blue-300 per link hover */
+        }
+    </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val)); $nextTick(() => { if (darkMode) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); })" :class="{ 'dark': darkMode }">
     <!-- Navigation -->
@@ -26,30 +73,30 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.home') }}</a>
-                    <a href="{{ route('features') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.features') }}</a>
-                    <a href="{{ route('instructions.index') }}" class="text-blue-600 dark:text-blue-400 font-semibold">{{ __('messages.instructions') }}</a>
-                    <a href="{{ route('pricing') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.pricing') }}</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.contact') }}</a>
+                    <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.home') }}</a>
+                    <a href="{{ route('features') }}" class="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.features') }}</a>
+                    <a href="{{ route('instructions.index') }}" class="text-blue-600 dark:text-blue-300 font-semibold">{{ __('messages.instructions') }}</a>
+                    <a href="{{ route('pricing') }}" class="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.pricing') }}</a>
+                    <a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.contact') }}</a>
                     
                     <!-- Language Selector -->
                     <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">
                             <span>{{ __('messages.language') }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                         <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg z-50">
-                            <a href="{{ route('locale.change', 'it') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Italiano</a>
-                            <a href="{{ route('locale.change', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">English</a>
-                            <a href="{{ route('locale.change', 'de') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Deutsch</a>
-                            <a href="{{ route('locale.change', 'fr') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Français</a>
+                            <a href="{{ route('locale.change', 'it') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Italiano</a>
+                            <a href="{{ route('locale.change', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">English</a>
+                            <a href="{{ route('locale.change', 'de') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Deutsch</a>
+                            <a href="{{ route('locale.change', 'fr') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Français</a>
                         </div>
                     </div>
 
                     <!-- Theme Toggle -->
-                    <button @click="darkMode = !darkMode; $nextTick(() => { if (darkMode) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); })" class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <button @click="darkMode = !darkMode; $nextTick(() => { if (darkMode) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); })" class="p-2 text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">
                         <svg x-show="!darkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
                         </svg>
@@ -58,7 +105,7 @@
                         </svg>
                     </button>
 
-                    <a href="{{ route('login') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.login') }}</a>
+                    <a href="{{ route('login') }}" class="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('messages.login') }}</a>
                     <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">{{ __('messages.register') }}</a>
                 </div>
 
@@ -66,7 +113,7 @@
                 <div class="lg:hidden flex items-center">
                     <button @click="open = !open" 
                             @keydown.escape="open = false"
-                            class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+                            class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
                             :aria-expanded="open"
                             aria-label="Toggle navigation menu">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -105,15 +152,15 @@
             
             <div class="px-4 py-6 space-y-4">
                 <!-- Mobile Navigation Links -->
-                <a href="{{ route('home') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.home') }}</a>
-                <a href="{{ route('features') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.features') }}</a>
-                <a href="{{ route('instructions.index') }}" class="block text-blue-600 dark:text-blue-400 font-semibold py-2">{{ __('messages.instructions') }}</a>
-                <a href="{{ route('pricing') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.pricing') }}</a>
-                <a href="{{ route('contact') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.contact') }}</a>
+                <a href="{{ route('home') }}" class="block text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.home') }}</a>
+                <a href="{{ route('features') }}" class="block text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.features') }}</a>
+                <a href="{{ route('instructions.index') }}" class="block text-blue-600 dark:text-blue-300 font-semibold py-2">{{ __('messages.instructions') }}</a>
+                <a href="{{ route('pricing') }}" class="block text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.pricing') }}</a>
+                <a href="{{ route('contact') }}" class="block text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors py-2">{{ __('messages.contact') }}</a>
                 
                 <!-- Mobile Language Selector -->
                 <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('messages.language') }}</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">{{ __('messages.language') }}</label>
                     <div class="relative">
                         <select onchange="window.location.href=this.value" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             <option value="{{ route('locale.change', 'it') }}" {{ app()->getLocale() == 'it' ? 'selected' : '' }}>🇮🇹 Italiano</option>
@@ -145,7 +192,7 @@
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                     {{ __('messages.how_to_use_platform') }}
                 </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-600 dark:text-gray-100 max-w-3xl mx-auto">
                     {{ __('messages.learn_platform_usage', ['platform' => 'FishTideLog']) }}
                 </p>
             </div>
@@ -155,7 +202,7 @@
                 @forelse($instructions as $instruction)
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
                         <!-- Section Header -->
-                        <div class="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 px-6 py-4">
+                        <div class="bg-blue-700 dark:bg-blue-800 px-6 py-4">
                             <h2 class="text-2xl font-bold text-white">
                                 {{ $instruction->getLocalizedTitle() }}
                             </h2>
@@ -170,7 +217,7 @@
                     </div>
                 @empty
                     <div class="text-center py-12">
-                        <div class="text-gray-500 dark:text-gray-400 text-lg">
+                        <div class="text-gray-500 dark:text-gray-200 text-lg">
                             {{ __('messages.no_instructions_available') }}
                         </div>
                     </div>
