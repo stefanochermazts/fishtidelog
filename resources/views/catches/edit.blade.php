@@ -179,14 +179,9 @@ $(document).ready(function() {
         let desc = species.description ? `<div class='text-xs text-gray-500'>${species.description}</div>` : '';
         return `<div><b>${species.text}</b>${desc}</div>`;
     }
-    // Preselezione specie
-    let initialData = null;
-    @if($catch->species)
-        initialData = {
-            id: '{{ $catch->species }}',
-            text: '{{ $catch->species }}'
-        };
-    @endif
+    // Preselezione specie - assicuriamoci che mostri il nome corretto
+    let initialSpecies = '{{ $catch->species }}';
+    
     $('#species_select').select2({
         placeholder: "{{ __('messages.select_or_type_species') }}",
         minimumInputLength: 2,
@@ -211,7 +206,7 @@ $(document).ready(function() {
                 return null;
             }
             return {
-                id: 'custom_' + params.term,
+                id: params.term,
                 text: params.term,
                 custom: true
             };
@@ -225,11 +220,12 @@ $(document).ready(function() {
             }
         },
         escapeMarkup: function (markup) { return markup; },
-        allowClear: true,
-        data: initialData ? [initialData] : undefined
+        allowClear: true
     });
-    if(initialData) {
-        let option = new Option(initialData.text, initialData.id, true, true);
+    
+    // Preseleziona la specie corrente se esiste
+    if(initialSpecies && initialSpecies.trim() !== '') {
+        let option = new Option(initialSpecies, initialSpecies, true, true);
         $('#species_select').append(option).trigger('change');
     }
     });
