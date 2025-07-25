@@ -270,6 +270,7 @@ return [
     'edit_help_content' => 'Edit help content',
     'view_public_instructions' => 'View Public Instructions',
     'see_user_experience' => 'See user experience',
+    'species_photo' => 'Species Photo',
     
     // Validation
     'required' => 'Required field',

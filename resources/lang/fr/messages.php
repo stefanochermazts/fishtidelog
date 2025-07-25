@@ -338,6 +338,7 @@ return [
     'edit_help_content' => 'Modifier le contenu d\'aide',
     'view_public_instructions' => 'Voir les Instructions Publiques',
     'see_user_experience' => 'Voir l\'expérience utilisateur',
+    'species_photo' => 'Photo Espèce',
     
     // Homepage Statistics
     'platform_numbers' => 'La Plateforme en Chiffres',

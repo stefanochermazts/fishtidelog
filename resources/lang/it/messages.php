@@ -276,6 +276,7 @@ return [
     'edit_help_content' => 'Modifica contenuti di aiuto',
     'view_public_instructions' => 'Visualizza Istruzioni Pubbliche',
     'see_user_experience' => 'Vedi l\'esperienza utente',
+    'species_photo' => 'Foto Specie',
     
     // Validation
     'required' => 'Campo obbligatorio',

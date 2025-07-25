@@ -29,11 +29,34 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Colonna sinistra - Foto e dettagli principali -->
                         <div>
+                            @php
+                                // Cerca la specie corrispondente per la foto di fallback
+                                $speciesPhoto = null;
+                                if (!$catch->photo_path) {
+                                    $fishSpecies = \App\Models\FishSpecies::where('common_name_it', 'ILIKE', $catch->species)
+                                        ->orWhere('common_name_en', 'ILIKE', $catch->species)
+                                        ->orWhere('common_name_fr', 'ILIKE', $catch->species)
+                                        ->orWhere('common_name_de', 'ILIKE', $catch->species)
+                                        ->orWhere('scientific_name', 'ILIKE', $catch->species)
+                                        ->first();
+                                    $speciesPhoto = $fishSpecies?->photo_path;
+                                }
+                            @endphp
+                            
                             @if($catch->photo_path)
                                 <div class="mb-6">
-                                                                    <img src="{{ Storage::url($catch->photo_path) }}" 
+                                    <img src="{{ Storage::url($catch->photo_path) }}" 
                                      alt="{{ $catch->species }}" 
                                      class="w-full h-96 object-cover rounded-lg shadow-lg">
+                                </div>
+                            @elseif($speciesPhoto)
+                                <div class="mb-6 relative">
+                                    <img src="{{ Storage::url($speciesPhoto) }}" 
+                                         alt="{{ $catch->species }}" 
+                                         class="w-full h-96 object-cover rounded-lg shadow-lg opacity-75">
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-blue-500 text-white text-sm px-3 py-1 rounded-full">{{ __('messages.species_photo') }}</span>
+                                    </div>
                                 </div>
                             @else
                                 <div class="mb-6 w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">

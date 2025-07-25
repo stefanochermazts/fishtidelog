@@ -26,6 +26,7 @@ class FishSpecies extends Model
         'max_length',
         'max_weight',
         'conservation_status',
+        'photo_path',
         'is_active',
     ];
 

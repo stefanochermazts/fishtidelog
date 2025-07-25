@@ -15,11 +15,31 @@
             @if($catches->count() > 0)
                 <div class="grid-responsive">
                             @foreach($catches as $catch)
-                                <div class="card card-hover">
+                                @php
+                                    // Cerca la specie corrispondente per la foto di fallback
+                                    $speciesPhoto = null;
+                                    if (!$catch->photo_path) {
+                                        $fishSpecies = \App\Models\FishSpecies::where('common_name_it', 'ILIKE', $catch->species)
+                                            ->orWhere('common_name_en', 'ILIKE', $catch->species)
+                                            ->orWhere('common_name_fr', 'ILIKE', $catch->species)
+                                            ->orWhere('common_name_de', 'ILIKE', $catch->species)
+                                            ->orWhere('scientific_name', 'ILIKE', $catch->species)
+                                            ->first();
+                                        $speciesPhoto = $fishSpecies?->photo_path;
+                                    }
+                                @endphp
+                                <div class="card card-hover relative">
                                     @if($catch->photo_path)
                                         <img src="{{ Storage::url($catch->photo_path) }}" 
                                              alt="{{ $catch->species }}" 
                                              class="w-full h-48 object-cover rounded-t-2xl">
+                                    @elseif($speciesPhoto)
+                                        <img src="{{ Storage::url($speciesPhoto) }}" 
+                                             alt="{{ $catch->species }}" 
+                                             class="w-full h-48 object-cover rounded-t-2xl opacity-75">
+                                        <div class="absolute top-2 left-2">
+                                            <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">{{ __('messages.species_photo') }}</span>
+                                        </div>
                                     @else
                                         <div class="w-full h-48 bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center rounded-t-2xl">
                                             <span class="text-neutral-400 dark:text-neutral-500 text-4xl">🐟</span>
