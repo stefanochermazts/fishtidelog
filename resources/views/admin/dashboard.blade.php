@@ -99,7 +99,7 @@
             <div class="mb-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.admin_quick_links') ?? 'Link Rapidi Amministrazione' }}</h3>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.admin_quick_links') }}</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <a href="{{ route('admin.users.index') }}" 
                                class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
@@ -108,7 +108,7 @@
                                 </svg>
                                 <div>
                                     <div class="font-medium text-gray-900 dark:text-white">{{ __('messages.manage_users') }}</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.view_edit_users') ?? 'Visualizza e modifica utenti' }}</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.view_edit_users') }}</div>
                                 </div>
                             </a>
 
@@ -119,7 +119,7 @@
                                 </svg>
                                 <div>
                                     <div class="font-medium text-gray-900 dark:text-white">{{ __('messages.manage_instructions') }}</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.edit_help_content') ?? 'Modifica contenuti di aiuto' }}</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.edit_help_content') }}</div>
                                 </div>
                             </a>
 
@@ -129,8 +129,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                 </svg>
                                 <div>
-                                    <div class="font-medium text-gray-900 dark:text-white">{{ __('messages.view_public_instructions') ?? 'Visualizza Istruzioni Pubbliche' }}</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.see_user_experience') ?? 'Vedi l\'esperienza utente' }}</div>
+                                    <div class="font-medium text-gray-900 dark:text-white">{{ __('messages.view_public_instructions') }}</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.see_user_experience') }}</div>
                                 </div>
                             </a>
                         </div>

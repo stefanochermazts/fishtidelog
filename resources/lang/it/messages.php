@@ -270,6 +270,11 @@ return [
     'confirm_delete' => 'Conferma Eliminazione',
     'cancel' => 'Annulla',
     'cm' => 'cm',
+    'admin_quick_links' => 'Link Rapidi Amministrazione',
+    'view_edit_users' => 'Visualizza e modifica utenti',
+    'edit_help_content' => 'Modifica contenuti di aiuto',
+    'view_public_instructions' => 'Visualizza Istruzioni Pubbliche',
+    'see_user_experience' => 'Vedi l\'esperienza utente',
     
     // Validation
     'required' => 'Campo obbligatorio',

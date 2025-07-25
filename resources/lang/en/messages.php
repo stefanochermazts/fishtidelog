@@ -264,6 +264,11 @@ return [
     'cannot_delete_last_admin' => 'Cannot delete the last administrator.',
     'confirm_delete' => 'Confirm Delete',
     'cancel' => 'Cancel',
+    'admin_quick_links' => 'Admin Quick Links',
+    'view_edit_users' => 'View and edit users',
+    'edit_help_content' => 'Edit help content',
+    'view_public_instructions' => 'View Public Instructions',
+    'see_user_experience' => 'See user experience',
     
     // Validation
     'required' => 'Required field',

@@ -332,6 +332,11 @@ return [
     'cannot_delete_last_admin' => 'Der letzte Administrator kann nicht gelöscht werden.',
     'confirm_delete' => 'Löschen Bestätigen',
     'cancel' => 'Abbrechen',
+    'admin_quick_links' => 'Admin Schnellzugriffe',
+    'view_edit_users' => 'Benutzer anzeigen und bearbeiten',
+    'edit_help_content' => 'Hilfeinhalte bearbeiten',
+    'view_public_instructions' => 'Öffentliche Anleitungen anzeigen',
+    'see_user_experience' => 'Benutzererfahrung sehen',
     
     // Homepage Statistics
     'platform_numbers' => 'Die Plattform in Zahlen',
