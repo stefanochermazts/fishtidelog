@@ -31,14 +31,25 @@ class FishCatchController extends Controller
     public function create(Request $request)
     {
         $user = Auth::user();
-        $trips = $user->fishingTrips()
-            ->where('end_time', '>=', now()->subDays(30)) // Solo uscite recenti
-            ->orderBy('start_time', 'desc')
-            ->get();
-            
+        
         // Se viene passato un fishing_trip_id, preseleziona quella uscita
         $selectedTripId = $request->get('fishing_trip_id');
         $redirectTo = $request->get('redirect_to', 'catches');
+        
+        // Carica le uscite recenti (ultimi 30 giorni)
+        $trips = $user->fishingTrips()
+            ->where('end_time', '>=', now()->subDays(30))
+            ->orderBy('start_time', 'desc')
+            ->get();
+        
+        // Se c'è un'uscita selezionata, assicurati che sia inclusa nella lista
+        if ($selectedTripId) {
+            $selectedTrip = $user->fishingTrips()->find($selectedTripId);
+            if ($selectedTrip && !$trips->contains('id', $selectedTripId)) {
+                // Aggiungi l'uscita selezionata se non è già nella lista
+                $trips = $trips->prepend($selectedTrip);
+            }
+        }
             
         return view('catches.create', compact('trips', 'selectedTripId', 'redirectTo'));
     }
