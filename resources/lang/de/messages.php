@@ -360,4 +360,22 @@ return [
     'content_editor' => 'Inhalts-Editor',
     'save_instruction' => 'Anleitung speichern',
     'back_to_instructions' => 'Zurück zu Anleitungen',
+    'view_public_page' => 'Öffentliche Seite anzeigen',
+    'preview' => 'Vorschau',
+
+    // Missing translations
+    'features' => 'Funktionen',
+    'pricing' => 'Preise',
+    'contact' => 'Kontakt',
+    'home' => 'Startseite',
+    'login' => 'Anmelden',
+    'register' => 'Registrieren',
+    'language' => 'Sprache',
+    'learn_platform_usage' => 'Erfahren Sie, wie Sie :platform optimal nutzen, um Ihre Angelabenteuer zu dokumentieren',
+    'no_instructions_available' => 'Derzeit sind keine Anleitungen verfügbar.',
+    'ready_to_start' => 'Bereit anzufangen?',
+    'start_tracking_journey' => 'Beginnen Sie heute mit der Verfolgung Ihrer Angelreise mit FishTideLog',
+    'register_now' => 'Jetzt Registrieren',
+    'explore_features' => 'Funktionen Erkunden',
+    'all_rights_reserved' => 'Alle Rechte vorbehalten.',
 ]; 

@@ -364,4 +364,22 @@ return [
     'content_editor' => 'Content Editor',
     'save_instruction' => 'Save Instruction',
     'back_to_instructions' => 'Back to Instructions',
+    'view_public_page' => 'View Public Page',
+    'preview' => 'Preview',
+
+    // Missing translations
+    'features' => 'Features',
+    'pricing' => 'Pricing',
+    'contact' => 'Contact',
+    'home' => 'Home',
+    'login' => 'Login',
+    'register' => 'Register',
+    'language' => 'Language',
+    'learn_platform_usage' => 'Learn how to make the most of :platform to document your fishing adventures',
+    'no_instructions_available' => 'No instructions available at the moment.',
+    'ready_to_start' => 'Ready to Start?',
+    'start_tracking_journey' => 'Start tracking your fishing journey with FishTideLog today',
+    'register_now' => 'Register Now',
+    'explore_features' => 'Explore Features',
+    'all_rights_reserved' => 'All rights reserved.',
 ]; 
