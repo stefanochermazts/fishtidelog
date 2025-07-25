@@ -21,8 +21,10 @@
                             Periodo di prova scaduto
                         </h1>
                         <p class="text-gray-600 dark:text-gray-300">
-                            Il tuo trial gratuito di 6 mesi è terminato il 
-                            <strong>{{ $trialEndedAt->format('d/m/Y') }}</strong>
+                            Il tuo trial gratuito di 6 mesi è terminato
+                            @if($trialEndedAt)
+                                il <strong>{{ $trialEndedAt->format('d/m/Y') }}</strong>
+                            @endif
                         </p>
                     </div>
 

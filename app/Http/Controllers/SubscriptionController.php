@@ -15,9 +15,15 @@ class SubscriptionController extends Controller
     {
         $user = auth()->user();
         
+        // Se trial_ends_at è null ma lo status è expired, usa la data di creazione + 6 mesi come fallback
+        $trialEndedAt = $user->trial_ends_at;
+        if (!$trialEndedAt && $user->subscription_status === 'expired') {
+            $trialEndedAt = $user->created_at?->addMonths(6);
+        }
+        
         return view('subscription.expired', [
             'user' => $user,
-            'trialEndedAt' => $user->trial_ends_at,
+            'trialEndedAt' => $trialEndedAt,
             'subscriptionStatus' => $user->subscription_status,
         ]);
     }
@@ -43,7 +49,7 @@ class SubscriptionController extends Controller
     public function upgrade(): RedirectResponse
     {
         // Qui andrà l'integrazione con il sistema di pagamento
-        // Per ora redirect alla pagina di pricing
+        // Per ora redirect alla pagina di pricing con messaggio informativo
         return redirect()->route('pricing')
             ->with('info', 'Sistema di pagamento in arrivo. Contatta l\'amministratore per attivare l\'abbonamento.');
     }
