@@ -31,8 +31,11 @@ class FixSpeciesData extends Command
         
         $this->info('Cercando catture con ID numerici nel campo species...');
         
-        // Trova catture dove species è un numero (probabilmente un ID)
-        $problematicCatches = FishCatch::whereRaw('species ~ \'^[0-9]+$\'')->get();
+        // Trova catture dove species è un numero che corrisponde a un ID nel database
+        $speciesIds = FishSpecies::pluck('id')->map(function($id) {
+            return (string) $id;
+        })->toArray();
+        $problematicCatches = FishCatch::whereIn('species', $speciesIds)->get();
         
         $this->info("Trovate {$problematicCatches->count()} catture con species come ID numerico.");
         
