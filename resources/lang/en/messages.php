@@ -265,6 +265,7 @@ return [
     'confirm_delete' => 'Confirm Delete',
     'cancel' => 'Cancel',
     'admin_quick_links' => 'Admin Quick Links',
+    'manage_users' => 'Manage Users',
     'view_edit_users' => 'View and edit users',
     'edit_help_content' => 'Edit help content',
     'view_public_instructions' => 'View Public Instructions',

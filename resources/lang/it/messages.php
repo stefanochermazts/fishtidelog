@@ -271,6 +271,7 @@ return [
     'cancel' => 'Annulla',
     'cm' => 'cm',
     'admin_quick_links' => 'Link Rapidi Amministrazione',
+    'manage_users' => 'Gestisci Utenti',
     'view_edit_users' => 'Visualizza e modifica utenti',
     'edit_help_content' => 'Modifica contenuti di aiuto',
     'view_public_instructions' => 'Visualizza Istruzioni Pubbliche',

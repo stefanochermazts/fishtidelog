@@ -333,6 +333,7 @@ return [
     'confirm_delete' => 'Löschen Bestätigen',
     'cancel' => 'Abbrechen',
     'admin_quick_links' => 'Admin Schnellzugriffe',
+    'manage_users' => 'Benutzer Verwalten',
     'view_edit_users' => 'Benutzer anzeigen und bearbeiten',
     'edit_help_content' => 'Hilfeinhalte bearbeiten',
     'view_public_instructions' => 'Öffentliche Anleitungen anzeigen',

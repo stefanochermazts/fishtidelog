@@ -333,6 +333,7 @@ return [
     'confirm_delete' => 'Confirmer la Suppression',
     'cancel' => 'Annuler',
     'admin_quick_links' => 'Liens Rapides Administration',
+    'manage_users' => 'Gérer les Utilisateurs',
     'view_edit_users' => 'Voir et modifier les utilisateurs',
     'edit_help_content' => 'Modifier le contenu d\'aide',
     'view_public_instructions' => 'Voir les Instructions Publiques',
