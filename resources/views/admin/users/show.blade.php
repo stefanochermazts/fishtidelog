@@ -158,6 +158,8 @@
                                     <form method="POST" action="{{ route('admin.users.activate-subscription', $user) }}">
                                         @csrf
                                         @method('PATCH')
+                                        <input type="hidden" name="months" value="1">
+                                        <input type="hidden" name="price" value="4.99">
                                         <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                                             Attiva Abbonamento
                                         </button>
@@ -168,6 +170,7 @@
                                     <form method="POST" action="{{ route('admin.users.extend-trial', $user) }}">
                                         @csrf
                                         @method('PATCH')
+                                        <input type="hidden" name="days" value="30">
                                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
                                             Estendi Trial (+30 giorni)
                                         </button>
