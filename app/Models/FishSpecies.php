@@ -80,7 +80,7 @@ class FishSpecies extends Model
     }
 
     /**
-     * Scope per ricerca per nome
+     * Scope per ricerca per nome (case insensitive)
      */
     public function scopeSearchByName($query, $search)
     {
@@ -88,9 +88,15 @@ class FishSpecies extends Model
         $commonNameField = "common_name_{$locale}";
         
         return $query->where(function($q) use ($search, $commonNameField) {
-            $q->where($commonNameField, 'LIKE', "%{$search}%")
-              ->orWhere('scientific_name', 'LIKE', "%{$search}%")
-              ->orWhere('common_name_en', 'LIKE', "%{$search}%");
+            // Cerca prima nel nome comune della lingua corrente
+            $q->where($commonNameField, 'ILIKE', "%{$search}%")
+              // Poi nel nome scientifico
+              ->orWhere('scientific_name', 'ILIKE', "%{$search}%")
+              // E in tutte le altre lingue per una ricerca più completa
+              ->orWhere('common_name_en', 'ILIKE', "%{$search}%")
+              ->orWhere('common_name_it', 'ILIKE', "%{$search}%")
+              ->orWhere('common_name_fr', 'ILIKE', "%{$search}%")
+              ->orWhere('common_name_de', 'ILIKE', "%{$search}%");
         });
     }
 
