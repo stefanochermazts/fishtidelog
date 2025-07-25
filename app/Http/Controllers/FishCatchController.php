@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FishCatch;
 use App\Models\FishingTrip;
+use App\Models\FishSpecies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -76,6 +77,14 @@ class FishCatchController extends Controller
 
         $data = $request->except('photo');
         $data['released'] = $request->has('released');
+        
+        // Converti ID specie in nome se necessario
+        if (is_numeric($data['species'])) {
+            $fishSpecies = FishSpecies::find($data['species']);
+            if ($fishSpecies) {
+                $data['species'] = $fishSpecies->common_name ?: $fishSpecies->scientific_name;
+            }
+        }
 
         // Gestione foto
         if ($request->hasFile('photo')) {
@@ -144,6 +153,14 @@ class FishCatchController extends Controller
 
         $data = $request->except('photo');
         $data['released'] = $request->has('released');
+        
+        // Converti ID specie in nome se necessario
+        if (is_numeric($data['species'])) {
+            $fishSpecies = FishSpecies::find($data['species']);
+            if ($fishSpecies) {
+                $data['species'] = $fishSpecies->common_name ?: $fishSpecies->scientific_name;
+            }
+        }
 
         // Gestione foto
         if ($request->hasFile('photo')) {
