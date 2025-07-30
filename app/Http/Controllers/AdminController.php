@@ -3,62 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\FishingTrip;
 use App\Models\FishingSpot;
 use App\Models\FishCatch;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
-
     /**
-     * Dashboard principale dell'amministrazione
+     * Dashboard amministrazione
      */
     public function dashboard()
     {
-        $stats = [
-            'total_users' => User::count(),
-            'trial_users' => User::where('subscription_status', 'trial')->count(),
-            'premium_users' => User::where('subscription_status', 'active')->count(),
-            'expired_users' => User::where('subscription_status', 'expired')->count(),
-            'total_trips' => FishingTrip::count(),
-            'total_spots' => FishingSpot::count(),
-            'total_catches' => FishCatch::count(),
-            'total_weight' => FishCatch::sum('weight') ?? 0,
-            'recent_users' => User::latest()->take(5)->get(),
-            'recent_trips' => FishingTrip::with('user')->latest()->take(5)->get(),
-            'expiring_trials' => User::where('subscription_status', 'trial')
-                ->where('trial_ends_at', '<=', now()->addDays(7))
-                ->where('trial_ends_at', '>', now())
-                ->count(),
-            'active_users' => User::whereIn('subscription_status', ['trial', 'active'])->count(),
-        ];
+        // Statistiche generali con cache di 5 minuti
+        $stats = Cache::remember('admin_stats', 300, function () {
+            return [
+                'total_users' => User::count(),
+                'premium_users' => User::where('subscription_ends_at', '>', now())->count(),
+                'total_trips' => FishingTrip::count(),
+                'total_spots' => FishingSpot::count(),
+                'total_catches' => FishCatch::count(),
+                'total_weight' => FishCatch::sum('weight') ?? 0,
+                'new_contacts' => Contact::where('status', 'new')->count(),
+            ];
+        });
 
-        return view('admin.dashboard', compact('stats'));
+        // Utenti recenti
+        $recentUsers = User::latest()->take(5)->get();
+
+        // Contatti recenti
+        $recentContacts = Contact::latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentUsers', 'recentContacts'));
     }
 
     /**
-     * Lista di tutti gli utenti
+     * Lista utenti
      */
     public function users(Request $request)
     {
-        $query = User::with(['fishingTrips', 'fishingSpots']);
+        $query = User::query();
 
-        // Filtri
-        if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
-            });
-        }
-
+        // Filtro per ruolo
         if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
 
-        if ($request->filled('subscription_status')) {
-            $query->where('subscription_status', $request->subscription_status);
+        // Filtro per stato premium
+        if ($request->filled('premium_status')) {
+            if ($request->premium_status === 'premium') {
+                $query->where('subscription_ends_at', '>', now());
+            } elseif ($request->premium_status === 'free') {
+                $query->where(function ($q) {
+                    $q->where('subscription_ends_at', '<=', now())
+                      ->orWhereNull('subscription_ends_at');
+                });
+            }
+        }
+
+        // Ricerca
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
         }
 
         $users = $query->latest()->paginate(20);
@@ -67,19 +78,18 @@ class AdminController extends Controller
     }
 
     /**
-     * Dettagli di un utente specifico
+     * Dettagli utente
      */
     public function userDetails(User $user)
     {
-        $stats = $user->getStats();
-        $recentTrips = $user->fishingTrips()->with('catches')->latest()->take(10)->get();
-        $recentSpots = $user->fishingSpots()->latest()->take(10)->get();
+        // Carica le relazioni per le statistiche
+        $user->load(['fishingTrips', 'fishingSpots', 'fishCatches']);
 
-        return view('admin.users.show', compact('user', 'stats', 'recentTrips', 'recentSpots'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
-     * Aggiorna il ruolo di un utente
+     * Aggiorna ruolo utente
      */
     public function updateUserRole(Request $request, User $user)
     {
@@ -87,94 +97,141 @@ class AdminController extends Controller
             'role' => 'required|in:user,admin'
         ]);
 
+        // Impedisci di rimuovere l'ultimo admin
+        if ($user->role === 'admin' && User::where('role', 'admin')->count() === 1) {
+            return back()->with('error', 'Non è possibile rimuovere l\'ultimo amministratore.');
+        }
+
         $user->update(['role' => $request->role]);
 
-        return redirect()->back()->with('success', 'Ruolo utente aggiornato con successo.');
+        return back()->with('success', 'Ruolo utente aggiornato con successo!');
     }
 
     /**
-     * Attiva manualmente l'abbonamento per un utente
+     * Attiva abbonamento premium
      */
     public function activateSubscription(Request $request, User $user)
     {
         $request->validate([
-            'months' => 'required|integer|min:1|max:24',
-            'price' => 'required|numeric|min:0|max:999.99'
+            'subscription_ends_at' => 'required|date|after:now'
         ]);
 
-        $user->activateSubscription($request->months, $request->price);
+        $user->update([
+            'subscription_ends_at' => $request->subscription_ends_at
+        ]);
 
-        return redirect()->back()->with('success', 
-            "Abbonamento attivato per {$request->months} mesi a €{$request->price}/mese.");
+        return back()->with('success', 'Abbonamento premium attivato con successo!');
     }
 
     /**
-     * Estende il trial di un utente
+     * Estendi periodo di prova
      */
     public function extendTrial(Request $request, User $user)
     {
         $request->validate([
-            'days' => 'required|integer|min:1|max:365'
+            'trial_ends_at' => 'required|date|after:now'
         ]);
 
-        if ($user->subscription_status === 'trial') {
-            $newTrialEnd = $user->trial_ends_at ? 
-                $user->trial_ends_at->addDays($request->days) : 
-                now()->addDays($request->days);
-                
-            $user->update(['trial_ends_at' => $newTrialEnd]);
-            
-            return redirect()->back()->with('success', 
-                "Trial esteso di {$request->days} giorni.");
-        }
+        $user->update([
+            'trial_ends_at' => $request->trial_ends_at
+        ]);
 
-        return redirect()->back()->with('error', 
-            'L\'utente non è in modalità trial.');
+        return back()->with('success', 'Periodo di prova esteso con successo!');
     }
 
     /**
-     * Cancella l'abbonamento di un utente
+     * Cancella abbonamento
      */
     public function cancelSubscription(User $user)
     {
-        $user->cancelSubscription();
+        $user->update([
+            'subscription_ends_at' => now()
+        ]);
 
-        return redirect()->back()->with('success', 
-            'Abbonamento cancellato. L\'utente manterrà l\'accesso fino alla scadenza.');
+        return back()->with('success', 'Abbonamento cancellato con successo!');
     }
 
     /**
-     * Marca un utente come scaduto
+     * Segna come scaduto
      */
     public function markAsExpired(User $user)
     {
-        $user->markAsExpired();
+        $user->update([
+            'subscription_ends_at' => now()->subDay()
+        ]);
 
-        return redirect()->back()->with('success', 
-            'Utente marcato come scaduto. L\'accesso è stato revocato.');
+        return back()->with('success', 'Utente segnato come scaduto!');
     }
 
     /**
-     * Elimina un utente
+     * Elimina utente
      */
     public function destroyUser(User $user)
     {
-        // Impedisci l'eliminazione del proprio account
-        if ($user->id === Auth::id()) {
-            return redirect()->back()->with('error', 'Non puoi eliminare il tuo stesso account.');
+        // Impedisci di eliminare se stessi
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Non puoi eliminare il tuo stesso account.');
         }
 
-        // Impedisci l'eliminazione dell'ultimo admin
-        if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
-            return redirect()->back()->with('error', 'Non puoi eliminare l\'ultimo amministratore.');
+        // Impedisci di eliminare l'ultimo admin
+        if ($user->role === 'admin' && User::where('role', 'admin')->count() === 1) {
+            return back()->with('error', 'Non è possibile eliminare l\'ultimo amministratore.');
         }
 
         $userName = $user->name;
-        
-        // Laravel si occuperà automaticamente delle relazioni cascade/soft delete
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 
-            "Utente {$userName} eliminato con successo.");
+        return redirect()->route('admin.users.index')->with('success', "Utente \"{$userName}\" eliminato con successo.");
+    }
+
+    /**
+     * Lista contatti
+     */
+    public function contacts(Request $request)
+    {
+        $query = Contact::query();
+
+        // Filtro per status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Ricerca
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('subject', 'like', "%{$search}%");
+            });
+        }
+
+        $contacts = $query->latest()->paginate(20);
+
+        return view('admin.contacts.index', compact('contacts'));
+    }
+
+    /**
+     * Dettagli contatto
+     */
+    public function contactDetails(Contact $contact)
+    {
+        // Segna come letto se è nuovo
+        if ($contact->isNew()) {
+            $contact->markAsRead();
+        }
+
+        return view('admin.contacts.show', compact('contact'));
+    }
+
+    /**
+     * Segna contatto come risposto
+     */
+    public function markContactAsReplied(Contact $contact)
+    {
+        $contact->markAsReplied();
+
+        return back()->with('success', 'Contatto segnato come risposto!');
     }
 }

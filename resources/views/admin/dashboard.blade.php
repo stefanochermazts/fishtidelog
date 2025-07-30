@@ -74,6 +74,22 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $stats['new_contacts'] }}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">Nuovi Contatti</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Statistiche aggiuntive -->
@@ -133,19 +149,30 @@
                                     <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('messages.see_user_experience') }}</div>
                                 </div>
                             </a>
+
+                            <a href="{{ route('admin.contacts.index') }}" 
+                               class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors">
+                                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                <div>
+                                    <div class="font-medium text-gray-900 dark:text-white">Gestione Contatti</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">Visualizza messaggi ricevuti</div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Utenti recenti e uscite recenti -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Utenti recenti, uscite recenti e contatti recenti -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Utenti recenti -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.recent_users') }}</h3>
                         <div class="space-y-3">
-                            @foreach($stats['recent_users'] as $user)
+                            @foreach($recentUsers as $user)
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
@@ -159,12 +186,12 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-2">
-                                        @if($user->isAdmin())
+                                        @if($user->role === 'admin')
                                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
                                                 {{ __('messages.admin') }}
                                             </span>
                                         @endif
-                                        @if($user->isPremium())
+                                        @if($user->subscription_ends_at && $user->subscription_ends_at->isFuture())
                                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                                 {{ __('messages.premium') }}
                                             </span>
@@ -181,22 +208,61 @@
                     </div>
                 </div>
 
-                <!-- Uscite recenti -->
+                <!-- Contatti recenti -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.recent_trips') }}</h3>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Contatti Recenti</h3>
                         <div class="space-y-3">
-                            @foreach($stats['recent_trips'] as $trip)
+                            @foreach($recentContacts as $contact)
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $trip->title }}</div>
-                                        <div class="text-xs text-gray-600 dark:text-gray-400">{{ $trip->user->name }} • {{ $trip->start_time->format('d/m/Y H:i') }}</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $contact->full_name }}</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">{{ $contact->email }} • {{ $contact->created_at->format('d/m/Y H:i') }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $contact->subject }}</div>
                                     </div>
-                                    <div class="text-xs text-gray-600 dark:text-gray-400">
-                                        {{ $trip->catches->count() }} {{ __('messages.catches') }}
+                                    <div class="flex items-center space-x-2">
+                                        @if($contact->isNew())
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                                Nuovo
+                                            </span>
+                                        @elseif($contact->isRead())
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                                Letto
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                Risposto
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
+                        </div>
+                        <div class="mt-4">
+                            <a href="{{ route('admin.contacts.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                Vedi tutti i contatti →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistiche rapide -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Statistiche Rapide</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Punti di pesca</span>
+                                <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $stats['total_spots'] }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Peso totale pescato</span>
+                                <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ number_format($stats['total_weight'], 1) }} kg</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Nuovi contatti</span>
+                                <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $stats['new_contacts'] }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

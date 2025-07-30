@@ -12,6 +12,7 @@ use App\Http\Controllers\EnvironmentalDataController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstructionController;
 
@@ -20,6 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/features', [HomeController::class, 'features'])->name('features');
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Locale routes
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
@@ -101,6 +103,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{instruction}/edit', [InstructionController::class, 'edit'])->name('edit');
         Route::put('/{instruction}', [InstructionController::class, 'update'])->name('update');
         Route::post('/upload-image', [InstructionController::class, 'uploadImage'])->name('upload-image');
+    });
+
+    // Admin contacts management
+    Route::prefix('contacts')->name('contacts.')->group(function () {
+        Route::get('/', [AdminController::class, 'contacts'])->name('index');
+        Route::get('/{contact}', [AdminController::class, 'contactDetails'])->name('show');
+        Route::patch('/{contact}/mark-replied', [AdminController::class, 'markContactAsReplied'])->name('mark-replied');
     });
 });
 

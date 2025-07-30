@@ -47,10 +47,10 @@ class HomeController extends Controller
     }
 
     /**
-     * Pagina di contatto
+     * Pagina di contatto - ora gestita dal ContactController
      */
     public function contact()
     {
-        return view('contact');
+        return app(ContactController::class)->show();
     }
 }

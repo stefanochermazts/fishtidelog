@@ -115,4 +115,14 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Notification Email
+    |--------------------------------------------------------------------------
+    |
+    | Email address where contact form notifications will be sent
+    |
+    */
+    'contact_notification_email' => env('CONTACT_NOTIFICATION_EMAIL'),
+
 ];
